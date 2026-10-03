@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pitch deck cover · Zirven V2.1 application 18</title>
+<meta name="description" content="Zirven investor deck: Night cover with the data terrain, a light cover variant and three follow-on slides showing brand architecture, VEVO and what Zirven builds.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  .z-board__head .brand { display: flex; align-items: center; gap: 16px; }
+  .z-board__head .brand i { width: 1px; height: 16px; background: rgba(14, 11, 31, 0.16); }
+  .deck { display: flex; flex-direction: column; gap: 44px; }
+  .deck .z-overline { color: var(--z-violet); }
+  .row { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .item { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .cap { display: flex; align-items: baseline; gap: 10px; font: 500 14px/1.35 var(--z-font-sans); color: var(--z-night); }
+  .cap b { font: 600 12px/1 var(--z-font-mono); color: var(--z-violet); }
+  .cap span { margin-left: auto; font: 500 12px/1 var(--z-font-mono); color: var(--z-ink-500); white-space: nowrap; }
+
+  /* ---------- Slides at 1600 × 900, scaled ---------- */
+  .art { position: relative; overflow: hidden; width: calc(1600px * var(--s)); height: calc(900px * var(--s)); border-radius: calc(14px * var(--s) + 4px); box-shadow: 0 1px 2px rgba(14, 11, 31, 0.14), 0 40px 80px -40px rgba(14, 11, 31, 0.6); }
+  .cv { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform: scale(var(--s)); transform-origin: 0 0; overflow: hidden; font-family: var(--z-font-sans); }
+
+  .sl { background: var(--z-night); color: var(--z-snow); }
+  .sl__head { position: absolute; left: 96px; right: 96px; top: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .sl__head img { height: 40px; width: auto; }
+  .sl__meta { font: 500 17px/1 var(--z-font-sans); color: var(--z-ink-400); letter-spacing: 0.01em; }
+  .sl__over { display: inline-flex; align-items: center; gap: 14px; font: 600 18px/1 var(--z-font-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--z-electric); }
+  .sl__over::before { content: ""; width: 28px; height: 3px; border-radius: 3px; background: currentColor; transform: rotate(-20deg); transform-origin: left center; margin-top: 8px; }
+  .sl__title { margin-top: 22px; font: 600 56px/1.08 var(--z-font-sans); letter-spacing: -0.025em; }
+  .sl__title em { font-style: normal; font-weight: 300; color: var(--z-lavender); }
+  .sl__foot { position: absolute; left: 96px; right: 96px; bottom: 52px; display: flex; align-items: center; gap: 40px; padding-top: 22px; border-top: 1.5px solid rgba(211, 200, 255, 0.14); font: 400 16px/1 var(--z-font-sans); color: var(--z-ink-400); }
+  .sl__pg { margin-left: auto; display: inline-flex; align-items: center; gap: 12px; font: 500 16px/1 var(--z-font-mono); color: var(--z-ink-500); }
+  .sl__pg b { color: var(--z-snow); font-weight: 600; }
+  .sl__pg::before { content: ""; width: 18px; height: 2px; background: var(--z-electric); transform: rotate(-20deg); }
+  .sl__body { position: absolute; left: 96px; right: 96px; top: 64px; }
+
+  /* Cover */
+  .cover__bg { position: absolute; inset: 0; background: url("../../pattern/terrain-dark.svg") left 60px top -10px / 1700px auto no-repeat; }
+  .cover__shade { position: absolute; inset: 0; background: linear-gradient(90deg, #0E0B1F 0%, rgba(14, 11, 31, 0.92) 34%, rgba(14, 11, 31, 0.4) 60%, rgba(14, 11, 31, 0) 82%); }
+  .cover__block { position: absolute; left: 96px; top: 258px; }
+  .cover h1 { margin-top: 30px; font: 600 212px/0.86 var(--z-font-sans); letter-spacing: -0.045em; margin-left: -10px; }
+  .cover__sub { margin-top: 40px; font: 300 50px/1.15 var(--z-font-sans); letter-spacing: -0.02em; color: var(--z-lavender); }
+  .cover__desc { margin-top: 34px; display: flex; align-items: center; gap: 18px; font: 500 20px/1 var(--z-font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--z-ink-300); }
+  .cover__desc i { width: 6px; height: 6px; border-radius: 50%; background: var(--z-electric); }
+  .cover__conf { display: inline-flex; align-items: center; gap: 10px; }
+  .cover__conf .zi { width: 18px; height: 18px; color: var(--z-ink-400); }
+
+  .sl--light { background: var(--z-snow); color: var(--z-night); }
+  .sl--light .cover__bg { background-image: url("../../pattern/terrain-light.svg"); }
+  .sl--light .cover__shade { background: linear-gradient(90deg, #F7F6FC 0%, rgba(247, 246, 252, 0.94) 34%, rgba(247, 246, 252, 0.35) 60%, rgba(247, 246, 252, 0) 82%); }
+  .sl--light .sl__over { color: var(--z-violet); }
+  .sl--light .cover__sub { color: var(--z-violet); }
+  .sl--light .cover__desc { color: var(--z-ink-600); }
+  .sl--light .cover__desc i, .sl--light .sl__pg::before { background: var(--z-violet); }
+  .sl--light .sl__foot { border-top-color: #DCD8EA; color: var(--z-ink-600); }
+  .sl--light .sl__pg b { color: var(--z-night); }
+  .sl--light .sl__meta { color: var(--z-ink-600); }
+  .sl--light .cover__conf .zi { color: var(--z-ink-500); }
+
+  /* Slide: brand architecture */
+  .arch { position: absolute; left: 96px; right: 96px; top: 290px; }
+  .arch__root { display: flex; justify-content: center; }
+  .arch__root div { display: flex; align-items: center; gap: 20px; padding: 20px 30px; border-radius: 18px; background: var(--z-ink-900); border: 1.5px solid rgba(150, 113, 255, 0.45); }
+  .arch__root img { height: 44px; width: auto; }
+  .arch__root b { display: block; font: 600 28px/1.1 var(--z-font-sans); }
+  .arch__root small { display: block; margin-top: 6px; font: 400 18px/1 var(--z-font-sans); color: var(--z-ink-400); }
+  .arch__wires { display: block; width: 100%; height: 72px; }
+  .arch__cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+  .arch__card { border: 1.5px solid rgba(211, 200, 255, 0.14); border-radius: 18px; padding: 26px; background: var(--z-ink-900); display: flex; flex-direction: column; gap: 14px; height: 270px; }
+  .arch__card--future { border-style: dashed; background: transparent; }
+  .arch__card img, .arch__card .tile { width: 60px; height: 60px; }
+  .arch__card .tile { border-radius: 14px; display: grid; place-items: center; background: rgba(150, 113, 255, 0.14); border: 1.5px solid rgba(150, 113, 255, 0.3); color: var(--z-electric); }
+  .arch__card .tile .zi { width: 30px; height: 30px; }
+  .arch__card b { font: 600 28px/1.1 var(--z-font-sans); }
+  .arch__card small { font: 400 18px/1.35 var(--z-font-sans); color: var(--z-ink-300); }
+  .arch__card .st { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; height: 34px; padding: 0 14px; border-radius: 999px; border: 1.5px solid rgba(211, 200, 255, 0.14); font: 500 16px/1 var(--z-font-sans); color: var(--z-ink-300); }
+  .st--live::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--z-cyan); box-shadow: 0 0 0 4px rgba(61, 216, 232, 0.2); }
+  .st--accent { color: var(--z-electric) !important; border-color: rgba(150, 113, 255, 0.4) !important; }
+
+  /* Slide: VEVO */
+  .vv__copy { position: absolute; left: 96px; top: 64px; width: 560px; }
+  .vv__copy img { height: 58px; width: auto; margin-top: 34px; }
+  .vv__copy p { margin-top: 24px; font: 400 22px/1.5 var(--z-font-sans); color: var(--z-ink-300); }
+  .vv__metrics { position: absolute; left: 96px; top: 376px; width: 580px; display: grid; grid-template-columns: 1fr; }
+  .vv__m { display: grid; grid-template-columns: 180px 1fr; align-items: baseline; gap: 20px; padding: 16px 0; border-top: 1.5px solid rgba(211, 200, 255, 0.12); }
+  .vv__m b { font: 600 48px/1 var(--z-font-sans); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .vv__m span { font: 400 19px/1.35 var(--z-font-sans); color: var(--z-ink-300); }
+  .vv__shot { position: absolute; left: 720px; top: 64px; right: -40px; bottom: 140px; border-radius: 20px; overflow: hidden; border: 1.5px solid rgba(211, 200, 255, 0.16); background: var(--z-ink-950); display: grid; grid-template-columns: 76px 1fr; box-shadow: 0 50px 100px -40px rgba(0, 0, 0, 0.9); }
+  .vv__rail { border-right: 1.5px solid rgba(211, 200, 255, 0.1); display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 22px 0; color: var(--z-ink-400); }
+  .vv__rail img { width: 40px; height: 40px; }
+  .vv__rail .zi { width: 26px; height: 26px; }
+  .vv__main { padding: 26px 64px 26px 28px; display: flex; flex-direction: column; gap: 20px; }
+  .vv__top { display: flex; align-items: center; justify-content: space-between; }
+  .vv__top small { display: block; font: 500 15px/1 var(--z-font-sans); color: var(--z-ink-400); }
+  .vv__top b { display: block; margin-top: 8px; font: 600 24px/1 var(--z-font-sans); }
+  .vv__ask { display: flex; align-items: center; gap: 10px; height: 44px; width: 300px; padding: 0 14px; border-radius: 12px; border: 1.5px solid rgba(211, 200, 255, 0.12); background: var(--z-ink-900); color: var(--z-ink-400); font: 400 17px/1 var(--z-font-sans); }
+  .vv__ask .zi { width: 20px; height: 20px; }
+  .vv__kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .vv__kpi { border: 1.5px solid rgba(211, 200, 255, 0.1); border-radius: 14px; padding: 16px 18px; }
+  .vv__kpi small { font: 500 15px/1 var(--z-font-sans); color: var(--z-ink-300); }
+  .vv__kpi strong { display: block; margin-top: 10px; font: 600 34px/1 var(--z-font-sans); letter-spacing: -0.02em; }
+  .vv__kpi i { display: block; margin-top: 8px; font: 500 14px/1 var(--z-font-sans); font-style: normal; color: var(--z-success); }
+  .vv__chart { border: 1.5px solid rgba(211, 200, 255, 0.1); border-radius: 14px; padding: 16px 18px; }
+  .vv__chart header { display: flex; justify-content: space-between; font: 500 15px/1 var(--z-font-sans); color: var(--z-ink-300); }
+  .vv__chart svg { width: 100%; height: auto; margin-top: 14px; }
+  .vv__ai { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 14px; border: 1.5px solid rgba(61, 216, 232, 0.3); background: rgba(61, 216, 232, 0.05); font: 400 16px/1.4 var(--z-font-sans); color: var(--z-ink-300); }
+  .vv__ai em { flex: none; font-style: normal; display: inline-flex; align-items: center; gap: 8px; color: var(--z-cyan); font-weight: 500; }
+  .vv__ai em::before { content: ""; width: 14px; height: 14px; background: currentColor; clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
+  .vv__note { padding-top: 16px; border-top: 1.5px solid rgba(211, 200, 255, 0.12); font: 400 15px/1 var(--z-font-sans); color: var(--z-ink-500); }
+
+  /* Slide: what we build */
+  .wb { position: absolute; left: 96px; right: 96px; top: 290px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: rgba(211, 200, 255, 0.12); border: 1.5px solid rgba(211, 200, 255, 0.12); border-radius: 20px; overflow: hidden; }
+  .wb div { background: var(--z-night); padding: 30px 32px; display: grid; grid-template-columns: 64px 1fr; gap: 8px 22px; align-items: center; height: 218px; align-content: center; }
+  .wb .tile { grid-row: span 2; width: 64px; height: 64px; border-radius: 16px; display: grid; place-items: center; background: rgba(150, 113, 255, 0.14); border: 1.5px solid rgba(150, 113, 255, 0.3); color: var(--z-electric); align-self: start; }
+  .wb .tile .zi { width: 32px; height: 32px; }
+  .wb b { font: 600 28px/1.1 var(--z-font-sans); }
+  .wb span { font: 400 18px/1.4 var(--z-font-sans); color: var(--z-ink-300); }
+
+  /* Master spec panel */
+  .spec { flex: 1; align-self: stretch; background: #fff; border-radius: 16px; padding: 26px 28px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 1px 2px rgba(14, 11, 31, 0.08); }
+  .spec h3 { font: 600 19px/1.3 var(--z-font-sans); color: var(--z-night); }
+  .spec dl { margin: 0; display: grid; grid-template-columns: 150px 1fr; }
+  .spec dt, .spec dd { margin: 0; padding: 11px 0; border-top: 1px solid var(--z-ink-200); font: 400 14px/1.45 var(--z-font-sans); }
+  .spec dt { color: var(--z-ink-500); font-weight: 500; }
+  .spec dd { color: var(--z-night); }
+  .spec code { font: 500 12.5px/1 var(--z-font-mono); color: var(--z-violet); }
+  .swatches { display: flex; gap: 6px; }
+  .swatches i { width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(14, 11, 31, 0.1); }
+</style>
+</head>
+<body>
+<div class="z-board">
+  <header class="z-board__head">
+    <div class="brand"><img src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven"><i></i><span>Zirven V2.1 · Applications</span></div>
+    <div class="z-board__title"><b>18</b> Pitch deck cover</div>
+  </header>
+
+  <main class="deck">
+    <!-- ============ Cover, Night ============ -->
+    <figure class="item">
+      <div class="art" style="--s:0.84">
+        <div class="cv sl cover" role="img" aria-label="Deck cover: Zirven, Building intelligent digital products. Investor overview 2026.">
+          <div class="cover__bg"></div><div class="cover__shade"></div>
+          <div class="sl__head"><img src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven"><span class="sl__meta">October 2026 · zirven.com</span></div>
+          <div class="cover__block">
+            <span class="sl__over">Investor overview · 2026</span>
+            <h1>Zirven</h1>
+            <p class="cover__sub">Building intelligent digital products.</p>
+            <p class="cover__desc">Software<i></i>SaaS<i></i>AI</p>
+          </div>
+          <div class="sl__foot"><span class="cover__conf"><svg class="zi"><use href="#zi-lock"/></svg>Confidential. Prepared for prospective investors; not for distribution.</span><span>Zirven Technology · Istanbul</span><span class="sl__pg"><b>01</b>/ 18</span></div>
+        </div>
+      </div>
+      <figcaption class="cap"><b>01</b>Cover · Night with the data terrain<span>16:9 · 1600 × 900 master · 1920 × 1080 export</span></figcaption>
+    </figure>
+
+    <!-- ============ Follow-on slides ============ -->
+    <div class="row">
+      <figure class="item">
+        <div class="art" style="--s:0.27">
+          <div class="cv sl" role="img" aria-label="Slide: brand architecture">
+            <div class="sl__body"><span class="sl__over">Brand architecture</span><h2 class="sl__title">One company. <em>A growing family of products.</em></h2></div>
+            <div class="arch">
+              <div class="arch__root"><div><img src="../../logo/svg/zirven-symbol-dark.svg" alt=""><span><b>Zirven</b><small>Parent company · shared platform</small></span></div></div>
+              <svg class="arch__wires" viewBox="0 0 1408 72" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="rgba(211,200,255,0.3)" stroke-width="1.5"><path d="M704 0V36M163 72V36H1245V72M524 72V36M884 72V36"/></g><circle cx="704" cy="36" r="5" fill="#9671FF"/></svg>
+              <div class="arch__cards">
+                <div class="arch__card"><img src="../../favicon/vevo-app-icon.svg" alt=""><b>VEVO</b><small>SaaS · AI business platform</small><span class="st st--live">Live</span></div>
+                <div class="arch__card arch__card--future"><img src="../../favicon/future-product-tile.svg" alt=""><b>Product 02</b><small>SaaS platform</small><span class="st">In development</span></div>
+                <div class="arch__card arch__card--future"><img src="../../favicon/future-product-tile.svg" alt=""><b>Product 03</b><small>AI product</small><span class="st">Research</span></div>
+                <div class="arch__card"><span class="tile"><svg class="zi"><use href="#zi-integrations"/></svg></span><b>Zirven Solutions</b><small>Custom software</small><span class="st st--accent">By engagement</span></div>
+              </div>
+            </div>
+            <div class="sl__foot"><span>Zirven · Investor overview 2026</span><span>Confidential</span><span class="sl__pg"><b>04</b>/ 18</span></div>
+          </div>
+        </div>
+        <figcaption class="cap"><b>04</b>Brand architecture<span>Endorsed model</span></figcaption>
+      </figure>
+
+      <figure class="item">
+        <div class="art" style="--s:0.27">
+          <div class="cv sl" role="img" aria-label="Slide: product VEVO">
+            <div class="vv__copy">
+              <span class="sl__over">Product · VEVO</span>
+              <br><img src="../../logo/svg/vevo-endorsed-dark.svg" alt="VEVO, a product by Zirven">
+              <p>Operations, customers and reporting in one workspace, with an assistant that answers from the customer’s own data.</p>
+            </div>
+            <div class="vv__metrics">
+              <div class="vv__m"><b>14</b><span>Pilot workspaces in logistics, manufacturing and distribution</span></div>
+              <div class="vv__m"><b>73%</b><span>Routine approvals automated at Corvane Industrial*</span></div>
+              <div class="vv__m"><b>2.4 d</b><span>Average order cycle, down from 3.1 days*</span></div>
+              <div class="vv__note">* Pilot data, Q3 2026</div>
+            </div>
+            <div class="vv__shot" aria-hidden="true">
+              <div class="vv__rail"><img src="../../favicon/vevo-app-icon.svg" alt=""><svg class="zi"><use href="#zi-home"/></svg><svg class="zi" style="color:#9671FF"><use href="#zi-analytics"/></svg><svg class="zi"><use href="#zi-workflow"/></svg><svg class="zi"><use href="#zi-teams"/></svg><svg class="zi"><use href="#zi-settings"/></svg></div>
+              <div class="vv__main">
+                <div class="vv__top"><div><small>Workspace · Operations</small><b>Good morning, Leyla</b></div><div class="vv__ask"><svg class="zi"><use href="#zi-search"/></svg>Search or ask…</div></div>
+                <div class="vv__kpis">
+                  <div class="vv__kpi"><small>Open orders</small><strong>1,284</strong><i>+6.2%</i></div>
+                  <div class="vv__kpi"><small>Automation rate</small><strong>73%</strong><i>+4.0 pts</i></div>
+                  <div class="vv__kpi"><small>Avg. cycle time</small><strong>2.4 d</strong><i>−0.3 d</i></div>
+                </div>
+                <div class="vv__chart"><header><span>Throughput by week</span><span>Last 12 weeks</span></header>
+                  <svg viewBox="0 0 640 150" aria-hidden="true">
+                    <g stroke="rgba(211,200,255,0.08)"><path d="M0 20H640M0 70H640M0 120H640"/></g>
+                    <g fill="#9671FF"><rect x="4" y="92" width="34" height="58" rx="4"/><rect x="57" y="84" width="34" height="66" rx="4"/><rect x="110" y="88" width="34" height="62" rx="4"/><rect x="163" y="74" width="34" height="76" rx="4"/><rect x="216" y="68" width="34" height="82" rx="4"/><rect x="269" y="76" width="34" height="74" rx="4"/><rect x="322" y="58" width="34" height="92" rx="4"/><rect x="375" y="50" width="34" height="100" rx="4"/><rect x="428" y="54" width="34" height="96" rx="4"/><rect x="481" y="40" width="34" height="110" rx="4"/><rect x="534" y="34" width="34" height="116" rx="4"/></g>
+                    <rect x="587" y="22" width="34" height="128" rx="4" fill="#D3C8FF"/>
+                  </svg>
+                </div>
+                <div class="vv__ai"><em>Assistant</em>Invoice matching has 3 exceptions. Supplier onboarding is waiting on your approval.</div>
+              </div>
+            </div>
+            <div class="sl__foot"><span>Zirven · Investor overview 2026</span><span>Confidential</span><span class="sl__pg"><b>07</b>/ 18</span></div>
+          </div>
+        </div>
+        <figcaption class="cap"><b>07</b>Product: VEVO<span>UI + 3 metrics</span></figcaption>
+      </figure>
+
+      <figure class="item">
+        <div class="art" style="--s:0.27">
+          <div class="cv sl" role="img" aria-label="Slide: what we build">
+            <div class="sl__body"><span class="sl__over">Capabilities</span><h2 class="sl__title">What we build. <em>One platform underneath.</em></h2></div>
+            <div class="wb">
+              <div><span class="tile"><svg class="zi"><use href="#zi-saas"/></svg></span><b>SaaS</b><span>Multi-tenant products with roles, billing and audit</span></div>
+              <div><span class="tile"><svg class="zi"><use href="#zi-ai"/></svg></span><b>AI</b><span>Assistants and extraction, grounded and measured</span></div>
+              <div><span class="tile"><svg class="zi"><use href="#zi-automation"/></svg></span><b>Automation</b><span>Workflows across ERP, CRM and internal tools</span></div>
+              <div><span class="tile"><svg class="zi"><use href="#zi-api"/></svg></span><b>API</b><span>REST, GraphQL and webhooks for every product</span></div>
+              <div><span class="tile"><svg class="zi"><use href="#zi-data"/></svg></span><b>Data</b><span>Pipelines, warehousing and dashboards</span></div>
+              <div><span class="tile"><svg class="zi"><use href="#zi-mobile"/></svg></span><b>Mobile</b><span>iOS and Android apps for teams in the field</span></div>
+            </div>
+            <div class="sl__foot"><span>Zirven · Investor overview 2026</span><span>Confidential</span><span class="sl__pg"><b>09</b>/ 18</span></div>
+          </div>
+        </div>
+        <figcaption class="cap"><b>09</b>What we build<span>Icon grid · 3 × 2</span></figcaption>
+      </figure>
+    </div>
+
+    <!-- ============ Light cover + master specs ============ -->
+    <div class="row" style="align-items:stretch">
+      <figure class="item">
+        <div class="art" style="--s:0.4125">
+          <div class="cv sl sl--light cover" role="img" aria-label="Deck cover, light theme">
+            <div class="cover__bg"></div><div class="cover__shade"></div>
+            <div class="sl__head"><img src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven"><span class="sl__meta">October 2026 · zirven.com</span></div>
+            <div class="cover__block">
+              <span class="sl__over">Investor overview · 2026</span>
+              <h1>Zirven</h1>
+              <p class="cover__sub">Building intelligent digital products.</p>
+              <p class="cover__desc">Software<i></i>SaaS<i></i>AI</p>
+            </div>
+            <div class="sl__foot"><span class="cover__conf"><svg class="zi"><use href="#zi-lock"/></svg>Confidential. Prepared for prospective investors; not for distribution.</span><span>Zirven Technology · Istanbul</span><span class="sl__pg"><b>01</b>/ 18</span></div>
+          </div>
+        </div>
+        <figcaption class="cap"><b>01</b>Cover · Snow variant for print and light rooms<span>Same grid</span></figcaption>
+      </figure>
+
+      <section class="spec" aria-label="Slide master specification">
+        <div><span class="z-overline">Slide master</span><h3 style="margin-top:10px">Built on a 96 px margin and one footer.</h3></div>
+        <dl>
+          <dt>Format</dt><dd>16:9. Master 1600 × 900, exported at 1920 × 1080 and as PDF.</dd>
+          <dt>Type</dt><dd>Readex Pro. Cover title 212, slide title 56, body 22, footer 16. <code>JetBrains Mono</code> for page numbers.</dd>
+          <dt>Footer</dt><dd>Confidentiality line, Zirven Technology, page number “NN / total” after a 20° marker.</dd>
+          <dt>Imagery</dt><dd>Real product UI, the data terrain on covers and section breaks. No stock photography.</dd>
+          <dt>Colour</dt><dd><span class="swatches"><i style="background:#0E0B1F"></i><i style="background:#F7F6FC"></i><i style="background:#5B34E0"></i><i style="background:#9671FF"></i><i style="background:#D3C8FF"></i><i style="background:#3DD8E8"></i></span></dd>
+        </dl>
+      </section>
+    </div>
+  </main>
+
+  <p class="z-board__note">Investor deck in 16:9, master 1600 × 900 px, delivered as Keynote, PowerPoint and PDF. Night cover with the data terrain and summit contour; Snow variant for printed handouts. Intelligence Cyan appears only on live product data and the assistant.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business card · Zirven V2.1 application 12</title>
+<meta name="description" content="Zirven V2.1 business card system: Night front with the Summit Z, Snow back with contact details, in English and Arabic.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  /* 1 mm = 6 px on this board; type is set in points so it reads true to print. */
+  .bc { --mm: 6px; --pt: calc(var(--mm) * 0.3528); }
+
+  /* ---------- Paper ---------- */
+  .card {
+    position: relative; flex: none; overflow: hidden;
+    width: calc(85 * var(--mm)); height: calc(55 * var(--mm)); border-radius: 2px;
+  }
+  /* uncoated fibre: a very quiet noise layer */
+  .card::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.5; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.36  0 0 0 0 0.32  0 0 0 0 0.45  0 0 0 0.09 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+  }
+  .card--night::after { mix-blend-mode: screen; opacity: 0.35;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.83  0 0 0 0 0.78  0 0 0 0 1  0 0 0 0.10 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>"); }
+  .card--snow { background: var(--z-snow); color: var(--z-night); }
+  .card--night { background: var(--z-night); color: var(--z-snow); }
+  .shadow-flat {
+    box-shadow: 0 0 0 0.5px rgba(14, 11, 31, 0.06), 0 1px 1px rgba(14, 11, 31, 0.08),
+                0 6px 12px -6px rgba(14, 11, 31, 0.18), 0 22px 40px -22px rgba(14, 11, 31, 0.32);
+  }
+
+  /* ---------- Front ---------- */
+  .front__terrain {
+    position: absolute; inset: 0;
+    background: url("../../pattern/terrain-dark-plain.svg") no-repeat;
+    background-size: calc(1600px * var(--ts)) calc(1000px * var(--ts));
+    background-position: var(--tx) var(--ty);
+  }
+  .front__summit { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .front__summit use { fill: none; stroke: var(--z-electric); stroke-width: 1.3px; vector-effect: non-scaling-stroke; }
+  .front__fade { position: absolute; inset: 0; background:
+      radial-gradient(120% 90% at 100% 100%, rgba(14, 11, 31, 0.92) 0%, rgba(14, 11, 31, 0.55) 34%, rgba(14, 11, 31, 0) 62%),
+      linear-gradient(180deg, rgba(36, 22, 84, 0.18), rgba(14, 11, 31, 0)); }
+  .front__symbol {
+    position: absolute; right: calc(6 * var(--mm)); bottom: calc(6 * var(--mm)); height: calc(19 * var(--mm)); width: auto;
+    /* foil sits slightly into uncoated stock */
+    filter: drop-shadow(0 -0.5px 0 rgba(0, 0, 0, 0.55)) drop-shadow(0 0.75px 0 rgba(211, 200, 255, 0.18));
+  }
+  .front__url {
+    position: absolute; left: calc(6 * var(--mm)); bottom: calc(6 * var(--mm));
+    font: 400 calc(6.5 * var(--pt))/1 var(--z-font-sans); letter-spacing: 0.04em; color: var(--z-lavender);
+  }
+
+  /* ---------- Back ---------- */
+  .back { padding: calc(6 * var(--mm)); display: grid; grid-template-rows: auto 1fr auto; }
+  .back__top { display: flex; align-items: flex-end; justify-content: space-between; }
+  .back__logo { height: calc(4.2 * var(--mm)); width: auto; }
+  .back__desc {
+    display: inline-flex; align-items: center; gap: calc(1.4 * var(--mm));
+    font: 500 calc(6 * var(--pt))/1 var(--z-font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--z-ink-500);
+  }
+  .back__desc::before { content: ""; width: calc(2.6 * var(--mm)); height: 1.5px; background: var(--z-violet); transform: rotate(-20deg); transform-origin: left center; }
+  .back__id { align-self: center; padding-top: calc(1 * var(--mm)); }
+  .back__name { font: 600 calc(11 * var(--pt))/1.15 var(--z-font-sans); letter-spacing: -0.01em; }
+  .back__role { margin-top: calc(1.4 * var(--mm)); font: 400 calc(7.5 * var(--pt))/1.3 var(--z-font-sans); color: var(--z-ink-600); }
+  .back__org { font: 500 calc(7.5 * var(--pt))/1.3 var(--z-font-sans); color: var(--z-violet); }
+  .back__contact {
+    list-style: none; margin: 0; padding: calc(3 * var(--mm)) 0 0; border-top: 1px solid var(--z-ink-200);
+    display: grid; grid-template-columns: calc(34 * var(--mm)) 1fr; row-gap: calc(1.9 * var(--mm));
+    font: 400 calc(6.6 * var(--pt))/1 var(--z-font-sans); color: var(--z-night);
+  }
+  .back__contact li { display: flex; align-items: center; gap: calc(1.6 * var(--mm)); white-space: nowrap; }
+  .back__contact .zi { width: calc(2.3 * var(--mm)); height: calc(2.3 * var(--mm)); color: var(--z-violet); stroke-width: 1.8; }
+  .back__contact .ltr { direction: ltr; unicode-bidi: isolate; }
+
+  /* Arabic side: same grid, mirrored */
+  .back[dir="rtl"] .back__desc { letter-spacing: 0; text-transform: none; font-size: calc(6.6 * var(--pt)); }
+  .back[dir="rtl"] .back__desc::before { transform: rotate(20deg); transform-origin: right center; }
+  .back[dir="rtl"] .back__logo { height: calc(5.4 * var(--mm)); }
+  .back[dir="rtl"] .back__name { font-size: calc(12.5 * var(--pt)); letter-spacing: 0; line-height: 1.25; }
+  .back[dir="rtl"] .back__role, .back[dir="rtl"] .back__org { font-size: calc(8 * var(--pt)); line-height: 1.5; }
+  .back[dir="rtl"] .back__role { margin-top: calc(0.6 * var(--mm)); }
+
+  /* ---------- Hero composition ---------- */
+  .scene {
+    position: relative; width: 100%; height: 640px; border-radius: 20px; overflow: hidden;
+    background:
+      radial-gradient(70% 90% at 18% 0%, #FBFAFE 0%, rgba(251, 250, 254, 0) 60%),
+      radial-gradient(60% 70% at 100% 100%, #CFCADD 0%, rgba(207, 202, 221, 0) 70%),
+      #E3E0EC;
+    box-shadow: inset 0 0 0 1px rgba(14, 11, 31, 0.05);
+  }
+  .scene .card { position: absolute; }
+  .scene .s1 { left: 160px; top: 128px; transform: rotate(-6deg); z-index: 2;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.3), 2px 3px 3px rgba(14, 11, 31, 0.22), 14px 22px 30px -8px rgba(14, 11, 31, 0.38), 40px 60px 70px -30px rgba(14, 11, 31, 0.35); }
+  .scene .s2 { left: 642px; top: 214px; transform: rotate(4deg); z-index: 3;
+    box-shadow: 0 0 0 0.5px rgba(14,11,31,0.07), 2px 3px 3px rgba(14, 11, 31, 0.14), 14px 22px 30px -8px rgba(14, 11, 31, 0.26), 40px 60px 70px -30px rgba(14, 11, 31, 0.28); }
+  .scene .s3 { left: 736px; top: 74px; transform: rotate(-11deg); z-index: 1;
+    box-shadow: 0 0 0 0.5px rgba(14,11,31,0.07), 2px 3px 3px rgba(14, 11, 31, 0.12), 12px 18px 26px -8px rgba(14, 11, 31, 0.22); }
+  /* paper thickness on the stacked edge */
+  .scene .s1::before, .scene .s2::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: 2px;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+  .scene .s1::before { box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(211, 200, 255, 0.14); }
+  .scene__sheen { position: absolute; inset: 0; z-index: 4; pointer-events: none;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0) 38%); }
+  .scene__label { position: absolute; left: 32px; bottom: 28px; z-index: 5; display: flex; gap: 10px; }
+  .scene__label span { font: 500 12px/1 var(--z-font-mono); color: var(--z-ink-600); background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(14, 11, 31, 0.06); padding: 7px 10px; border-radius: 7px; }
+
+  /* ---------- Flat specification views ---------- */
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 32px; padding-top: 8px; border-top: 1px solid rgba(14, 11, 31, 0.1); }
+  .section-head h2 { font: 600 20px/1.3 var(--z-font-sans); letter-spacing: -0.005em; }
+  .section-head p { font: 400 14px/1.55 var(--z-font-sans); color: var(--z-ink-600); max-width: 560px; text-align: right; }
+  .spec + .section-head { margin-top: 4px; }
+  .spec--tight { padding-top: 20px; }
+  .spec { display: grid; grid-template-columns: repeat(2, auto); justify-content: center; column-gap: 88px; row-gap: 28px; padding: 44px 0 8px 40px; }
+  .spec figure { margin: 0; position: relative; }
+  .spec figcaption { margin-top: 18px; display: flex; gap: 12px; align-items: baseline; font: 400 13px/1.45 var(--z-font-sans); color: var(--z-ink-600); }
+  .spec figcaption b { font: 600 12px/1 var(--z-font-mono); color: var(--z-violet); }
+  .spec figcaption strong { color: var(--z-night); font-weight: 500; }
+
+  /* dimension annotations */
+  .dim { position: absolute; color: var(--z-ink-500); font: 500 11px/1 var(--z-font-mono); letter-spacing: 0.02em; }
+  .dim--h { left: 0; right: 0; top: -26px; height: 9px; border-inline: 1px solid currentColor; }
+  .dim--h::before { content: ""; position: absolute; left: 0; right: 0; top: 4px; border-top: 1px solid currentColor; }
+  .dim--v { top: 0; bottom: 0; left: -28px; width: 9px; border-block: 1px solid currentColor; }
+  .dim--v::before { content: ""; position: absolute; top: 0; bottom: 0; left: 4px; border-left: 1px solid currentColor; }
+  .dim span { position: absolute; background: #E9E7F1; padding: 0 7px; white-space: nowrap; }
+  .dim--h span { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  .dim--v span { top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); }
+  .safe { position: absolute; inset: calc(4 * var(--mm)); border: 1px dashed rgba(150, 113, 255, 0.55); pointer-events: none; z-index: 3; }
+  .safe i { position: absolute; top: -18px; left: -1px; font: 500 10px/1 var(--z-font-mono); font-style: normal; color: var(--z-electric); white-space: nowrap; }
+
+  .specs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid rgba(14, 11, 31, 0.1); border-bottom: 1px solid rgba(14, 11, 31, 0.1); }
+  .specs div { padding: 18px 20px 18px 0; display: flex; flex-direction: column; gap: 8px; }
+  .specs div + div { padding-left: 20px; border-left: 1px solid rgba(14, 11, 31, 0.1); }
+  .specs dt { font: 500 11px/1 var(--z-font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--z-ink-500); }
+  .specs dd { margin: 0; font: 400 14px/1.45 var(--z-font-sans); color: var(--z-night); }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; vertical-align: -1px; box-shadow: inset 0 0 0 1px rgba(14, 11, 31, 0.12); }
+</style>
+</head>
+<body>
+<div class="z-board bc">
+  <header class="z-board__head">
+    <img src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+    <span>Zirven V2.1 · Applications</span>
+    <div class="z-board__title"><b>12</b> Business card</div>
+  </header>
+
+  <!-- ===================== Hero composition ===================== -->
+  <section class="scene" aria-label="Business cards, styled view">
+    <!-- Omar Haddad, Arabic side (behind) -->
+    <div class="card card--snow back s3" dir="rtl" lang="ar">
+      <div class="back__top">
+        <img class="back__logo" src="../../logo/svg/zirven-logo-arabic-light.svg" alt="زيرفن">
+        <span class="back__desc">برمجيات · منصات سحابية · ذكاء اصطناعي</span>
+      </div>
+      <div class="back__id">
+        <div class="back__name">عمر حداد</div>
+        <div class="back__role">مهندس ذكاء اصطناعي رئيسي</div>
+        <div class="back__org">زيرفن للتقنية</div>
+      </div>
+      <ul class="back__contact">
+        <li><svg class="zi"><use href="#zi-mail"/></svg><span class="ltr">omar@zirven.com</span></li>
+        <li><svg class="zi"><use href="#zi-phone"/></svg><span class="ltr">+90 212 000 00 00</span></li>
+        <li><svg class="zi"><use href="#zi-globe"/></svg><span class="ltr">zirven.com</span></li>
+        <li><svg class="zi"><use href="#zi-linkedin"/></svg><span class="ltr">linkedin.com/in/omarhaddad</span></li>
+      </ul>
+    </div>
+
+    <!-- Leyla Demir, front -->
+    <div class="card card--night s1" style="--ts:0.62; --tx:-268px; --ty:-62px">
+      <div class="front__terrain"></div>
+      <svg class="front__summit" viewBox="0 0 510 330" aria-hidden="true"><use href="#summit-path" transform="translate(-268 -62) scale(0.62)"/></svg>
+      <div class="front__fade"></div>
+      <img class="front__symbol" src="../../logo/svg/zirven-symbol-dark.svg" alt="Zirven">
+      <span class="front__url">zirven.com</span>
+    </div>
+
+    <!-- Leyla Demir, back -->
+    <div class="card card--snow back s2">
+      <div class="back__top">
+        <img class="back__logo" src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+        <span class="back__desc">Software · SaaS · AI</span>
+      </div>
+      <div class="back__id">
+        <div class="back__name">Leyla Demir</div>
+        <div class="back__role">Head of Product</div>
+        <div class="back__org">Zirven Technology</div>
+      </div>
+      <ul class="back__contact">
+        <li><svg class="zi"><use href="#zi-mail"/></svg>leyla@zirven.com</li>
+        <li><svg class="zi"><use href="#zi-phone"/></svg>+90 212 000 00 00</li>
+        <li><svg class="zi"><use href="#zi-globe"/></svg>zirven.com</li>
+        <li><svg class="zi"><use href="#zi-linkedin"/></svg>linkedin.com/in/leylademir</li>
+      </ul>
+    </div>
+
+    <div class="scene__sheen"></div>
+    <div class="scene__label"><span>85 × 55 mm</span><span>400 gsm uncoated</span><span>Violet foil</span></div>
+  </section>
+
+  <!-- ===================== Specification: Leyla Demir ===================== -->
+  <div class="section-head">
+    <h2>Front and back · 1 : 1 at 6 px per mm</h2>
+    <p>The front is a brand moment: the Summit Z in foil over a crop of the data terrain. The back carries the person, set left on one grid.</p>
+  </div>
+
+  <div class="spec">
+    <figure>
+      <div class="card card--night shadow-flat" style="--ts:0.62; --tx:-268px; --ty:-62px">
+        <div class="front__terrain"></div>
+        <svg class="front__summit" viewBox="0 0 510 330" aria-hidden="true"><use href="#summit-path" transform="translate(-268 -62) scale(0.62)"/></svg>
+        <div class="front__fade"></div>
+        <img class="front__symbol" src="../../logo/svg/zirven-symbol-dark.svg" alt="Zirven">
+        <span class="front__url">zirven.com</span>
+      </div>
+      <div class="dim dim--h"><span>85 mm</span></div>
+      <div class="dim dim--v"><span>55 mm</span></div>
+      <figcaption><b>A</b><span><strong>Front</strong> · Night, symbol 19 mm high in Electric Purple foil, 6 mm margins</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="card card--snow back shadow-flat">
+        <div class="safe"><i>Safe area · 4 mm</i></div>
+        <div class="back__top">
+          <img class="back__logo" src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+          <span class="back__desc">Software · SaaS · AI</span>
+        </div>
+        <div class="back__id">
+          <div class="back__name">Leyla Demir</div>
+          <div class="back__role">Head of Product</div>
+          <div class="back__org">Zirven Technology</div>
+        </div>
+        <ul class="back__contact">
+          <li><svg class="zi"><use href="#zi-mail"/></svg>leyla@zirven.com</li>
+          <li><svg class="zi"><use href="#zi-phone"/></svg>+90 212 000 00 00</li>
+          <li><svg class="zi"><use href="#zi-globe"/></svg>zirven.com</li>
+          <li><svg class="zi"><use href="#zi-linkedin"/></svg>linkedin.com/in/leylademir</li>
+        </ul>
+      </div>
+      <figcaption><b>B</b><span><strong>Back</strong> · Snow, Readex Pro 11 / 7.5 / 6.6 pt, Night and Zirven Violet</span></figcaption>
+    </figure>
+  </div>
+
+  <!-- ===================== Variant: Omar Haddad, EN + AR ===================== -->
+  <div class="section-head">
+    <h2>Variant · Omar Haddad, Principal AI Engineer</h2>
+    <p>One system in English, Turkish and Arabic. The Arabic side mirrors the grid right to left and uses the Arabic logo; numbers and addresses stay left to right.</p>
+  </div>
+
+  <div class="spec spec--tight">
+    <figure>
+      <div class="card card--snow back shadow-flat">
+        <div class="back__top">
+          <img class="back__logo" src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+          <span class="back__desc">Software · SaaS · AI</span>
+        </div>
+        <div class="back__id">
+          <div class="back__name">Omar Haddad</div>
+          <div class="back__role">Principal AI Engineer</div>
+          <div class="back__org">Zirven Technology</div>
+        </div>
+        <ul class="back__contact">
+          <li><svg class="zi"><use href="#zi-mail"/></svg>omar@zirven.com</li>
+          <li><svg class="zi"><use href="#zi-phone"/></svg>+90 212 000 00 00</li>
+          <li><svg class="zi"><use href="#zi-globe"/></svg>zirven.com</li>
+          <li><svg class="zi"><use href="#zi-linkedin"/></svg>linkedin.com/in/omarhaddad</li>
+        </ul>
+      </div>
+      <figcaption><b>C</b><span><strong>Back · English</strong> · shared with the Night front (A)</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="card card--snow back shadow-flat" dir="rtl" lang="ar">
+        <div class="back__top">
+          <img class="back__logo" src="../../logo/svg/zirven-logo-arabic-light.svg" alt="زيرفن">
+          <span class="back__desc">برمجيات · منصات سحابية · ذكاء اصطناعي</span>
+        </div>
+        <div class="back__id">
+          <div class="back__name">عمر حداد</div>
+          <div class="back__role">مهندس ذكاء اصطناعي رئيسي</div>
+          <div class="back__org">زيرفن للتقنية</div>
+        </div>
+        <ul class="back__contact">
+          <li><svg class="zi"><use href="#zi-mail"/></svg><span class="ltr">omar@zirven.com</span></li>
+          <li><svg class="zi"><use href="#zi-phone"/></svg><span class="ltr">+90 212 000 00 00</span></li>
+          <li><svg class="zi"><use href="#zi-globe"/></svg><span class="ltr">zirven.com</span></li>
+          <li><svg class="zi"><use href="#zi-linkedin"/></svg><span class="ltr">linkedin.com/in/omarhaddad</span></li>
+        </ul>
+      </div>
+      <figcaption><b>D</b><span><strong>Back · Arabic</strong> (dir="rtl") · Readex Pro Arabic 12.5 / 8 pt, Arabic logo lockup</span></figcaption>
+    </figure>
+  </div>
+
+  <dl class="specs">
+    <div><dt>Format</dt><dd>85 × 55 mm, 3 mm bleed, square corners</dd></div>
+    <div><dt>Stock</dt><dd>400 gsm uncoated, bright white, single sheet</dd></div>
+    <div><dt>Front</dt><dd><span class="swatch" style="background:#0E0B1F"></span>Night as rich black-violet<br><span class="swatch" style="background:#9671FF"></span>Symbol: Electric Purple spot or foil</dd></div>
+    <div><dt>Back</dt><dd><span class="swatch" style="background:#0E0B1F"></span>Night text<br><span class="swatch" style="background:#5B34E0"></span>Zirven Violet accents and icons</dd></div>
+  </dl>
+
+  <p class="z-board__note">Printed on 400 gsm uncoated board; Night runs as a rich black-violet (C80 M85 Y0 K85, or Pantone 2765 C family) and Zirven Violet as Pantone 2725 C range, both to be proofed on stock. The symbol is an Electric Purple spot (Pantone 2088 C range, to be proofed) or a matte violet foil; type is Readex Pro, never below 6 pt.</p>
+</div>
+
+<!-- The summit contour from pattern/terrain-dark.svg, isolated so it can be drawn above the fade. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <path id="summit-path" d="M1610.0 308.1 C1606.7 306.9 1595.0 302.4 1590.0 300.7 C1585.0 299.1 1585.0 299.2 1580.0 298.0 C1575.0 296.8 1566.7 294.9 1560.0 293.6 C1553.3 292.3 1545.0 290.9 1540.0 290.0 C1535.0 289.2 1535.0 289.3 1530.0 288.4 C1525.0 287.5 1516.6 286.1 1510.0 284.7 C1503.4 283.3 1495.4 281.3 1490.4 280.0 C1485.4 278.7 1484.7 278.5 1480.0 276.8 C1475.3 275.2 1467.1 272.1 1462.1 270.0 C1457.1 267.9 1453.7 266.1 1450.0 264.1 C1446.3 262.2 1443.8 260.8 1440.0 258.5 C1436.2 256.1 1431.6 253.1 1427.4 250.0 C1423.1 246.9 1418.7 243.3 1414.7 240.0 C1410.7 236.7 1407.1 233.3 1403.5 230.0 C1399.9 226.7 1396.5 223.3 1393.1 220.0 C1389.7 216.7 1386.4 213.3 1383.0 210.0 C1379.6 206.7 1376.3 203.3 1372.7 200.0 C1369.2 196.7 1365.6 193.3 1361.8 190.0 C1358.0 186.7 1353.6 183.2 1350.0 180.4 C1346.4 177.6 1343.3 175.5 1340.0 173.2 C1336.7 171.0 1333.9 169.2 1330.0 166.9 C1326.1 164.7 1321.8 162.3 1316.8 160.0 C1311.8 157.7 1304.5 154.6 1300.0 152.9 C1295.5 151.2 1295.0 151.0 1290.0 149.6 C1285.0 148.2 1276.7 146.0 1270.0 144.7 C1263.3 143.4 1256.7 142.5 1250.0 141.8 C1243.3 141.0 1235.0 140.6 1230.0 140.3 C1225.0 140.0 1225.0 140.0 1220.0 140.0 C1215.0 139.9 1206.4 139.8 1200.0 139.8 C1193.6 139.8 1186.6 139.9 1181.6 140.0 C1176.6 140.1 1175.3 140.1 1170.0 140.3 C1164.7 140.4 1156.7 140.7 1150.0 141.0 C1143.3 141.4 1136.7 141.8 1130.0 142.5 C1123.3 143.1 1116.7 143.8 1110.0 145.0 C1103.3 146.2 1095.0 148.2 1090.0 149.5 C1085.0 150.7 1084.6 150.8 1080.0 152.6 C1075.4 154.4 1067.7 157.6 1062.7 160.0 C1057.7 162.4 1053.8 164.6 1050.0 166.9 C1046.2 169.1 1043.3 171.1 1040.0 173.4 C1036.7 175.7 1033.5 178.1 1030.0 180.8 C1026.5 183.6 1022.6 186.8 1018.9 190.0 C1015.1 193.2 1011.3 196.7 1007.6 200.0 C1004.0 203.3 1000.4 206.7 996.9 210.0 C993.4 213.3 990.0 216.7 986.5 220.0 C983.0 223.3 979.6 226.7 976.1 230.0 C972.7 233.3 969.2 236.7 965.7 240.0 C962.2 243.3 958.6 246.7 955.1 250.0 C951.5 253.3 947.9 256.7 944.3 260.0 C940.7 263.3 937.0 266.7 933.4 270.0 C929.8 273.3 926.1 276.7 922.5 280.0 C918.9 283.3 915.3 286.7 911.9 290.0 C908.4 293.3 905.0 296.7 901.7 300.0 C898.4 303.3 895.2 306.7 892.2 310.0 C889.1 313.3 886.2 316.7 883.4 320.0 C880.7 323.3 878.0 326.7 875.5 330.0 C873.0 333.3 870.9 336.1 868.3 340.0 C865.7 343.9 862.9 348.2 860.0 353.2 C857.1 358.2 853.2 365.5 851.0 370.0 C848.7 374.5 848.3 375.5 846.4 380.0 C844.6 384.5 841.8 392.0 840.0 397.0 C838.2 402.0 837.4 404.5 835.9 410.0 C834.4 415.5 832.3 425.0 831.2 430.0 C830.1 435.0 830.1 435.0 829.3 440.0 C828.5 445.0 827.2 453.3 826.1 460.0 C825.1 466.7 824.1 474.1 823.0 480.0 C822.0 485.9 821.2 490.3 820.0 495.3 C818.8 500.3 817.6 505.0 815.9 510.0 C814.2 515.0 812.4 520.1 810.0 525.1 C807.6 530.1 804.3 535.8 801.7 540.0 C799.1 544.2 797.0 546.7 794.2 550.0 C791.3 553.3 788.2 556.7 784.5 560.0 C780.8 563.3 775.9 567.1 771.8 570.0 C767.7 572.9 763.6 575.2 760.0 577.2 C756.4 579.3 754.4 580.2 750.0 582.4 C745.6 584.5 738.7 587.6 733.7 590.0 C728.7 592.4 724.0 594.6 720.0 596.7 C716.0 598.7 713.7 599.9 710.0 602.1 C706.3 604.3 701.9 607.0 697.8 610.0 C693.8 613.0 689.2 616.7 685.5 620.0 C681.7 623.3 678.5 626.7 675.5 630.0 C672.4 633.3 669.8 636.6 667.2 640.0 C664.6 643.4 662.8 645.6 660.0 650.6 C657.2 655.6 652.4 665.1 650.3 670.0 C648.2 674.9 647.8 675.0 647.3 680.0 C646.8 685.0 646.4 695.0 647.3 700.0 C648.1 705.0 649.4 706.7 652.3 710.0 C655.2 713.3 659.9 717.4 664.5 720.0 C669.1 722.6 674.1 724.3 680.0 725.7 C685.9 727.0 693.3 728.1 700.0 728.2 C706.7 728.4 713.3 727.7 720.0 726.7 C726.7 725.6 735.0 723.3 740.0 722.0 C745.0 720.6 745.0 720.5 750.0 718.6 C755.0 716.7 765.0 712.7 770.0 710.7 C775.0 708.6 775.8 708.1 780.0 706.3 C784.2 704.5 790.5 702.0 795.5 700.0 C800.5 698.0 805.0 696.2 810.0 694.5 C815.0 692.9 820.7 691.3 825.7 690.0 C830.7 688.7 834.3 687.7 840.0 686.7 C845.7 685.6 853.3 684.4 860.0 683.6 C866.7 682.7 874.5 682.0 880.0 681.4 C885.5 680.8 888.3 680.6 893.3 680.0 C898.3 679.4 903.9 678.8 910.0 678.0 C916.1 677.1 923.3 675.9 930.0 674.6 C936.7 673.3 945.0 671.3 950.0 670.1 C955.0 668.9 955.0 668.8 960.0 667.4 C965.0 665.9 975.0 662.9 980.0 661.5 C985.0 660.0 985.0 659.9 990.0 658.5 C995.0 657.1 1004.2 654.5 1010.0 653.1 C1015.8 651.7 1019.9 650.9 1024.9 650.0 C1029.9 649.1 1034.2 648.4 1040.0 648.0 C1045.8 647.5 1053.3 647.1 1060.0 647.2 C1066.7 647.3 1075.0 648.1 1080.0 648.6 C1085.0 649.1 1085.1 649.1 1090.1 650.0 C1095.1 650.9 1103.4 652.5 1110.0 654.1 C1116.6 655.6 1125.0 657.9 1130.0 659.2 C1135.0 660.5 1135.0 660.6 1140.0 662.0 C1145.0 663.4 1155.0 666.3 1160.0 667.6 C1165.0 669.0 1165.0 669.0 1170.0 670.2 C1175.0 671.3 1183.3 673.3 1190.0 674.6 C1196.7 675.8 1203.3 676.9 1210.0 677.7 C1216.7 678.5 1225.0 679.1 1230.0 679.5 C1235.0 679.9 1235.0 679.9 1240.0 680.0 C1245.0 680.1 1254.1 680.2 1260.0 680.2 C1265.9 680.2 1270.9 680.0 1275.6 680.0 C1280.2 680.0 1283.9 680.0 1288.0 680.0 C1292.0 680.0 1294.7 680.0 1300.0 680.2 C1305.3 680.4 1313.3 680.7 1320.0 681.1 C1326.7 681.4 1333.3 681.9 1340.0 682.3 C1346.7 682.8 1353.3 683.3 1360.0 683.6 C1366.7 683.9 1373.3 684.3 1380.0 684.2 C1386.7 684.2 1393.4 684.0 1400.0 683.3 C1406.6 682.6 1414.3 681.1 1419.3 680.0 C1424.3 678.9 1425.5 678.7 1430.0 677.0 C1434.5 675.3 1441.4 672.4 1446.4 670.0 C1451.4 667.6 1456.1 664.9 1460.0 662.5 C1463.9 660.2 1466.7 658.2 1470.0 655.9 C1473.3 653.5 1476.6 651.1 1480.0 648.5 C1483.4 645.8 1486.9 643.1 1490.7 640.0 C1494.4 636.9 1498.7 633.3 1502.7 630.0 C1506.6 626.7 1510.5 623.3 1514.4 620.0 C1518.4 616.7 1522.3 613.3 1526.2 610.0 C1530.1 606.7 1534.1 603.3 1538.1 600.0 C1542.0 596.7 1546.3 593.1 1550.0 590.1 C1553.7 587.1 1556.7 584.6 1560.0 581.9 C1563.3 579.1 1566.7 576.4 1570.0 573.6 C1573.3 570.8 1576.7 568.0 1580.0 565.2 C1583.3 562.3 1586.7 559.4 1590.0 556.4 C1593.3 553.4 1596.7 550.3 1600.0 547.1 C1603.3 543.8 1608.3 538.6 1610.0 536.9"/>
+  </defs>
+</svg>
+</body>
+</html>

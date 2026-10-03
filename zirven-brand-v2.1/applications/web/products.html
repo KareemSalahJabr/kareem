@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Products &amp; ecosystem — Zirven · Zirven V2.1 applications 03–04</title>
+<meta name="description" content="Zirven builds, owns and keeps improving its software. VEVO is live, two more products are in build, and every product runs on one shared Zirven Platform.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  html { overflow-x: hidden; }
+  body { overflow-x: hidden; }
+
+  .sec-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 64px; align-items: end; }
+  .sec-head .z-lead { padding-bottom: 6px; }
+
+  /* ---------- Hero ---------- */
+  .p-hero { position: relative; overflow: hidden; padding: 112px 0 0; }
+  .p-hero__bg { position: absolute; inset: 0; opacity: 0.85; }
+  .p-hero__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--z-night) 0%, rgba(14,11,31,0.88) 42%, rgba(14,11,31,0.25) 80%), linear-gradient(0deg, var(--z-night) 0%, rgba(14,11,31,0) 40%); }
+  .p-hero__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr); gap: 72px; align-items: end; }
+  .p-hero h1 { font-size: 64px; line-height: 1.04; letter-spacing: -0.03em; font-weight: 600; margin-top: 28px; }
+  .p-hero h1 em { font-style: normal; color: var(--z-lavender); font-weight: 300; }
+  .p-hero .z-lead { font-size: 18.5px; }
+  .stats { position: relative; margin-top: 88px; border-top: 1px solid var(--t-line); background: linear-gradient(180deg, rgba(14,11,31,0.4), var(--z-night)); }
+  .stats__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .stats__cell { padding: 30px 28px 34px; border-left: 1px solid var(--t-line); display: flex; flex-direction: column; gap: 10px; }
+  .stats__cell:first-child { border-left: 0; padding-left: 0; }
+  .stats__cell b { font: 600 40px/1 var(--z-font-sans); letter-spacing: -0.025em; font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 12px; }
+  .stats__cell b .z-dot-live { display: inline-block; }
+  .stats__cell span { font: 500 14.5px/1.3 var(--z-font-sans); color: var(--t-text); }
+  .stats__cell small { font: 400 13px/1.4 var(--z-font-sans); color: var(--t-text-3); }
+
+  /* ---------- Ecosystem diagram ---------- */
+  .eco { position: relative; border: 1px solid var(--t-line); border-radius: 20px; overflow: hidden;
+    background: radial-gradient(ellipse 55% 38% at 56% 0%, rgba(91, 52, 224, 0.18), rgba(91, 52, 224, 0) 70%),
+                radial-gradient(ellipse 60% 30% at 56% 82%, rgba(91, 52, 224, 0.12), rgba(91, 52, 224, 0) 70%),
+                radial-gradient(circle, rgba(211, 200, 255, 0.11) 1px, rgba(211, 200, 255, 0) 1.4px) 0 0 / 24px 24px, var(--z-night); }
+  .eco__top { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 28px; border-bottom: 1px solid var(--t-line); background: rgba(14, 11, 31, 0.7); font: 500 12px/1 var(--z-font-mono); color: var(--t-text-3); }
+  .eco__top b { color: var(--t-text-2); font-weight: 500; }
+  .legend { display: flex; align-items: center; gap: 22px; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .legend i { flex: none; display: inline-block; width: 22px; height: 0; border-top: 1px solid rgba(211, 200, 255, 0.6); }
+  .legend i.dash { border-top-style: dashed; border-top-color: rgba(150, 113, 255, 0.9); }
+  .legend i.lg-port { width: 7px; height: 7px; border: 1px solid var(--z-electric); background: var(--z-night); border-radius: 2px; }
+  .eco__body { padding: 40px 40px 36px 0; }
+  .eco__row { display: grid; grid-template-columns: 156px minmax(0, 1fr); }
+  .eco__axis { position: relative; margin-right: 36px; padding: 0 16px 0 28px; border-right: 1px solid rgba(211, 200, 255, 0.14); display: flex; flex-direction: column; justify-content: center; gap: 7px; font: 500 11px/1.2 var(--z-font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--t-text-3); }
+  .eco__axis b { font: 600 12px/1 var(--z-font-mono); letter-spacing: 0.04em; color: var(--z-electric); }
+  .eco__axis--layer::after { content: ""; position: absolute; right: -4px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: var(--z-night); border: 1px solid var(--z-electric); }
+  .eco__axis--rel { color: var(--z-ink-500); font-size: 10.5px; text-transform: none; letter-spacing: 0.02em; }
+  .wire { position: relative; height: 64px; }
+  .wire svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .wire--tall { height: 76px; }
+  .wire--short { height: 36px; }
+  .jn { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--z-electric); transform: translate(-50%, -50%); box-shadow: 0 0 0 4px rgba(150, 113, 255, 0.16); }
+  .port { position: absolute; width: 9px; height: 9px; border-radius: 2px; background: var(--z-night); border: 1px solid var(--z-electric); transform: translate(-50%, -50%); }
+  .wire__tag { position: absolute; top: 50%; transform: translate(10px, -50%); font: 500 10.5px/1 var(--z-font-mono); color: var(--z-ink-500); white-space: nowrap; }
+
+  .owner { justify-self: center; display: flex; align-items: center; gap: 16px; padding: 16px 22px 16px 16px; border-radius: 16px; background: linear-gradient(180deg, #1B1538, #15112B); border: 1px solid rgba(150, 113, 255, 0.38); box-shadow: 0 0 0 6px rgba(150, 113, 255, 0.05), 0 18px 50px -20px rgba(91, 52, 224, 0.6); }
+  .owner__mark { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: var(--z-night); border: 1px solid var(--t-line); }
+  .owner__mark img { height: 24px; width: auto; }
+  .owner b { display: block; font: 600 18px/1.2 var(--z-font-sans); }
+  .owner span { display: block; margin-top: 4px; font: 400 13px/1.3 var(--z-font-sans); color: var(--t-text-3); }
+  .owner .z-tag { margin-left: 10px; }
+
+  .eco__products { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .eco__products > div { padding: 0 9px; }
+  .pn { height: 100%; display: flex; flex-direction: column; gap: 14px; padding: 16px; border-radius: 14px; background: var(--z-ink-900); border: 1px solid rgba(211, 200, 255, 0.14); }
+  .pn--live { border-color: rgba(150, 113, 255, 0.45); background: linear-gradient(180deg, #1C1640 0%, #15112B 70%); }
+  .pn--future { border-style: dashed; border-color: rgba(211, 200, 255, 0.24); background: rgba(21, 17, 43, 0.6); }
+  .pn__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .pn__tile { width: 40px; height: 40px; flex: none; border-radius: 10px; }
+  .pn__tile--solutions { display: grid; place-items: center; background: var(--t-accent-soft); color: var(--z-electric); border: 1px solid rgba(150, 113, 255, 0.25); }
+  .pn__name b { display: block; font: 600 17px/1.2 var(--z-font-sans); }
+  .pn__name span { display: block; margin-top: 5px; font: 400 13px/1.35 var(--z-font-sans); color: var(--t-text-3); }
+  .pn__name code { font: 500 11px/1 var(--z-font-mono); color: var(--z-ink-500); }
+  .use { margin-top: auto; display: flex; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(211, 200, 255, 0.1); font: 500 11px/1 var(--z-font-mono); color: var(--t-text-3); }
+  .use__bar { display: flex; gap: 3px; }
+  .use__bar i { width: 9px; height: 12px; border-radius: 2px; background: rgba(211, 200, 255, 0.1); }
+  .use__bar i.on { background: var(--z-electric); }
+  .pn--future .use__bar i.on { background: rgba(150, 113, 255, 0.6); }
+  .use em { margin-left: auto; font-style: normal; color: var(--t-text-2); }
+
+  .plat { border-radius: 16px; border: 1px solid rgba(150, 113, 255, 0.4); background: linear-gradient(180deg, rgba(36, 22, 84, 0.55), rgba(21, 17, 43, 0.92) 46%); box-shadow: 0 30px 80px -40px rgba(91, 52, 224, 0.7); overflow: hidden; }
+  .plat__head { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-bottom: 1px solid rgba(150, 113, 255, 0.22); }
+  .plat__head .z-h4 { font-size: 18px; }
+  .plat__tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .plat__tags .z-tag { background: rgba(14, 11, 31, 0.6); border: 1px solid rgba(211, 200, 255, 0.1); }
+  .mods { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: rgba(150, 113, 255, 0.16); }
+  .mod { position: relative; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 3px 12px; align-items: center; padding: 15px 16px 16px; background: rgba(16, 12, 35, 0.94); }
+  .mod__icon { grid-row: span 3; width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: rgba(150, 113, 255, 0.12); border: 1px solid rgba(150, 113, 255, 0.24); color: var(--z-lavender); }
+  .mod__icon--ai { background: rgba(61, 216, 232, 0.08); border-color: rgba(61, 216, 232, 0.35); color: var(--z-cyan); }
+  .mod b { font: 500 14px/1.25 var(--z-font-sans); color: var(--z-snow); min-width: 0; }
+  .mod span { font: 400 12px/1.3 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mod code { font: 500 10.5px/1.2 var(--z-font-mono); color: var(--z-ink-500); }
+
+  .infra { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 13px 18px; border-radius: 12px; border: 1px dashed rgba(211, 200, 255, 0.2); background: rgba(14, 11, 31, 0.75); font: 500 13.5px/1.2 var(--z-font-sans); color: var(--t-text-2); }
+  .infra .zi { color: var(--z-lavender); }
+  .infra .z-tag { background: var(--z-ink-850); }
+  .infra__right { margin-left: auto; display: flex; gap: 18px; font: 500 12px/1 var(--z-font-mono); color: var(--t-text-3); }
+  .eco__foot { display: flex; justify-content: space-between; gap: 24px; padding: 16px 28px; border-top: 1px solid var(--t-line); background: rgba(14, 11, 31, 0.7); font: 400 13px/1.45 var(--z-font-sans); color: var(--t-text-3); }
+  .eco__foot b { color: var(--t-text-2); font-weight: 500; }
+
+  /* ---------- Lineup ---------- */
+  .feat { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); overflow: hidden; background: linear-gradient(160deg, #1A1338 0%, #120E26 60%); }
+  .feat__copy { padding: 48px; display: flex; flex-direction: column; gap: 22px; }
+  .feat__tile { width: 64px; height: 64px; border-radius: 15px; }
+  .feat__name { display: flex; align-items: center; gap: 12px; }
+  .tags { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; }
+  .feat__meta { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 4px 0 0; background: var(--t-line); border: 1px solid var(--t-line); border-radius: 12px; overflow: hidden; }
+  .feat__meta div { background: #140F2B; padding: 14px 16px; }
+  .feat__meta dt { font: 500 12px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .feat__meta dd { margin: 8px 0 0; font: 500 14.5px/1.2 var(--z-font-sans); color: var(--t-text); }
+  .feat__shot { padding: 48px 0 48px 8px; display: flex; align-items: center; }
+  .feat__shot .z-browser { width: 100%; border-right: 0; border-radius: 14px 0 0 14px; }
+
+  .mini { display: grid; grid-template-columns: 52px minmax(0, 1fr); background: var(--z-night); }
+  .mini__rail { border-right: 1px solid var(--t-line); display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 14px 0; color: var(--z-ink-500); }
+  .mini__rail img { width: 28px; height: 28px; border-radius: 7px; }
+  .mini__rail .zi[data-on] { color: var(--z-electric); }
+  .mini__main { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .mini__table { font-size: 13px; }
+  .mini__table th { padding: 10px 12px; font-size: 11.5px; }
+  .mini__table td { padding: 10px 12px; }
+  .mini__table td:first-child { display: flex; align-items: center; gap: 10px; }
+  .mini__table .z-avatar { width: 24px; height: 24px; font-size: 9.5px; border-radius: 6px; }
+  .health { display: flex; align-items: center; gap: 8px; font: 500 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .health i { position: relative; display: block; width: 64px; height: 5px; border-radius: 3px; background: rgba(211, 200, 255, 0.1); overflow: hidden; }
+  .health i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--v); background: var(--z-electric); border-radius: 3px; }
+  .health--warn i::after { background: var(--z-warning); }
+  .boxed { border: 1px solid var(--t-line); border-radius: 12px; overflow: hidden; }
+  .insight { border: 1px solid rgba(61, 216, 232, 0.28); border-radius: 12px; padding: 14px 16px; background: linear-gradient(180deg, rgba(61, 216, 232, 0.06), rgba(61, 216, 232, 0)); display: flex; flex-direction: column; gap: 10px; }
+  .insight p { font: 400 13.5px/1.55 var(--z-font-sans); color: var(--z-ink-300); }
+  .insight p b { color: var(--z-snow); font-weight: 500; }
+
+  .prod { display: flex; flex-direction: column; gap: 18px; padding: 28px; }
+  .prod--future { border-style: dashed; background: rgba(21, 17, 43, 0.45); }
+  .prod__tile { width: 52px; height: 52px; border-radius: 12px; }
+  .prod p { color: var(--t-text-2); font-size: 15px; line-height: 1.6; }
+  .prod__meta { margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--t-line); font: 500 13px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .prod__meta b { font: 500 12.5px/1 var(--z-font-mono); color: var(--t-text-2); }
+  .prod__cta { display: inline-flex; align-items: center; gap: 8px; font: 500 14.5px/1 var(--z-font-sans); }
+
+  /* ---------- Shared platform benefits ---------- */
+  .bene { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+  .bene__vis { height: 196px; padding: 20px; border-bottom: 1px solid var(--t-line); background: linear-gradient(180deg, rgba(36, 22, 84, 0.28), rgba(14, 11, 31, 0)); display: flex; flex-direction: column; justify-content: center; }
+  .bene__txt { padding: 24px 26px 28px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .bene__txt p { color: var(--t-text-2); font-size: 15px; }
+  .bene__txt ul { list-style: none; margin: auto 0 0; padding: 14px 0 0; display: flex; flex-direction: column; gap: 8px; font: 400 14px/1.35 var(--z-font-sans); color: var(--t-text-2); }
+  .bene__txt li { display: flex; align-items: center; gap: 10px; }
+  .bene__txt li .zi { color: var(--z-electric); }
+  .log { border: 1px solid var(--t-line); border-radius: 12px; background: var(--z-night); overflow: hidden; }
+  .log__head { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-bottom: 1px solid var(--t-line); font: 500 12px/1 var(--z-font-sans); color: var(--t-text-2); background: var(--z-ink-900); }
+  .log__head .z-caption { margin-left: auto; }
+  .log__row { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 12px; border-bottom: 1px solid rgba(211, 200, 255, 0.07); font: 400 12px/1.3 var(--z-font-sans); color: var(--t-text-2); }
+  .log__row:last-child { border-bottom: 0; }
+  .log__row time { font: 500 11px/1 var(--z-font-mono); color: var(--t-text-3); }
+  .log__row b { color: var(--z-snow); font-weight: 500; }
+  .log__row .z-tag { height: 19px; font-size: 10.5px; }
+  .acct { border: 1px solid var(--t-line); border-radius: 12px; background: var(--z-night); overflow: hidden; box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.8); }
+  .acct__id { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--t-line); font: 500 12.5px/1.2 var(--z-font-sans); }
+  .acct__id small { display: block; font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; }
+  .acct__item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; font: 500 12.5px/1.2 var(--z-font-sans); }
+  .acct__item img { width: 22px; height: 22px; border-radius: 6px; }
+  .acct__item small { display: block; font: 400 11px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; }
+  .acct__item[aria-current] { background: var(--t-accent-soft); }
+  .acct__item .zi { margin-left: auto; color: var(--z-electric); }
+  .bene .z-code { padding: 14px 16px; font-size: 12px; line-height: 1.75; border-radius: 12px; }
+
+  /* ---------- Roadmap ramp (20°) ---------- */
+  .roadmap { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; align-items: start; margin-top: 72px; padding-bottom: 36px; }
+  .roadmap::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--t-line); }
+  .rs { position: relative; padding: 30px 12px 0 0; }
+  .rm-key { position: absolute; left: 0; top: 0; width: calc(25% - 44px); padding: 18px 18px 16px; border: 1px solid var(--t-line); border-radius: 14px; background: var(--z-ink-900); }
+  .rm-key__today { display: flex; flex-direction: column; gap: 6px; padding-bottom: 14px; border-bottom: 1px solid var(--t-line); }
+  .rm-key__today b { font: 600 15px/1.2 var(--z-font-sans); }
+  .rm-key ul { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font: 400 13.5px/1.2 var(--z-font-sans); color: var(--t-text-2); }
+  .rm-key li { display: flex; align-items: center; gap: 10px; }
+  .rm-key i { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--z-electric); flex: none; }
+  .rm-key i.k-done { background: var(--z-electric); }
+  .rm-key i.k-now { box-shadow: 0 0 0 4px rgba(150, 113, 255, 0.18); }
+  .rm-key i.k-plan { border-color: rgba(211, 200, 255, 0.45); border-style: dashed; }
+  .rm-key p { margin-top: 14px; font: 400 12px/1.45 var(--z-font-sans); color: var(--t-text-3); }
+  /* each step rises by one column pitch × tan(20°) */
+  .rs:nth-child(2) { margin-top: calc((100% + 20px) * 0.36397 * 3); }
+  .rs:nth-child(3) { margin-top: calc((100% + 20px) * 0.36397 * 2); }
+  .rs:nth-child(4) { margin-top: calc((100% + 20px) * 0.36397 * 1); }
+  .rs::before { content: ""; position: absolute; left: 0; top: 0; width: 13px; height: 13px; border-radius: 50%; transform: translate(-50%, -50%); background: var(--z-night); border: 2px solid var(--z-electric); z-index: 2; }
+  .rs--done::before { background: var(--z-electric); }
+  .rs--now::before { background: var(--z-night); box-shadow: 0 0 0 6px rgba(150, 113, 255, 0.18); }
+  /* segment to the next step: length = pitch / cos(20°) */
+  .rs::after { content: ""; position: absolute; left: 0; top: -1px; height: 0; width: calc((100% + 20px) * 1.06418); border-top: 2px dashed rgba(211, 200, 255, 0.35); transform-origin: 0 50%; transform: rotate(-20deg); z-index: 1; }
+  .rs--done::after { border-top: 2px solid var(--z-electric); }
+  .rs:last-child::after { width: 120px; border-top-color: rgba(211, 200, 255, 0.18); }
+  .rs__when { display: flex; align-items: center; gap: 10px; }
+  .rs__when b { font: 600 13px/1 var(--z-font-mono); color: var(--z-electric); }
+  .rs h3 { margin-top: 16px; font: 600 20px/1.3 var(--z-font-sans); letter-spacing: -0.006em; }
+  .rs p { margin-top: 8px; color: var(--t-text-2); font-size: 14.5px; line-height: 1.55; }
+  .rs__prod { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .rs__prod img { width: 20px; height: 20px; border-radius: 5px; }
+  .rm-note { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 20px; font: 400 13px/1.45 var(--z-font-sans); color: var(--t-text-3); }
+
+  /* ---------- Brand architecture strip ---------- */
+  .arch { border: 1px solid var(--t-line); border-radius: 20px; overflow: hidden; background: var(--z-ink-900); }
+  .arch__flow { display: grid; grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr) 56px minmax(0, 1.6fr); align-items: stretch; }
+  .arch__node { padding: 28px 28px 26px; display: flex; flex-direction: column; gap: 16px; }
+  .arch__lbl { font: 500 11px/1 var(--z-font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--t-text-3); }
+  .arch__lbl b { color: var(--z-electric); font-weight: 600; margin-right: 6px; }
+  .arch__art { height: 48px; display: flex; align-items: center; gap: 14px; }
+  .arch__arrow { display: grid; place-items: center; color: var(--z-ink-500); position: relative; }
+  .arch__arrow::before { content: ""; position: absolute; top: 24px; bottom: 24px; left: 50%; width: 1px; background: var(--t-line); }
+  .arch__arrow span { position: relative; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--z-ink-900); border: 1px solid var(--t-line); }
+  .arch__rule { display: flex; align-items: center; gap: 16px; padding: 18px 28px; border-top: 1px solid var(--t-line); background: rgba(150, 113, 255, 0.07); font: 400 15px/1.5 var(--z-font-sans); color: var(--t-text-2); }
+  .arch__rule b { color: var(--z-snow); font-weight: 500; }
+  .arch__rule q { color: var(--z-lavender); quotes: "“" "”"; }
+  .arch__rule .z-icon-tile { width: 36px; height: 36px; border-radius: 10px; }
+
+  /* ---------- CTA ---------- */
+  .cta { position: relative; overflow: hidden; padding: 64px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: center; }
+  .cta__routes { display: flex; flex-direction: column; gap: 10px; min-width: 340px; }
+  .cta__routes a { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--t-line); background: rgba(14, 11, 31, 0.72); color: var(--t-text); text-decoration: none; }
+  .cta__routes a:hover { border-color: rgba(150, 113, 255, 0.5); }
+  .cta__routes a span { display: block; font: 400 13px/1.3 var(--z-font-sans); color: var(--t-text-3); margin-top: 3px; }
+  .cta__routes a .zi:last-child { margin-left: auto; color: var(--t-text-3); }
+  .cta__routes img { width: 36px; height: 36px; border-radius: 9px; }
+
+  .foot-grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 32px; }
+  .foot-grid h4 { font: 500 13px/1 var(--z-font-sans); color: var(--t-text-3); margin-bottom: 16px; }
+  .foot-grid ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1180px) {
+    .mod span { display: none; }
+    .mod { grid-template-columns: 34px minmax(0, 1fr); padding: 14px; }
+    .mod__icon { grid-row: span 2; }
+  }
+  @media (max-width: 1080px) {
+    .p-hero__grid, .feat, .cta { grid-template-columns: 1fr; }
+    .p-hero__grid { gap: 32px; }
+    .feat__shot { padding: 0 0 40px 40px; }
+    .eco__row { grid-template-columns: 0 minmax(0, 1fr); }
+    .eco__axis { visibility: hidden; margin: 0; padding: 0; border: 0; }
+    .eco__body { padding: 32px 28px; }
+    .mods { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mod span { display: block; }
+    .mod__icon { grid-row: span 3; }
+    .arch__flow { grid-template-columns: 1fr; }
+    .arch__arrow { height: 40px; }
+    .arch__arrow::before { top: 0; bottom: 0; }
+    .arch__arrow span { transform: rotate(90deg); }
+    .cta__routes { min-width: 0; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stats__cell:nth-child(3) { border-left: 0; padding-left: 0; }
+    .stats__cell:nth-child(n+3) { border-top: 1px solid var(--t-line); }
+    .roadmap { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
+    .rs { margin-top: 0 !important; }
+    .rm-key { display: none; }
+    .rs::after { display: none; }
+  }
+  @media (max-width: 760px) {
+    .eco__products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 0; }
+    .wire--tall svg, .wire--tall .port, .wire--fan svg, .wire--fan .jn, .wire--fan .port, .wire__tag { display: none; }
+    .wire--fan, .wire--tall { height: 20px; }
+    .plat__head { flex-wrap: wrap; }
+    .plat__tags { justify-content: flex-start; width: 100%; }
+    .sec-head { grid-template-columns: 1fr; gap: 20px; }
+    .sec-head h2 br { display: none; }
+  }
+  @media (max-width: 640px) {
+    .p-hero { padding-top: 64px; }
+    .p-hero h1 { font-size: 40px; }
+    .z-nav__links { display: none; }
+    .z-nav__inner { gap: 16px; }
+    .z-lang { display: none; }
+    .stats { margin-top: 56px; }
+    .stats__cell { padding: 22px 16px 24px; }
+    .stats__cell b { font-size: 32px; }
+    .eco__top { flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px 18px; }
+    .legend { gap: 14px; flex-wrap: wrap; }
+    .eco__body { padding: 24px 16px; }
+    .eco__products { grid-template-columns: 1fr; }
+    .eco__products > div { padding: 0; }
+    .owner { padding: 12px 14px 12px 12px; gap: 12px; }
+    .owner .z-tag { display: none; }
+    .mods { grid-template-columns: 1fr; }
+    .infra__right { margin-left: 0; flex-wrap: wrap; }
+    .eco__foot { flex-direction: column; gap: 6px; padding: 14px 18px; }
+    .feat__copy { padding: 28px 22px; }
+    .feat__shot { padding: 0 0 28px 22px; }
+    .mini { grid-template-columns: 1fr; }
+    .mini__rail { display: none; }
+    .mini__table th:nth-child(3), .mini__table td:nth-child(3) { display: none; }
+    .mini__main > .z-row > .z-row { display: none; }
+    .wire--short svg { display: none; }
+    .wire--short { height: 16px; }
+    .feat__meta { grid-template-columns: 1fr; }
+    .roadmap { grid-template-columns: 1fr; margin-top: 48px; gap: 36px; padding-left: 20px; padding-bottom: 0; }
+    .roadmap::before { left: 0; right: auto; top: 6px; bottom: 6px; width: 1px; height: auto; }
+    .rs { padding-top: 0; }
+    .rs::before { left: -20px; top: 7px; }
+    .rm-note { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .arch__node { padding: 22px 20px; }
+    .arch__art { flex-wrap: wrap; height: auto; }
+    .arch__rule { align-items: flex-start; padding: 18px 20px; }
+    .cta { padding: 32px 22px; gap: 28px; }
+    .foot-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="z-nav">
+  <div class="z-container z-nav__inner">
+    <a href="index.html" aria-label="Zirven home"><img class="z-nav__logo" src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven"></a>
+    <nav class="z-nav__links" aria-label="Primary">
+      <a href="products.html" aria-current="page">Products</a>
+      <a href="index.html#build">What we build</a>
+      <a href="index.html#ai">AI &amp; Technology</a>
+      <a href="index.html#engineering">Engineering</a>
+      <a href="index.html#about">About</a>
+    </nav>
+    <div class="grow"></div>
+    <div class="z-lang" aria-label="Language"><span aria-current="true">EN</span><span>TR</span><span>AR</span></div>
+    <a class="z-btn z-btn--secondary z-btn--sm" href="index.html#contact">Work with us</a>
+  </div>
+</header>
+
+<main>
+<!-- ===================== HERO ===================== -->
+<section class="p-hero">
+  <div class="p-hero__bg z-bg-terrain-plain"></div>
+  <div class="z-glow" style="width:560px;height:560px;right:-80px;top:-200px"></div>
+  <div class="z-container p-hero__grid">
+    <div class="z-rise">
+      <span class="z-overline">Products</span>
+      <h1>Software we build, own <em>and keep improving.</em></h1>
+    </div>
+    <div class="z-stack gap-8 z-rise">
+      <p class="z-lead">Zirven designs, builds and operates its own products. Every one of them runs on the same platform, so security, accounts and design are solved once and each release climbs from the last.</p>
+      <div class="z-row gap-3 z-wrap">
+        <a class="z-btn z-btn--primary z-btn--lg" href="#ecosystem">See the ecosystem <svg class="zi"><use href="#zi-arrow-right"/></svg></a>
+        <a class="z-btn z-btn--secondary z-btn--lg" href="vevo.html">Discover VEVO</a>
+      </div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="z-container stats__grid">
+      <div class="stats__cell"><b>1 <span class="z-dot-live" aria-hidden="true"></span></b><span>Live product</span><small>VEVO, in production since 2025</small></div>
+      <div class="stats__cell"><b>2</b><span>Products in build</span><small>Product 02 · Product 03</small></div>
+      <div class="stats__cell"><b>1</b><span>Shared platform</span><small>Zirven Platform v4.2</small></div>
+      <div class="stats__cell"><b>8</b><span>Platform services</span><small>Built once, used by every product</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRODUCT ECOSYSTEM ===================== -->
+<section class="z-section" id="ecosystem" style="padding-top:112px">
+  <div class="z-container">
+    <div class="sec-head">
+      <div class="z-stack gap-4">
+        <span class="z-overline">Product ecosystem</span>
+        <h2 class="z-h1">One platform under <br>every product.</h2>
+      </div>
+      <p class="z-lead">Products focus on the problem they solve. Identity, permissions, billing, data, AI and integrations are built once in the Zirven Platform and shared by all of them.</p>
+    </div>
+
+    <figure class="eco mt-12" style="margin-inline:0;margin-bottom:0" aria-label="Zirven product architecture: Zirven owns four products, which all run on the shared Zirven Platform">
+      <div class="eco__top">
+        <span><b>fig. 01</b> &nbsp;Zirven product architecture</span>
+        <div class="legend" aria-hidden="true">
+          <span><i></i>owns</span>
+          <span><i class="dash"></i>runs on</span>
+          <span><i class="lg-port"></i>platform API</span>
+          <span><span class="z-dot-live"></span>live</span>
+        </div>
+      </div>
+
+      <div class="eco__body">
+        <!-- L0 owner -->
+        <div class="eco__row">
+          <div class="eco__axis eco__axis--layer"><b>L0</b>Owner</div>
+          <div class="owner">
+            <div class="owner__mark"><img src="../../logo/svg/zirven-symbol-dark.svg" alt=""></div>
+            <div><b>Zirven</b><span>Zirven Technology · designs, builds and owns every layer</span></div>
+            <span class="z-tag">master brand</span>
+          </div>
+        </div>
+
+        <!-- owns -->
+        <div class="eco__row">
+          <div class="eco__axis eco__axis--rel">owns ↓</div>
+          <div class="wire wire--fan">
+            <svg viewBox="0 0 1000 64" preserveAspectRatio="none" aria-hidden="true">
+              <g fill="none" stroke="rgba(211,200,255,0.42)" stroke-width="1" vector-effect="non-scaling-stroke">
+                <path d="M500 0 V32" vector-effect="non-scaling-stroke"/>
+                <path d="M125 64 V32 H875 V64" vector-effect="non-scaling-stroke"/>
+                <path d="M375 64 V32" vector-effect="non-scaling-stroke"/>
+                <path d="M625 64 V32" vector-effect="non-scaling-stroke"/>
+              </g>
+            </svg>
+            <span class="jn" style="left:50%;top:32px"></span>
+          </div>
+        </div>
+
+        <!-- L1 products -->
+        <div class="eco__row">
+          <div class="eco__axis eco__axis--layer"><b>L1</b>Products</div>
+          <div class="eco__products">
+            <div>
+              <div class="pn pn--live">
+                <div class="pn__top"><img class="pn__tile" src="../../favicon/vevo-app-icon.svg" alt="VEVO"><span class="z-chip z-chip--live">Live</span></div>
+                <div class="pn__name"><b>VEVO</b><span>AI-powered business platform</span></div>
+                <div class="use" title="Uses: Identity, Permissions, Billing, Data, AI, Integrations, Design system, Observability"><span class="use__bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><em>8/8</em></div>
+              </div>
+            </div>
+            <div>
+              <div class="pn pn--future">
+                <div class="pn__top"><img class="pn__tile" src="../../favicon/future-product-tile.svg" alt=""><span class="z-chip">In development</span></div>
+                <div class="pn__name"><b>Product 02</b><span>SaaS platform · vertical</span></div>
+                <div class="use" title="Uses: Identity, Permissions, Billing, Data, Integrations, Design system, Observability"><span class="use__bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i></span><em>7/8</em></div>
+              </div>
+            </div>
+            <div>
+              <div class="pn pn--future">
+                <div class="pn__top"><img class="pn__tile" src="../../favicon/future-product-tile.svg" alt=""><span class="z-chip">Research</span></div>
+                <div class="pn__name"><b>Product 03</b><span>AI product · documents</span></div>
+                <div class="use" title="Uses: Identity, Permissions, Data, AI, Design system, Observability"><span class="use__bar"><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i></span><em>6/8</em></div>
+              </div>
+            </div>
+            <div>
+              <div class="pn">
+                <div class="pn__top"><div class="pn__tile pn__tile--solutions"><svg class="zi"><use href="#zi-integrations"/></svg></div><span class="z-chip z-chip--accent">By engagement</span></div>
+                <div class="pn__name"><b>Zirven Solutions</b><span>Custom software</span></div>
+                <div class="use" title="Uses, per project: Identity, Permissions, Data, Integrations, Design system, Observability"><span class="use__bar"><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i></span><em>per project</em></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- runs on -->
+        <div class="eco__row">
+          <div class="eco__axis eco__axis--rel">runs on ↓</div>
+          <div class="wire wire--tall">
+            <svg viewBox="0 0 1000 76" preserveAspectRatio="none" aria-hidden="true">
+              <g fill="none" stroke="rgba(150,113,255,0.85)" stroke-width="1.25" stroke-dasharray="4 4">
+                <path d="M125 0 V76" vector-effect="non-scaling-stroke"/>
+                <path d="M375 0 V76" vector-effect="non-scaling-stroke"/>
+                <path d="M625 0 V76" vector-effect="non-scaling-stroke"/>
+                <path d="M875 0 V76" vector-effect="non-scaling-stroke"/>
+              </g>
+            </svg>
+            <span class="wire__tag" style="left:12.5%">api.zirven.com/v1</span>
+            <span class="port" style="left:12.5%;top:76px"></span><span class="port" style="left:37.5%;top:76px"></span><span class="port" style="left:62.5%;top:76px"></span><span class="port" style="left:87.5%;top:76px"></span>
+          </div>
+        </div>
+
+        <!-- L2 platform -->
+        <div class="eco__row">
+          <div class="eco__axis eco__axis--layer"><b>L2</b>Platform</div>
+          <div class="plat">
+            <div class="plat__head">
+              <div class="z-icon-tile"><svg class="zi"><use href="#zi-layers"/></svg></div>
+              <div><div class="z-h4">Zirven Platform</div><div class="z-caption" style="margin-top:3px">Shared foundations · built once, used by every product</div></div>
+              <div class="grow"></div>
+              <div class="plat__tags"><span class="z-tag">v4.2</span><span class="z-tag">multi-tenant</span><span class="z-tag">8 services</span></div>
+            </div>
+            <div class="mods">
+              <div class="mod"><div class="mod__icon"><svg class="zi"><use href="#zi-key"/></svg></div><code>svc.id</code><b>Identity &amp; SSO</b><span>SAML · OIDC · SCIM</span></div>
+              <div class="mod"><div class="mod__icon"><svg class="zi"><use href="#zi-users"/></svg></div><code>svc.authz</code><b>Permissions</b><span>Roles, policies, audit</span></div>
+              <div class="mod"><div class="mod__icon"><svg class="zi"><use href="#zi-file"/></svg></div><code>svc.billing</code><b>Billing</b><span>Plans, usage, invoices</span></div>
+              <div class="mod"><div class="mod__icon"><svg class="zi"><use href="#zi-database"/></svg></div><code>svc.data</code><b>Data layer</b><span>Tenant-isolated storage</span></div>
+              <div class="mod"><div class="mod__icon mod__icon--ai"><svg class="zi"><use href="#zi-ai"/></svg></div><code>svc.ai</code><b>AI services</b><span>Models, retrieval, evals</span></div>
+              <div class="mod"><div class="mod__icon"><svg class="zi"><use href="#zi-api"/></svg></div><code>svc.api</code><b>Integrations &amp; API</b><span>REST, webhooks, events</span></div>
+              <div class="mod"><div class="mod__icon"><svg class="zi"><use href="#zi-web"/></svg></div><code>pkg.ui</code><b>Design system</b><span>Tokens, components, a11y</span></div>
+              <div class="mod"><div class="mod__icon"><svg class="zi"><use href="#zi-activity"/></svg></div><code>svc.obs</code><b>Observability</b><span>Logs, traces, alerts</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- deploys to -->
+        <div class="eco__row">
+          <div class="eco__axis eco__axis--rel">deploys to ↓</div>
+          <div class="wire wire--short">
+            <svg viewBox="0 0 1000 36" preserveAspectRatio="none" aria-hidden="true">
+              <g fill="none" stroke="rgba(211,200,255,0.3)" stroke-width="1"><path d="M125 0 V36 M375 0 V36 M625 0 V36 M875 0 V36" vector-effect="non-scaling-stroke"/></g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- L3 infrastructure -->
+        <div class="eco__row">
+          <div class="eco__axis eco__axis--layer"><b>L3</b>Infra</div>
+          <div class="infra">
+            <svg class="zi"><use href="#zi-cloud"/></svg>
+            <span>Cloud infrastructure</span>
+            <span class="z-tag" title="Frankfurt">eu-central-1</span>
+            <span class="z-tag" title="Istanbul">tr-west-1</span>
+            <span class="z-tag" title="UAE">me-central-1</span>
+            <div class="infra__right"><span>AES-256 · TLS 1.3</span><span>99.95% uptime target</span></div>
+          </div>
+        </div>
+      </div>
+
+      <figcaption class="eco__foot">
+        <span><b>Read top-down.</b> Zirven owns every layer. Products sit on the platform and never rebuild what it already provides.</span>
+        <span class="z-mono">Last reviewed · Oct 2026</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== PRODUCT LINEUP ===================== -->
+<section class="z-section" id="lineup" style="padding-top:40px">
+  <div class="z-container">
+    <div class="sec-head">
+      <div class="z-stack gap-4">
+        <span class="z-overline">The lineup</span>
+        <h2 class="z-h1">One product live. <br>Two more in build.</h2>
+      </div>
+      <p class="z-lead">We show our products as they are: what is live, what is in build and what is still research.</p>
+    </div>
+
+    <!-- VEVO featured -->
+    <article class="z-panel feat mt-12" id="vevo">
+      <div class="feat__copy">
+        <div class="z-row gap-4">
+          <img class="feat__tile" src="../../favicon/vevo-app-icon.svg" alt="VEVO">
+          <div>
+            <div class="feat__name"><h3 class="z-h2">VEVO</h3><span class="z-chip z-chip--live">Live</span></div>
+            <div class="z-caption" style="margin-top:6px">AI-powered business platform · a product by Zirven</div>
+          </div>
+        </div>
+        <p class="z-lead" style="font-size:17px">Operations, customers and reporting in one workspace, with an assistant that understands your business data and shows where every answer came from.</p>
+        <ul class="tags" aria-label="Key capabilities">
+          <li class="z-tag">live dashboards</li><li class="z-tag">workflows</li><li class="z-tag">assistant</li><li class="z-tag">customer records</li><li class="z-tag">reporting</li><li class="z-tag">REST API</li>
+        </ul>
+        <dl class="feat__meta">
+          <div><dt>Current release</dt><dd>3.8 · September 2026</dd></div>
+          <div><dt>Built for</dt><dd>Operations teams</dd></div>
+          <div><dt>Languages</dt><dd>English · Türkçe · العربية</dd></div>
+          <div><dt>Hosting</dt><dd>EU · Türkiye · Middle East</dd></div>
+        </dl>
+        <div class="z-row gap-3 z-wrap"><a class="z-btn z-btn--primary" href="vevo.html">Explore VEVO <svg class="zi"><use href="#zi-arrow-right"/></svg></a><a class="z-btn z-btn--secondary" href="vevo.html#demo">Book a demo</a></div>
+      </div>
+      <div class="feat__shot">
+        <div class="z-browser">
+          <div class="z-browser__bar"><i></i><i></i><i></i><div class="z-browser__url">vevo.zirven.com/meridian/customers</div></div>
+          <div class="mini">
+            <div class="mini__rail" aria-hidden="true"><img src="../../favicon/vevo-app-icon.svg" alt=""><svg class="zi"><use href="#zi-home"/></svg><svg class="zi" data-on><use href="#zi-users"/></svg><svg class="zi"><use href="#zi-analytics"/></svg><svg class="zi"><use href="#zi-workflow"/></svg><svg class="zi"><use href="#zi-settings"/></svg></div>
+            <div class="mini__main">
+              <div class="z-row z-between gap-4">
+                <div><div class="z-caption">Customers · Meridian Logistics</div><div class="z-h4" style="margin-top:4px">Key accounts <span class="z-faint" style="font-weight:400">· 248</span></div></div>
+                <div class="z-row gap-2"><span class="z-chip">This quarter</span><span class="z-btn z-btn--secondary z-btn--sm">Export</span></div>
+              </div>
+              <div class="boxed">
+                <table class="z-table mini__table">
+                  <thead><tr><th>Account</th><th>Orders QTD</th><th>On-time</th><th>Health</th></tr></thead>
+                  <tbody>
+                    <tr><td><span class="z-avatar">HM</span>Helix Medical Supply</td><td>1,206</td><td>97.8%</td><td><span class="health"><i style="--v:92%"></i>92</span></td></tr>
+                    <tr><td><span class="z-avatar">NC</span>Northline Components</td><td>884</td><td>95.1%</td><td><span class="health"><i style="--v:84%"></i>84</span></td></tr>
+                    <tr><td><span class="z-avatar">CI</span>Corvane Industrial</td><td>652</td><td>93.6%</td><td><span class="health"><i style="--v:78%"></i>78</span></td></tr>
+                    <tr><td><span class="z-avatar">BF</span>Brightwater Freight</td><td>517</td><td>88.4%</td><td><span class="health health--warn"><i style="--v:61%"></i>61</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="insight">
+                <span class="z-ai">Insight · from 2 sources</span>
+                <p>Brightwater Freight’s on-time rate fell <b>6.1 pts</b> after the Rotterdam lane change. <b>4 open orders</b> are at risk of missing SLA this week.</p>
+                <div class="z-row gap-2"><span class="z-btn z-btn--primary z-btn--sm">Review orders</span><span class="z-btn z-btn--ghost z-btn--sm">Dismiss</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- other products -->
+    <div class="z-grid z-grid-3 mt-6">
+      <article class="z-card prod prod--future">
+        <div class="z-row z-between"><img class="prod__tile" src="../../favicon/future-product-tile.svg" alt=""><span class="z-chip">In development</span></div>
+        <div><h3 class="z-h3">Product 02</h3><div class="z-caption" style="margin-top:6px">SaaS platform · asset-heavy operations</div></div>
+        <p>A vertical SaaS platform for teams that maintain equipment and sites: work orders, maintenance plans and asset history, with a mobile app for the field.</p>
+        <ul class="tags"><li class="z-tag">work orders</li><li class="z-tag">scheduling</li><li class="z-tag">asset history</li><li class="z-tag">offline mobile</li></ul>
+        <div class="prod__meta"><span>Private beta</span><b>2027 H1</b></div>
+        <a class="prod__cta" href="index.html#contact">Join the design-partner list <svg class="zi zi--sm"><use href="#zi-arrow-right"/></svg></a>
+      </article>
+      <article class="z-card prod prod--future">
+        <div class="z-row z-between"><img class="prod__tile" src="../../favicon/future-product-tile.svg" alt=""><span class="z-chip">Research</span></div>
+        <div><h3 class="z-h3">Product 03</h3><div class="z-caption" style="margin-top:6px">AI product · document-heavy work</div></div>
+        <p>Applied AI for documents that slow operations down: extraction, review and decision support, with people approving every result that matters.</p>
+        <ul class="tags"><li class="z-tag">extraction</li><li class="z-tag">review queues</li><li class="z-tag">evals</li><li class="z-tag">audit trail</li></ul>
+        <div class="prod__meta"><span>Research preview</span><b>2027 H2</b></div>
+        <a class="prod__cta" href="#roadmap">Follow the roadmap <svg class="zi zi--sm"><use href="#zi-arrow-right"/></svg></a>
+      </article>
+      <article class="z-card z-card--interactive prod">
+        <div class="z-row z-between"><div class="z-icon-tile prod__tile"><svg class="zi zi--lg"><use href="#zi-integrations"/></svg></div><span class="z-chip z-chip--accent">By engagement</span></div>
+        <div><h3 class="z-h3">Zirven Solutions</h3><div class="z-caption" style="margin-top:6px">Custom software · same team, same platform</div></div>
+        <p>When no product solves the problem yet, we design and build custom platforms on Zirven foundations, then operate and evolve them with you.</p>
+        <ul class="tags"><li class="z-tag">discovery</li><li class="z-tag">architecture</li><li class="z-tag">build</li><li class="z-tag">operate</li></ul>
+        <div class="prod__meta"><span>Typical first release</span><b>12–16 weeks</b></div>
+        <a class="prod__cta" href="index.html#contact">Talk to us <svg class="zi zi--sm"><use href="#zi-arrow-right"/></svg></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ONE PLATFORM BENEFITS ===================== -->
+<section class="z-section" id="platform" style="background:linear-gradient(180deg, transparent, rgba(36,22,84,0.32) 28%, rgba(36,22,84,0.32) 72%, transparent)">
+  <div class="z-container">
+    <div class="sec-head">
+      <div class="z-stack gap-4">
+        <span class="z-overline">One platform</span>
+        <h2 class="z-h1">How products share <br>one platform.</h2>
+      </div>
+      <p class="z-lead">Every improvement to the platform reaches every product. Your team gets the benefit without changing a thing.</p>
+    </div>
+    <div class="z-grid z-grid-3 mt-12">
+      <!-- security -->
+      <article class="z-card bene">
+        <div class="bene__vis">
+          <div class="log">
+            <div class="log__head"><svg class="zi zi--sm"><use href="#zi-lock"/></svg>Audit log<span class="z-caption">All products</span></div>
+            <div class="log__row"><time>09:14</time><span><b>Leyla Demir</b> signed in via SAML</span><span class="z-tag">VEVO</span></div>
+            <div class="log__row"><time>09:16</time><span><b>Omar Haddad</b> made Editor</span><span class="z-tag">admin</span></div>
+            <div class="log__row"><time>09:21</time><span>API key <b>key_••8F2</b> rotated</span><span class="z-tag">api</span></div>
+          </div>
+        </div>
+        <div class="bene__txt">
+          <div class="z-row gap-3"><div class="z-icon-tile"><svg class="zi"><use href="#zi-security"/></svg></div><h3 class="z-h4">Secure by default</h3></div>
+          <p>SSO, roles, audit logging and encryption are platform services. Each product ships with them on day one, and every fix reaches all of them.</p>
+          <ul><li><svg class="zi zi--sm"><use href="#zi-check"/></svg>SAML 2.0, OIDC and SCIM provisioning</li><li><svg class="zi zi--sm"><use href="#zi-check"/></svg>One audit trail across products</li></ul>
+        </div>
+      </article>
+      <!-- one account -->
+      <article class="z-card bene">
+        <div class="bene__vis">
+          <div class="acct">
+            <div class="acct__id"><span class="z-avatar z-avatar--sm">LD</span><div>Zirven ID<small>leyla.demir@meridian-logistics.com</small></div></div>
+            <div class="acct__item" aria-current="true"><img src="../../favicon/vevo-app-icon.svg" alt=""><div>VEVO<small>Meridian Logistics · Admin</small></div><svg class="zi zi--sm"><use href="#zi-check"/></svg></div>
+            <div class="acct__item"><img src="../../favicon/future-product-tile.svg" alt=""><div>Product 02<small>Design partner · invited</small></div></div>
+          </div>
+        </div>
+        <div class="bene__txt">
+          <div class="z-row gap-3"><div class="z-icon-tile"><svg class="zi"><use href="#zi-users"/></svg></div><h3 class="z-h4">One account</h3></div>
+          <p>A single Zirven ID, one admin console and one invoice for every product your company uses. Add a product without another onboarding project.</p>
+          <ul><li><svg class="zi zi--sm"><use href="#zi-check"/></svg>Users and roles managed in one place</li><li><svg class="zi zi--sm"><use href="#zi-check"/></svg>Consolidated billing per company</li></ul>
+        </div>
+      </article>
+      <!-- design + api -->
+      <article class="z-card bene">
+        <div class="bene__vis">
+<pre class="z-code"><span class="tk-c"># one API, every product</span>
+<span class="tk-k">GET</span>  /v1/vevo/orders        <span class="tk-s">200</span>
+<span class="tk-k">GET</span>  /v1/identity/users     <span class="tk-s">200</span>
+<span class="tk-k">POST</span> /v1/workflows/runs     <span class="tk-s">201</span>
+<span class="tk-k">GET</span>  /v1/events?since=<span class="tk-n">24h</span>  <span class="tk-s">200</span></pre>
+        </div>
+        <div class="bene__txt">
+          <div class="z-row gap-3"><div class="z-icon-tile"><svg class="zi"><use href="#zi-api"/></svg></div><h3 class="z-h4">One design, one API</h3></div>
+          <p>Products look, behave and integrate the same way. Learn one, and you already know the next one. Connect once at api.zirven.com.</p>
+          <ul><li><svg class="zi zi--sm"><use href="#zi-check"/></svg>Shared components and patterns</li><li><svg class="zi zi--sm"><use href="#zi-check"/></svg>Same auth, webhooks and rate limits</li></ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ROADMAP ===================== -->
+<section class="z-section" id="roadmap">
+  <div class="z-container">
+    <div class="sec-head">
+      <div class="z-stack gap-4">
+        <span class="z-overline">Roadmap (indicative)</span>
+        <h2 class="z-h1">Where the products <br>are heading.</h2>
+      </div>
+      <p class="z-lead">Dates are targets, not promises. When plans change, we update this page and tell the customers it affects.</p>
+    </div>
+
+    <div class="roadmap">
+      <div class="rm-key" aria-label="Status key">
+        <div class="rm-key__today"><span class="z-caption">Today</span><b>3 October 2026</b></div>
+        <ul>
+          <li><i class="k-done"></i>Shipped</li>
+          <li><i class="k-now"></i>In progress</li>
+          <li><i class="k-plan"></i>Planned or research</li>
+        </ul>
+      </div>
+      <div class="rs rs--done">
+        <div class="rs__when"><b>2026 Q3</b><span class="z-chip z-chip--success">Shipped</span></div>
+        <h3>VEVO 3.8</h3>
+        <p>Visual workflow builder, hosting in Türkiye and audit-log export to SIEM tools.</p>
+        <span class="rs__prod"><img src="../../favicon/vevo-app-icon.svg" alt="">VEVO</span>
+      </div>
+      <div class="rs rs--now">
+        <div class="rs__when"><b>2026 Q4</b><span class="z-chip z-chip--accent">In progress</span></div>
+        <h3>VEVO Assistant, generally available</h3>
+        <p>Out of beta: answers with sources, approval for every action and admin controls per workspace.</p>
+        <span class="rs__prod"><img src="../../favicon/vevo-app-icon.svg" alt="">VEVO</span>
+      </div>
+      <div class="rs">
+        <div class="rs__when"><b>2027 H1</b><span class="z-chip">Planned</span></div>
+        <h3>Product 02, private beta</h3>
+        <p>First design partners on the new vertical SaaS platform, built on Zirven Platform v5.</p>
+        <span class="rs__prod"><img src="../../favicon/future-product-tile.svg" alt="">Product 02</span>
+      </div>
+      <div class="rs">
+        <div class="rs__when"><b>2027 H2</b><span class="z-chip">Research</span></div>
+        <h3>Product 03, research preview</h3>
+        <p>Document extraction and review with people in the loop, opened to a small group of partners.</p>
+        <span class="rs__prod"><img src="../../favicon/future-product-tile.svg" alt="">Product 03</span>
+      </div>
+    </div>
+    <div class="rm-note"><span>Indicative roadmap. Scope and timing may change as we learn from customers.</span><span class="z-mono">Updated 3 Oct 2026</span></div>
+  </div>
+</section>
+
+<!-- ===================== BRAND ARCHITECTURE ===================== -->
+<section class="z-section z-section--tight" id="brand" style="padding-top:24px">
+  <div class="z-container">
+    <div class="z-stack gap-4 maxw-lg" style="margin-bottom:32px">
+      <span class="z-overline">Brand architecture</span>
+      <h2 class="z-h2">How our names fit together.</h2>
+    </div>
+    <div class="arch">
+      <div class="arch__flow">
+        <div class="arch__node">
+          <span class="arch__lbl"><b>01</b>Master brand</span>
+          <div class="arch__art"><img src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven" style="height:30px;width:auto"></div>
+          <span class="z-small z-muted">The company. Signs every product, contract and release.</span>
+        </div>
+        <div class="arch__arrow" aria-hidden="true"><span><svg class="zi zi--sm"><use href="#zi-chevron-right"/></svg></span></div>
+        <div class="arch__node">
+          <span class="arch__lbl"><b>02</b>Product layer</span>
+          <div class="arch__art"><div class="z-icon-tile"><svg class="zi"><use href="#zi-products"/></svg></div><span class="z-h4">Products</span></div>
+          <span class="z-small z-muted">Owned and operated by Zirven, built on one platform.</span>
+        </div>
+        <div class="arch__arrow" aria-hidden="true"><span><svg class="zi zi--sm"><use href="#zi-chevron-right"/></svg></span></div>
+        <div class="arch__node">
+          <span class="arch__lbl"><b>03</b>Product brands</span>
+          <div class="arch__art"><img src="../../logo/svg/vevo-endorsed-dark.svg" alt="VEVO — a product by Zirven" style="height:34px;width:auto"><img src="../../favicon/future-product-tile.svg" alt="Future product" style="height:36px;width:36px"><img src="../../favicon/future-product-tile.svg" alt="Future product" style="height:36px;width:36px"></div>
+          <span class="z-small z-muted">VEVO today, future products as they launch.</span>
+        </div>
+      </div>
+      <div class="arch__rule">
+        <div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-check"/></svg></div>
+        <span><b>Endorsement rule.</b> Every product carries <q>a product by Zirven</q> in its logo lockup, sign-in screen and footer. Custom work ships as Zirven Solutions, never as a separate brand.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="z-section" id="start" style="padding-top:64px">
+  <div class="z-container">
+    <div class="z-panel cta z-bg-ascent">
+      <div style="position:relative">
+        <span class="z-overline">Get started</span>
+        <h2 class="z-h1 mt-4">Start with VEVO.<br>Grow with Zirven.</h2>
+        <p class="z-lead mt-4 maxw-md">See VEVO on a sample of your own operations data in a 30-minute walkthrough, or tell us about a problem no product solves yet.</p>
+        <div class="z-row gap-3 z-wrap mt-8"><a class="z-btn z-btn--primary z-btn--lg" href="vevo.html#demo">Book a VEVO demo <svg class="zi"><use href="#zi-arrow-right"/></svg></a><a class="z-btn z-btn--secondary z-btn--lg" href="index.html#contact">Contact Zirven</a></div>
+      </div>
+      <div class="cta__routes" style="position:relative">
+        <a href="vevo.html"><img src="../../favicon/vevo-app-icon.svg" alt=""><div>VEVO<span>The AI-powered business platform</span></div><svg class="zi zi--sm"><use href="#zi-arrow-right"/></svg></a>
+        <a href="index.html#contact"><div class="z-icon-tile" style="width:36px;height:36px;border-radius:9px"><svg class="zi zi--sm"><use href="#zi-integrations"/></svg></div><div>Zirven Solutions<span>Custom software, by engagement</span></div><svg class="zi zi--sm"><use href="#zi-arrow-right"/></svg></a>
+        <a href="index.html#engineering"><div class="z-icon-tile" style="width:36px;height:36px;border-radius:9px"><svg class="zi zi--sm"><use href="#zi-terminal"/></svg></div><div>Developers<span>API reference at docs.zirven.com</span></div><svg class="zi zi--sm"><use href="#zi-arrow-right"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="z-footer">
+  <div class="z-container">
+    <div class="foot-grid">
+      <div class="z-stack gap-4"><img src="../../logo/svg/zirven-logo-descriptor-en-dark.svg" alt="Zirven — Software · SaaS · AI" style="height:44px;width:auto;align-self:flex-start"><p class="z-small z-muted maxw-sm">Building intelligent digital products.</p></div>
+      <div><h4>Products</h4><ul><li><a href="vevo.html">VEVO</a></li><li><a href="products.html">All products</a></li><li><a href="products.html#roadmap">Roadmap</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="index.html#about">About</a></li><li><a href="#">Careers</a></li><li><a href="index.html#contact">Contact</a></li></ul></div>
+      <div><h4>Developers</h4><ul><li><a href="#">API reference</a></li><li><a href="#">Status</a></li><li><a href="#">GitHub</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Security</a></li><li><a href="#">Terms</a></li></ul></div>
+    </div>
+    <div class="z-row z-between mt-16 z-caption"><span>© 2026 Zirven Technology</span><span>Software · SaaS · AI</span></div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zirven V2.1 · Brand identity</title>
+<meta name="description" content="Zirven V2.1 brand identity for a technology and software company: Building intelligent digital products. Software · SaaS · AI.">
+<link rel="icon" href="favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/zirven.css">
+<script src="assets/js/zirven-icons.js"></script>
+<style>
+  .hero { min-height: 520px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+  .hero h1 { font: 600 64px/1.02 var(--z-font-sans); letter-spacing: -0.03em; }
+  .hero h1 span { color: var(--z-lavender); font-weight: 300; }
+  .links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .links a { display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 16px; border: 1px solid var(--t-line); background: var(--z-ink-900); color: var(--t-text); min-height: 170px; }
+  .links a:hover { border-color: var(--z-electric); text-decoration: none; }
+  .links a p { color: var(--t-text-2); font-size: 14.5px; }
+  .links a .z-caption { margin-top: auto; font-family: var(--z-font-mono); }
+  @media (max-width: 900px) { .links { grid-template-columns: 1fr; } .hero h1 { font-size: 42px; } }
+</style>
+</head>
+<body>
+<section class="hero z-bg-terrain">
+  <div class="z-container z-stack gap-6" style="position:relative">
+    <img src="logo/svg/zirven-logo-descriptor-en-dark.svg" alt="Zirven — Software · SaaS · AI" style="height:56px;width:auto;align-self:flex-start">
+    <span class="z-overline mt-8">Brand identity · V2.1</span>
+    <h1>Building intelligent<br><span>digital products.</span></h1>
+    <p class="z-lead maxw-md">The corrected identity of Zirven, a technology and software company and the parent brand of VEVO and future products.</p>
+  </div>
+</section>
+<main class="z-container z-section--tight">
+  <div class="links">
+    <a href="brand-board/index.html"><svg class="zi zi--lg" style="color:var(--z-electric)"><use href="#zi-products"/></svg><b class="z-h4">Brand board</b><p>The whole identity on one page.</p><span class="z-caption">brand-board/</span></a>
+    <a href="guidelines/index.html"><svg class="zi zi--lg" style="color:var(--z-electric)"><use href="#zi-file"/></svg><b class="z-h4">Brand guidelines</b><p>24 sections, from positioning to tokens.</p><span class="z-caption">guidelines/</span></a>
+    <a href="applications/index.html"><svg class="zi zi--lg" style="color:var(--z-electric)"><use href="#zi-web"/></svg><b class="z-h4">Applications</b><p>Website, product UI, print, social, signage, deck, developer.</p><span class="z-caption">applications/</span></a>
+    <a href="logo/exploration/logo-review.html"><svg class="zi zi--lg" style="color:var(--z-electric)"><use href="#zi-summit"/></svg><b class="z-h4">Logo review</b><p>A / B / C compared at 16 to 64 px, as app icons and in monochrome.</p><span class="z-caption">logo/exploration/</span></a>
+    <a href="audit/semantic-audit.md"><svg class="zi zi--lg" style="color:var(--z-electric)"><use href="#zi-security"/></svg><b class="z-h4">Semantic audit</b><p>Terminology scan and the "is this a software company?" review.</p><span class="z-caption">audit/</span></a>
+    <a href="README.md"><svg class="zi zi--lg" style="color:var(--z-electric)"><use href="#zi-terminal"/></svg><b class="z-h4">README &amp; changelog</b><p>Folder map, rebuild commands, what changed from V2.</p><span class="z-caption">README.md · CHANGELOG.md</span></a>
+  </div>
+  <div class="z-row z-between mt-16 z-caption"><span>© 2026 Zirven Technology</span><span>Software · SaaS · AI</span></div>
+</main>
+</body>
+</html>

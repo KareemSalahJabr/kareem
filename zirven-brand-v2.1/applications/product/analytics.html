@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VEVO — Analytics · Zirven V2.1 application 08</title>
+<meta name="description" content="VEVO analytics: fulfilment performance with filters, KPIs, a multi-series chart, regional bars, a weekday heatmap, a warehouse table and an AI explanation of a KPI change with cited queries. VEVO is a product by Zirven.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  /* ================= VEVO app shell (shared, identical on every VEVO screen) ================= */
+  html, body { height: 100%; overflow: hidden; }
+  .z-app { height: 100vh; min-height: 0; }
+  .zi--xs { width: 14px; height: 14px; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* sidebar */
+  .z-sidebar { min-height: 0; overflow: hidden; gap: 2px; padding: 18px 14px 16px; }
+  .z-sidebar__brand { padding: 0 8px 18px; letter-spacing: 0.04em; }
+  .ws { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 7px 10px 7px 8px; border: 1px solid var(--t-line); border-radius: 10px; background: var(--t-surface); }
+  .ws__mono { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: #2A2150; color: var(--z-lavender); font: 600 10.5px/1 var(--z-font-sans); letter-spacing: 0.02em; flex: none; }
+  .ws__name { font: 500 13.5px/1.2 var(--z-font-sans); color: var(--t-text); white-space: nowrap; }
+  .ws__meta { font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; white-space: nowrap; }
+  .ws .zi { color: var(--t-text-3); }
+  .z-sidebar__item { height: 34px; font-size: 13.5px; }
+  .z-sidebar__item .zi { color: var(--t-text-3); }
+  .z-sidebar__count--alert { color: var(--z-warning); }
+  .pin { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin: 0 6px; flex: none; }
+  .sb-foot { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-top: 12px; border-top: 1px solid var(--t-line); }
+  .sb-user { display: flex; align-items: center; gap: 10px; padding: 4px 6px; }
+  .sb-user__name { font: 500 13.5px/1.2 var(--z-font-sans); }
+  .sb-user__role { font: 400 12px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 3px; }
+  .sb-user .zi { color: var(--t-text-3); }
+  .sb-endorse { display: flex; align-items: center; gap: 5px; padding: 0 8px 2px; font: 400 11px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .sb-endorse img { height: 12px; width: auto; }
+  .sb-endorse img.wm { height: 10px; margin-left: 1px; }
+
+  /* top bar */
+  .shell { display: grid; grid-template-rows: 64px minmax(0, 1fr); height: 100vh; min-height: 0; min-width: 0; }
+  .z-topbar { padding: 0 20px 0 24px; gap: 12px; }
+  .crumbs { display: flex; align-items: center; gap: 8px; font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .crumbs .zi { color: var(--z-ink-600); }
+  .crumbs b { color: var(--t-text); font-weight: 500; }
+  .z-search { width: 340px; height: 36px; font-size: 13.5px; }
+  .z-search .z-kbd { margin-left: auto; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--t-text-2); border: 1px solid transparent; position: relative; flex: none; }
+  .icon-btn--line { border-color: var(--t-line); }
+  .icon-btn .dot { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--z-electric); box-shadow: 0 0 0 2px var(--z-night); }
+
+  /* UI kit: cards, headers, small controls */
+  .card { background: var(--t-surface); border: 1px solid var(--t-line); border-radius: 12px; min-width: 0; min-height: 0; }
+  .card__head { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 16px; flex: none; }
+  .card__head--line { border-bottom: 1px solid var(--t-line); }
+  .card__title { font: 500 14px/1 var(--z-font-sans); color: var(--t-text); white-space: nowrap; }
+  .card__sub { font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .count { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--t-surface-2); border: 1px solid var(--t-line); font: 500 11px/1 var(--z-font-mono); color: var(--t-text-2); }
+  .link { display: inline-flex; align-items: center; gap: 4px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); white-space: nowrap; }
+  .link .zi { color: var(--t-text-3); }
+  .btn-xs { height: 30px; padding: 0 10px; font-size: 12.5px; gap: 6px; border-radius: 8px; }
+  .sev { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 6px; font: 500 11.5px/1 var(--z-font-sans); white-space: nowrap; }
+  .sev--high { color: #FF8A8E; background: rgba(229, 72, 77, 0.14); }
+  .sev--med { color: #F6BE6B; background: rgba(240, 167, 58, 0.13); }
+  .sev--low { color: var(--t-text-2); background: var(--t-surface-2); }
+  .sev--ok { color: #5FD3A2; background: rgba(46, 182, 125, 0.13); }
+  .sev--run { color: var(--z-lavender); background: rgba(150, 113, 255, 0.14); }
+  .sev::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .sev--plain::before { display: none; }
+  .z-chip { height: 24px; font-size: 12px; }
+  .z-tag { height: 20px; font-size: 11px; padding: 0 7px; border-radius: 5px; }
+  .z-avatar--xs { width: 22px; height: 22px; font-size: 9.5px; }
+  .av-a { background: #2E2366; } .av-b { background: #1F2A4A; color: #C7D6FF; } .av-c { background: #33204A; color: #EBC8FF; } .av-d { background: #1E3340; color: #BDEAF0; } .av-e { background: #3A2A1E; color: #F5D9B8; }
+
+  /* ================= Page ================= */
+  .an { padding: 24px; display: flex; flex-direction: column; gap: 16px; min-height: 0; overflow: hidden; }
+  .ph { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex: none; }
+  .ph h1 { font: 600 22px/1.1 var(--z-font-sans); letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+  .ph h1 span { color: var(--t-text-3); font-weight: 400; }
+  .ph h1 .zi { color: var(--z-warning); }
+  .ph__meta { display: flex; align-items: center; gap: 10px; margin-top: 8px; white-space: nowrap; font: 400 12.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .ph__meta .sep { width: 3px; height: 3px; border-radius: 50%; background: var(--z-ink-600); }
+  .ph__ctrl { display: flex; align-items: center; gap: 8px; }
+  .ph__ctrl .z-btn { height: 36px; font-size: 13.5px; padding: 0 14px; }
+  .ph__ctrl .z-btn .zi { color: var(--t-text-3); }
+  .ph__ctrl .z-btn--primary .zi { color: inherit; }
+  .range b { font-weight: 500; color: var(--t-text); }
+  .cmp { display: inline-flex; align-items: center; gap: 10px; height: 36px; padding: 0 14px 0 10px; border-radius: 10px; border: 1px solid var(--t-line); font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text-2); white-space: nowrap; }
+  .cmp em { font-style: normal; color: var(--t-text-3); font-weight: 400; }
+  .switch { width: 30px; height: 18px; border-radius: 999px; background: var(--z-electric); position: relative; flex: none; }
+  .switch::after { content: ""; position: absolute; top: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--z-night); }
+
+  /* filters */
+  .fl { display: flex; align-items: center; gap: 8px; flex: none; }
+  .fchip { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px 0 12px; border-radius: 8px; border: 1px solid var(--t-line); background: var(--t-surface); font: 400 13px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .fchip b { font-weight: 500; color: var(--t-text); }
+  .fchip .zi { color: var(--t-text-3); }
+  .fchip--on { border-color: rgba(150, 113, 255, 0.4); background: rgba(150, 113, 255, 0.08); }
+  .fchip--add { border-style: dashed; background: transparent; color: var(--t-text-2); padding: 0 12px 0 10px; }
+  .fl__sep { width: 1px; height: 20px; background: var(--t-line); margin: 0 4px; }
+  .fl__note { font: 400 12.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 9px; border: 1px solid var(--t-line); background: var(--t-surface); margin-left: auto; }
+  .seg span { height: 24px; padding: 0 10px; display: grid; place-items: center; border-radius: 6px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .seg span[aria-current] { background: var(--z-ink-800); color: var(--t-text); }
+
+  /* KPI strip */
+  .kstrip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); flex: none; overflow: hidden; }
+  .ks { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; position: relative; }
+  .ks + .ks { border-left: 1px solid var(--t-line); }
+  .ks--on { background: linear-gradient(180deg, rgba(150, 113, 255, 0.10), rgba(150, 113, 255, 0.02)); }
+  .ks--on::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--z-electric); }
+  .ks__label { display: flex; align-items: center; gap: 6px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); white-space: nowrap; }
+  .ks__ai { width: 10px; height: 10px; background: var(--z-cyan); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); margin-left: auto; }
+  .ks__row { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+  .ks__value { font: 600 22px/1 var(--z-font-sans); letter-spacing: -0.012em; }
+  .ks__row .z-delta { font-size: 12px; }
+  .ks__prev { font: 400 11.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+
+  /* analysis grid */
+  .ag { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: 292px minmax(0, 1fr); gap: 16px; }
+  .ag > .card { display: flex; flex-direction: column; overflow: hidden; }
+  .mc { grid-column: span 2; }
+  .legend { margin-left: auto; display: flex; align-items: center; gap: 14px; font: 500 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .legend i { width: 12px; height: 2px; border-radius: 2px; }
+  .legend i.tg { background: repeating-linear-gradient(90deg, rgba(247, 246, 252, 0.5) 0 2px, transparent 2px 5px); }
+  .mc__body { position: relative; flex: 1; padding: 0 16px 10px; display: flex; align-items: flex-end; }
+  .mc__svg { width: 100%; height: auto; }
+  .ax text, .ax-t { font: 400 11px/1 var(--z-font-sans); fill: var(--z-ink-500); font-variant-numeric: tabular-nums; }
+  .ax text.on { fill: var(--t-text); }
+  .ax-t { fill: var(--t-text-2); }
+  .mc__flag { position: absolute; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; border-radius: 6px; background: #1C1735; border: 1px solid rgba(211, 200, 255, 0.16); font: 500 11px/1 var(--z-font-sans); color: var(--t-text-2); white-space: nowrap; transform: translateX(-50%); }
+  .mc__flag i { width: 6px; height: 6px; border-radius: 50%; background: var(--z-lavender); }
+  .mc__tip { position: absolute; padding: 10px 12px; border-radius: 10px; background: #1C1735; border: 1px solid rgba(211, 200, 255, 0.16); box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; gap: 8px; font: 400 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .mc__tip-h { display: flex; justify-content: space-between; font: 500 12px/1 var(--z-font-sans); color: var(--t-text); }
+  .mc__tip-h span { font: 400 11px/1 var(--z-font-mono); color: var(--t-text-3); }
+  .mc__tip-r { display: flex; align-items: center; gap: 8px; }
+  .mc__tip-r i { width: 8px; height: 8px; border-radius: 2px; }
+  .mc__tip-r b { margin-left: auto; font-weight: 500; color: var(--t-text); }
+
+  /* explain panel (AI) */
+  .ex { background: linear-gradient(180deg, rgba(36, 22, 84, 0.5), rgba(21, 17, 43, 1) 75%); border-color: rgba(61, 216, 232, 0.22); }
+  .ex .card__head { border-bottom: 1px solid var(--t-line); }
+  .ex .z-ai { font-size: 13px; }
+  .ex__body { flex: 1; padding: 14px 16px 14px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+  .ex__subj { display: flex; align-items: center; gap: 8px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .ex__subj b { color: var(--t-text); font-weight: 500; }
+  .ex__subj .z-delta { margin-left: auto; font-size: 12px; }
+  .ex p { font: 400 12.5px/1.5 var(--z-font-sans); color: var(--t-text-2); }
+  .ex p b { color: var(--t-text); font-weight: 500; }
+  .ex sup { font: 500 9.5px/1 var(--z-font-mono); color: var(--z-cyan); vertical-align: 3px; margin-left: 1px; }
+  .drv { display: grid; grid-template-columns: 84px minmax(0, 1fr) 40px; align-items: center; gap: 6px 10px; font: 400 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .drv__bar { position: relative; height: 8px; }
+  .drv__bar::before { content: ""; position: absolute; left: 30%; top: -3px; bottom: -3px; width: 1px; background: rgba(211, 200, 255, 0.25); }
+  .drv__bar i { position: absolute; top: 0; height: 8px; border-radius: 0 3px 3px 0; background: var(--z-electric); }
+  .drv__bar i.neg { border-radius: 3px 0 0 3px; background: var(--z-ink-500); }
+  .drv__cap { font: 500 11px/1 var(--z-font-sans); color: var(--t-text-3); letter-spacing: 0.02em; padding-bottom: 2px; }
+  .drv__cap.r { text-align: right; }
+  .drv b { text-align: right; font-weight: 500; color: var(--t-text); font-variant-numeric: tabular-nums; }
+  .ex__src { margin-top: auto; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .ex__src .z-tag { gap: 5px; }
+  .ex__src .z-tag em { font-style: normal; color: var(--z-cyan); }
+  .ex__src .link { margin-left: auto; }
+
+  /* region bars */
+  .rgs { flex: 1; padding: 4px 16px 12px; display: flex; flex-direction: column; justify-content: space-around; }
+  .rg { display: grid; grid-template-columns: 58px minmax(0, 1fr) 48px 44px; align-items: center; gap: 10px; }
+  .rg__n { font: 400 12.5px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .rg__bars { display: flex; flex-direction: column; gap: 3px; }
+  .rg__bars i { display: block; border-radius: 0 3px 3px 0; }
+  .rg__now { height: 10px; background: var(--z-electric); }
+  .rg__prev { height: 3px; background: var(--z-ink-600); }
+  .rg__v { font: 500 12.5px/1 var(--z-font-sans); text-align: right; }
+  .rg__d { font: 500 11.5px/1 var(--z-font-sans); text-align: right; }
+  .rg__d.up { color: var(--z-success); } .rg__d.dn { color: var(--z-danger); }
+  .mini-legend { margin-left: auto; display: flex; gap: 12px; font: 500 11.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .mini-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .mini-legend i { width: 10px; border-radius: 2px; }
+
+  /* heatmap */
+  .hm { flex: 1; padding: 2px 16px 12px; display: flex; flex-direction: column; gap: 10px; }
+  .hm__grid { display: grid; grid-template-columns: 30px repeat(13, minmax(0, 1fr)); grid-template-rows: repeat(7, 19px) 14px; gap: 3px; }
+  .hm__grid > span:last-child, .hm__w { }
+  .hm__d { font: 400 11px/19px var(--z-font-sans); color: var(--t-text-3); }
+  .hm__w { font: 400 10.5px/14px var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .hm__c { border-radius: 3px; display: block; }
+  .hm__c--none { background: transparent; border: 1px dashed rgba(211, 200, 255, 0.12); }
+  .hm__c--on { box-shadow: 0 0 0 2px var(--z-night), 0 0 0 3.5px var(--z-snow); position: relative; z-index: 1; }
+  .hm__foot { margin-top: auto; display: flex; align-items: center; gap: 10px; font: 400 11.5px/1.3 var(--z-font-sans); color: var(--t-text-3); }
+  .hm__foot b { color: var(--t-text); font-weight: 500; }
+  .scale { margin-left: auto; display: flex; align-items: center; gap: 6px; font: 400 11px/1 var(--z-font-sans); }
+  .scale span { display: flex; gap: 2px; }
+  .scale i { width: 14px; height: 8px; border-radius: 2px; }
+
+  /* warehouse table */
+  .wh table { width: 100%; table-layout: fixed; border-collapse: collapse; font: 400 13px/1 var(--z-font-sans); }
+  .wh th { text-align: left; font: 500 11.5px/1 var(--z-font-sans); color: var(--t-text-3); height: 32px; padding: 0 10px; border-top: 1px solid var(--t-line); border-bottom: 1px solid var(--t-line); background: rgba(14, 11, 31, 0.35); white-space: nowrap; }
+  .wh th .zi { display: inline-block; vertical-align: -2px; margin-left: 2px; }
+  .wh th.sorted { color: var(--t-text); }
+  .wh th .srt { opacity: 0.45; }
+  .wh td { height: 34px; padding: 0 10px; border-bottom: 1px solid var(--t-line); color: var(--t-text); white-space: nowrap; }
+  .wh tr:last-child td { border-bottom: 0; }
+  .wh th:first-child, .wh td:first-child { padding-left: 16px; }
+  .wh th:last-child, .wh td:last-child { padding-right: 16px; }
+  .wh .r { text-align: right; }
+  .wh td.below { color: var(--t-text-2); }
+  .wh__n { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+  .wh__cc { flex: none; width: 22px; height: 16px; border-radius: 4px; display: grid; place-items: center; font: 500 9.5px/1 var(--z-font-mono); color: var(--t-text-3); border: 1px solid var(--t-line); }
+  .wh__o { display: flex; align-items: center; gap: 8px; }
+  .wh__bar { flex: 1; height: 6px; border-radius: 2px; overflow: hidden; }
+  .wh__bar i { display: block; height: 100%; background: var(--z-lavender); opacity: 0.85; border-radius: 0 2px 2px 0; }
+  .wh__o .num { width: 44px; text-align: right; font-size: 12.5px; color: var(--t-text-2); }
+  .wh .z-delta { font-size: 12px; }
+
+</style>
+</head>
+<body>
+<div class="z-app">
+
+  <!-- ===================== SIDEBAR (shared VEVO shell) ===================== -->
+  <aside class="z-sidebar" aria-label="VEVO navigation">
+    <div class="z-sidebar__brand"><img src="../../favicon/vevo-app-icon.svg" alt="">VEVO</div>
+    <div class="ws" role="button" aria-label="Switch workspace">
+      <span class="ws__mono">CI</span>
+      <div class="grow"><div class="ws__name">Corvane Industrial</div><div class="ws__meta">Operations · 48 members</div></div>
+      <svg class="zi zi--sm"><use href="#zi-chevron-down"/></svg>
+    </div>
+    <a class="z-sidebar__item" href="dashboard.html"><svg class="zi"><use href="#zi-home"/></svg>Home</a>
+    <a class="z-sidebar__item" href="ai-assistant.html"><svg class="zi"><use href="#zi-ai-assistant"/></svg>Assistant</a>
+    <a class="z-sidebar__item" href="analytics.html" aria-current="page"><svg class="zi"><use href="#zi-analytics"/></svg>Analytics</a>
+    <a class="z-sidebar__item" href="automation.html"><svg class="zi"><use href="#zi-workflow"/></svg>Workflows<span class="z-sidebar__count z-sidebar__count--alert">3</span></a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-users"/></svg>Customers</a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-inbox"/></svg>Orders<span class="z-sidebar__count">1,284</span></a>
+    <a class="z-sidebar__item" href="api-integrations.html"><svg class="zi"><use href="#zi-integrations"/></svg>Integrations</a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-settings"/></svg>Settings</a>
+
+    <div class="z-sidebar__section">Pinned</div>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#9671FF"></i>Q3 supplier review</a>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#D3C8FF"></i>Board pack · October</a>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#77718F"></i>Izmir plant capacity</a>
+
+    <div class="sb-foot">
+      <div class="sb-user">
+        <span class="z-avatar">LD</span>
+        <div class="grow"><div class="sb-user__name">Leyla Demir</div><div class="sb-user__role">Operations lead</div></div>
+        <svg class="zi zi--sm"><use href="#zi-more"/></svg>
+      </div>
+      <div class="sb-endorse">a product by <img src="../../logo/svg/zirven-symbol-micro-dark.svg" alt=""><img class="wm" src="../../logo/svg/zirven-wordmark-dark.svg" alt="Zirven"></div>
+    </div>
+  </aside>
+
+  <div class="shell">
+    <!-- ===================== TOP BAR ===================== -->
+    <header class="z-topbar">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <span>Corvane Industrial</span><svg class="zi zi--xs"><use href="#zi-chevron-right"/></svg>
+        <span>Analytics</span><svg class="zi zi--xs"><use href="#zi-chevron-right"/></svg>
+        <b>Fulfilment performance</b>
+      </nav>
+      <div class="grow"></div>
+      <div class="z-search"><svg class="zi zi--sm"><use href="#zi-search"/></svg>Search or ask VEVO…<span class="z-kbd">⌘K</span></div>
+      <span class="icon-btn icon-btn--line" aria-label="Notifications"><svg class="zi zi--sm"><use href="#zi-bell"/></svg><i class="dot"></i></span>
+      <span class="z-avatar">LD</span>
+    </header>
+
+    <!-- ===================== ANALYTICS · FULFILMENT PERFORMANCE ===================== -->
+    <main class="an" aria-label="Fulfilment performance">
+      <section class="ph">
+        <div>
+          <h1><span>Analytics ·</span> Fulfilment performance</h1>
+          <div class="ph__meta"><span>Saved report by Leyla Demir</span><i class="sep"></i><span>Refreshed 09:12</span></div>
+        </div>
+        <div class="ph__ctrl">
+          <a class="z-btn z-btn--secondary range" href="#"><svg class="zi zi--sm"><use href="#zi-calendar"/></svg><b>1 Jul – 30 Sep 2026</b><svg class="zi zi--sm"><use href="#zi-chevron-down"/></svg></a>
+          <span class="cmp" role="switch" aria-checked="true"><span class="switch"></span>Compare <em>to Q2</em></span>
+          <a class="z-btn z-btn--secondary" href="#"><svg class="zi zi--sm"><use href="#zi-file"/></svg>Export</a>
+          <a class="z-btn z-btn--primary" href="#"><svg class="zi zi--sm"><use href="#zi-users"/></svg>Share</a>
+        </div>
+      </section>
+
+      <section class="fl" aria-label="Filters">
+        <span class="fchip fchip--on"><svg class="zi zi--xs"><use href="#zi-globe"/></svg>Region <b>Europe</b><svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg></span>
+        <span class="fchip"><svg class="zi zi--xs"><use href="#zi-layers"/></svg>Warehouse <b>All 5</b><svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg></span>
+        <span class="fchip fchip--on"><svg class="zi zi--xs"><use href="#zi-integrations"/></svg>Channel <b>EDI, Portal, API</b><svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg></span>
+        <span class="fchip fchip--add"><svg class="zi zi--xs"><use href="#zi-plus"/></svg>Add filter</span>
+        <i class="fl__sep"></i>
+        <span class="fl__note num">48,215 orders · 5 warehouses · 6 regions</span>
+        <div class="seg" role="tablist" aria-label="Granularity"><span>Day</span><span aria-current="true">Week</span><span>Month</span></div>
+      </section>
+
+      <section class="card kstrip" aria-label="Key metrics">
+          <div class="ks">
+            <div class="ks__label">Orders fulfilled</div>
+            <div class="ks__row"><span class="ks__value">48,215</span><span class="z-delta num">↑ 12.4%</span></div>
+            <div class="ks__prev num">Q2: 42,900</div>
+          </div>
+          <div class="ks ks--on">
+            <div class="ks__label">On-time rate<span class="ks__ai" title="Explained by VEVO Assistant"></span></div>
+            <div class="ks__row"><span class="ks__value">94.6%</span><span class="z-delta num">↑ 1.8 pts</span></div>
+            <div class="ks__prev num">Q2: 92.8%</div>
+          </div>
+          <div class="ks">
+            <div class="ks__label">Perfect order rate</div>
+            <div class="ks__row"><span class="ks__value">91.2%</span><span class="z-delta num">↑ 0.9 pts</span></div>
+            <div class="ks__prev num">Q2: 90.3%</div>
+          </div>
+          <div class="ks">
+            <div class="ks__label">Avg. fulfilment time</div>
+            <div class="ks__row"><span class="ks__value">31.4 h</span><span class="z-delta num">↓ 2.6 h</span></div>
+            <div class="ks__prev num">Q2: 34.0 h</div>
+          </div>
+          <div class="ks">
+            <div class="ks__label">Cost per order</div>
+            <div class="ks__row"><span class="ks__value">€6.84</span><span class="z-delta num">↓ 3.1%</span></div>
+            <div class="ks__prev num">Q2: €7.06</div>
+          </div>
+          <div class="ks">
+            <div class="ks__label">Backorders</div>
+            <div class="ks__row"><span class="ks__value">312</span><span class="z-delta z-delta--down num">↑ 4.0%</span></div>
+            <div class="ks__prev num">Q2: 300</div>
+          </div>
+      </section>
+
+      <section class="ag">
+        <!-- Main chart -->
+        <article class="card mc">
+          <div class="card__head">
+            <span class="card__title">On-time delivery rate by site</span><span class="card__sub">Weekly · Q3 2026</span>
+            <div class="legend">
+              <span><i style="background:#9671FF"></i>Rotterdam DC</span>
+              <span><i style="background:#D3C8FF"></i>Leipzig hub</span>
+              <span><i style="background:#77718F"></i>Izmir plant</span>
+              <span><i class="tg"></i>Target</span>
+            </div>
+            <span class="icon-btn" style="width:28px;height:28px;border-radius:8px;margin-right:-6px"><svg class="zi zi--sm"><use href="#zi-more"/></svg></span>
+          </div>
+          <div class="mc__body">
+            <svg class="mc__svg" viewBox="0 0 723 236" width="723" height="236" role="img" aria-label="Weekly on-time delivery rate for Rotterdam DC, Leipzig hub and Izmir plant, Q3 2026, against a 95% target">
+              <g stroke="rgba(211,200,255,0.08)"><path d="M40 210H707"/><path d="M40 177.3H707"/><path d="M40 144.7H707"/><path d="M40 112H707"/><path d="M40 79.3H707"/><path d="M40 46.7H707"/><path d="M40 14H707"/></g>
+              <g class="ax"><text x="32" y="213.5" text-anchor="end">86%</text><text x="32" y="180.8" text-anchor="end">88%</text><text x="32" y="148.2" text-anchor="end">90%</text><text x="32" y="115.5" text-anchor="end">92%</text><text x="32" y="82.8" text-anchor="end">94%</text><text x="32" y="50.2" text-anchor="end">96%</text><text x="32" y="17.5" text-anchor="end">98%</text><text x="50" y="230" text-anchor="middle">29 Jun</text><text x="157.8" y="230" text-anchor="middle">13 Jul</text><text x="265.7" y="230" text-anchor="middle">27 Jul</text><text x="373.5" y="230" text-anchor="middle">10 Aug</text><text x="481.3" y="230" text-anchor="middle">24 Aug</text><text x="589.2" y="230" text-anchor="middle">7 Sep</text><text x="643.1" y="230" text-anchor="middle" class="on">14 Sep</text><text x="697" y="230" text-anchor="middle">21 Sep</text></g>
+              <path d="M40 63H707" stroke="#F7F6FC" stroke-opacity="0.38" stroke-width="1" stroke-dasharray="2 4"/>
+              <text class="ax-t" x="50" y="56">Target 95%</text>
+              <path d="M481.3 32V210" stroke="rgba(211,200,255,0.28)" stroke-width="1" stroke-dasharray="3 3"/>
+              <path d="M50 76.1 C68 73.9 85.9 69.5 103.9 69.5 C121.9 69.5 139.9 79.3 157.8 79.3 C175.8 79.3 193.8 69.3 211.8 66.3 C229.7 63.3 247.7 61.4 265.7 61.4 C283.6 61.4 301.6 67.9 319.6 67.9 C337.6 67.9 355.5 63 373.5 63 C391.5 63 409.4 69.5 427.4 69.5 C445.4 69.5 463.4 59.7 481.3 59.7 C499.3 59.7 517.3 64.6 535.3 64.6 C553.2 64.6 571.2 56.5 589.2 56.5 C607.1 56.5 625.1 63 643.1 63 C661.1 63 679 59.7 697 58.1" fill="none" stroke="#77718F" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M50 120.2 C68 122.9 85.9 128.3 103.9 128.3 C121.9 128.3 139.9 118.5 157.8 115.3 C175.8 112 193.8 108.7 211.8 108.7 C229.7 108.7 247.7 118.5 265.7 118.5 C283.6 118.5 301.6 105.5 319.6 105.5 C337.6 105.5 355.5 110.4 373.5 110.4 C391.5 110.4 409.4 101.4 427.4 98.9 C445.4 96.5 463.4 97.3 481.3 95.7 C499.3 94 517.3 89.1 535.3 89.1 C553.2 89.1 571.2 97.3 589.2 97.3 C607.1 97.3 625.1 88.6 643.1 85.9 C661.1 83.1 679 82.6 697 81" fill="none" stroke="#D3C8FF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M50 131.6 C68 129.4 85.9 125.1 103.9 125.1 C121.9 125.1 139.9 136.5 157.8 136.5 C175.8 136.5 193.8 131.3 211.8 128.3 C229.7 125.3 247.7 118.5 265.7 118.5 C283.6 118.5 301.6 126.7 319.6 126.7 C337.6 126.7 355.5 114.9 373.5 112 C391.5 109.1 409.4 111.3 427.4 105.5 C445.4 99.6 463.4 77.4 481.3 69.5 C499.3 61.6 517.3 61.4 535.3 58.1 C553.2 54.8 571.2 52.1 589.2 49.9 C607.1 47.8 625.1 46.7 643.1 45 C661.1 43.4 679 41.8 697 40.1" fill="none" stroke="#9671FF" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M643.1 14V210" stroke="rgba(211,200,255,0.4)" stroke-width="1"/>
+              <circle cx="643.1" cy="63" r="4" fill="#77718F" stroke="#15112B" stroke-width="2"/><circle cx="643.1" cy="85.9" r="4" fill="#D3C8FF" stroke="#15112B" stroke-width="2"/><circle cx="643.1" cy="45" r="4" fill="#9671FF" stroke="#15112B" stroke-width="2"/>
+              <circle cx="697" cy="40.1" r="4" fill="#9671FF" stroke="#15112B" stroke-width="2"/>
+            </svg>
+            <div class="mc__flag" style="left:496px;top:18px"><i></i>Rotterdam cut-off moved to 16:00</div>
+            <div class="mc__tip" style="left:469px;top:109px;width:176px">
+              <div class="mc__tip-h">Week of 14 Sep<span>W38</span></div>
+              <div class="mc__tip-r"><i style="background:#9671FF"></i>Rotterdam DC<b class="num">96.1%</b></div>
+              <div class="mc__tip-r"><i style="background:#D3C8FF"></i>Leipzig hub<b class="num">93.6%</b></div>
+              <div class="mc__tip-r"><i style="background:#77718F"></i>Izmir plant<b class="num">95.0%</b></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Explain this change (AI) -->
+        <article class="card ex" aria-label="Explain this change">
+          <div class="card__head">
+            <span class="z-ai">Explain this change</span>
+            <span class="card__sub" style="margin-left:4px">3 queries · 1.4 s</span>
+            <span class="icon-btn" style="width:28px;height:28px;border-radius:8px;margin:0 -6px 0 auto"><svg class="zi zi--sm"><use href="#zi-more"/></svg></span>
+          </div>
+          <div class="ex__body">
+            <div class="ex__subj"><b>On-time rate</b><span class="num">92.8% → 94.6%</span><span class="z-delta num">↑ 1.8 pts</span></div>
+            <p><b>Rotterdam DC drove most of the rise.</b> Its carrier cut-off moved from 14:00 to 16:00 on 24 Aug<sup>2</sup>, and same-day pickups rose from 61% to 88%<sup>3</sup>.</p>
+            <div class="drv" aria-label="Contribution by site, percentage points">
+              <span class="drv__cap">Contribution by site</span><span></span><span class="drv__cap r">pts</span>
+              <span>Rotterdam DC</span><span class="drv__bar"><i style="left:30%;width:65%"></i></span><b>+1.3</b>
+              <span>Leipzig hub</span><span class="drv__bar"><i style="left:30%;width:30%"></i></span><b>+0.6</b>
+              <span>Izmir plant</span><span class="drv__bar"><i class="neg" style="left:25%;width:5%"></i></span><b>−0.1</b>
+            </div>
+            <div class="ex__src">
+              <span class="z-tag"><em>1</em>ontime_by_site.sql</span>
+              <span class="z-tag"><em>2</em>carrier_cutoffs</span>
+              <span class="z-tag"><em>3</em>pickups_daily</span>
+              <a class="link" href="ai-assistant.html">Ask a follow-up<svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Orders by region -->
+        <article class="card">
+          <div class="card__head">
+            <span class="card__title">Orders by region</span>
+            <div class="mini-legend"><span><i style="height:8px;background:#9671FF"></i>Q3</span><span><i style="height:3px;background:#57516F"></i>Q2</span></div>
+          </div>
+          <div class="rgs">
+            <div class="rg">
+              <span class="rg__n">DACH</span>
+              <div class="rg__bars"><i class="rg__now" style="width:92.6%"></i><i class="rg__prev" style="width:80.9%"></i></div>
+              <span class="rg__v num">14,820</span>
+              <span class="rg__d num up">+14.4%</span>
+            </div>
+            <div class="rg">
+              <span class="rg__n">Benelux</span>
+              <div class="rg__bars"><i class="rg__now" style="width:71.6%"></i><i class="rg__prev" style="width:63.1%"></i></div>
+              <span class="rg__v num">11,460</span>
+              <span class="rg__d num up">+13.6%</span>
+            </div>
+            <div class="rg">
+              <span class="rg__n">Türkiye</span>
+              <div class="rg__bars"><i class="rg__now" style="width:61.7%"></i><i class="rg__prev" style="width:53.3%"></i></div>
+              <span class="rg__v num">9,870</span>
+              <span class="rg__d num up">+15.8%</span>
+            </div>
+            <div class="rg">
+              <span class="rg__n">Nordics</span>
+              <div class="rg__bars"><i class="rg__now" style="width:39.0%"></i><i class="rg__prev" style="width:36.0%"></i></div>
+              <span class="rg__v num">6,240</span>
+              <span class="rg__d num up">+8.3%</span>
+            </div>
+            <div class="rg">
+              <span class="rg__n">Iberia</span>
+              <div class="rg__bars"><i class="rg__now" style="width:21.3%"></i><i class="rg__prev" style="width:21.8%"></i></div>
+              <span class="rg__v num">3,410</span>
+              <span class="rg__d num dn">−2.0%</span>
+            </div>
+            <div class="rg">
+              <span class="rg__n">Other</span>
+              <div class="rg__bars"><i class="rg__now" style="width:15.1%"></i><i class="rg__prev" style="width:13.1%"></i></div>
+              <span class="rg__v num">2,415</span>
+              <span class="rg__d num up">+15.0%</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Heatmap -->
+        <article class="card">
+          <div class="card__head">
+            <span class="card__title">On-time rate · weekday × week</span>
+          </div>
+          <div class="hm">
+            <div class="hm__grid" role="img" aria-label="On-time rate by weekday and ISO week, Q3 2026. Sundays have no shipments."><span class="hm__d">Mon</span><i class="hm__c" style="background:#3E2C8F" title="Mon W27 · 89.3%"></i><i class="hm__c" style="background:#3E2C8F" title="Mon W28 · 89.6%"></i><i class="hm__c" style="background:#3E2C8F" title="Mon W29 · 88.5%"></i><i class="hm__c" style="background:#3E2C8F" title="Mon W30 · 89.2%"></i><i class="hm__c" style="background:#3E2C8F" title="Mon W31 · 89.8%"></i><i class="hm__c" style="background:#3E2C8F" title="Mon W32 · 89.7%"></i><i class="hm__c" style="background:#3E2C8F" title="Mon W33 · 89.4%"></i><i class="hm__c" style="background:#5B34E0" title="Mon W34 · 91.1%"></i><i class="hm__c hm__c--on" style="background:#5B34E0" title="Mon W35 · 91.9%"></i><i class="hm__c" style="background:#5B34E0" title="Mon W36 · 91.9%"></i><i class="hm__c" style="background:#5B34E0" title="Mon W37 · 91.9%"></i><i class="hm__c" style="background:#7F5BF5" title="Mon W38 · 93.1%"></i><i class="hm__c" style="background:#7F5BF5" title="Mon W39 · 93.2%"></i><span class="hm__d">Tue</span><i class="hm__c" style="background:#5B34E0" title="Tue W27 · 90.8%"></i><i class="hm__c" style="background:#5B34E0" title="Tue W28 · 91.8%"></i><i class="hm__c" style="background:#5B34E0" title="Tue W29 · 91.0%"></i><i class="hm__c" style="background:#7F5BF5" title="Tue W30 · 92.3%"></i><i class="hm__c" style="background:#5B34E0" title="Tue W31 · 91.6%"></i><i class="hm__c" style="background:#7F5BF5" title="Tue W32 · 92.1%"></i><i class="hm__c" style="background:#7F5BF5" title="Tue W33 · 92.5%"></i><i class="hm__c" style="background:#7F5BF5" title="Tue W34 · 92.1%"></i><i class="hm__c" style="background:#7F5BF5" title="Tue W35 · 93.2%"></i><i class="hm__c" style="background:#A88BFF" title="Tue W36 · 95.2%"></i><i class="hm__c" style="background:#A88BFF" title="Tue W37 · 95.4%"></i><i class="hm__c" style="background:#A88BFF" title="Tue W38 · 94.2%"></i><i class="hm__c" style="background:#A88BFF" title="Tue W39 · 95.1%"></i><span class="hm__d">Wed</span><i class="hm__c" style="background:#7F5BF5" title="Wed W27 · 93.3%"></i><i class="hm__c" style="background:#7F5BF5" title="Wed W28 · 92.1%"></i><i class="hm__c" style="background:#7F5BF5" title="Wed W29 · 92.3%"></i><i class="hm__c" style="background:#7F5BF5" title="Wed W30 · 93.0%"></i><i class="hm__c" style="background:#7F5BF5" title="Wed W31 · 93.4%"></i><i class="hm__c" style="background:#7F5BF5" title="Wed W32 · 92.5%"></i><i class="hm__c" style="background:#7F5BF5" title="Wed W33 · 92.8%"></i><i class="hm__c" style="background:#A88BFF" title="Wed W34 · 94.5%"></i><i class="hm__c" style="background:#A88BFF" title="Wed W35 · 94.8%"></i><i class="hm__c" style="background:#A88BFF" title="Wed W36 · 94.8%"></i><i class="hm__c" style="background:#A88BFF" title="Wed W37 · 95.6%"></i><i class="hm__c" style="background:#A88BFF" title="Wed W38 · 95.5%"></i><i class="hm__c" style="background:#A88BFF" title="Wed W39 · 95.5%"></i><span class="hm__d">Thu</span><i class="hm__c" style="background:#7F5BF5" title="Thu W27 · 93.2%"></i><i class="hm__c" style="background:#7F5BF5" title="Thu W28 · 92.6%"></i><i class="hm__c" style="background:#7F5BF5" title="Thu W29 · 92.3%"></i><i class="hm__c" style="background:#7F5BF5" title="Thu W30 · 92.3%"></i><i class="hm__c" style="background:#A88BFF" title="Thu W31 · 94.1%"></i><i class="hm__c" style="background:#7F5BF5" title="Thu W32 · 92.6%"></i><i class="hm__c" style="background:#A88BFF" title="Thu W33 · 94.3%"></i><i class="hm__c" style="background:#7F5BF5" title="Thu W34 · 93.7%"></i><i class="hm__c" style="background:#A88BFF" title="Thu W35 · 94.6%"></i><i class="hm__c" style="background:#A88BFF" title="Thu W36 · 95.7%"></i><i class="hm__c" style="background:#A88BFF" title="Thu W37 · 95.5%"></i><i class="hm__c" style="background:#D3C8FF" title="Thu W38 · 96.5%"></i><i class="hm__c" style="background:#D3C8FF" title="Thu W39 · 96.6%"></i><span class="hm__d">Fri</span><i class="hm__c" style="background:#5B34E0" title="Fri W27 · 91.0%"></i><i class="hm__c" style="background:#5B34E0" title="Fri W28 · 91.4%"></i><i class="hm__c" style="background:#5B34E0" title="Fri W29 · 91.5%"></i><i class="hm__c" style="background:#5B34E0" title="Fri W30 · 91.4%"></i><i class="hm__c" style="background:#5B34E0" title="Fri W31 · 91.5%"></i><i class="hm__c" style="background:#5B34E0" title="Fri W32 · 91.9%"></i><i class="hm__c" style="background:#7F5BF5" title="Fri W33 · 92.9%"></i><i class="hm__c" style="background:#7F5BF5" title="Fri W34 · 93.1%"></i><i class="hm__c" style="background:#A88BFF" title="Fri W35 · 94.9%"></i><i class="hm__c" style="background:#A88BFF" title="Fri W36 · 94.2%"></i><i class="hm__c" style="background:#A88BFF" title="Fri W37 · 94.6%"></i><i class="hm__c" style="background:#A88BFF" title="Fri W38 · 95.0%"></i><i class="hm__c" style="background:#A88BFF" title="Fri W39 · 95.2%"></i><span class="hm__d">Sat</span><i class="hm__c" style="background:#7F5BF5" title="Sat W27 · 93.7%"></i><i class="hm__c" style="background:#7F5BF5" title="Sat W28 · 93.2%"></i><i class="hm__c" style="background:#7F5BF5" title="Sat W29 · 92.9%"></i><i class="hm__c" style="background:#7F5BF5" title="Sat W30 · 93.1%"></i><i class="hm__c" style="background:#7F5BF5" title="Sat W31 · 93.2%"></i><i class="hm__c" style="background:#7F5BF5" title="Sat W32 · 93.9%"></i><i class="hm__c" style="background:#7F5BF5" title="Sat W33 · 93.3%"></i><i class="hm__c" style="background:#7F5BF5" title="Sat W34 · 93.8%"></i><i class="hm__c" style="background:#A88BFF" title="Sat W35 · 96.0%"></i><i class="hm__c" style="background:#D3C8FF" title="Sat W36 · 96.5%"></i><i class="hm__c" style="background:#D3C8FF" title="Sat W37 · 96.9%"></i><i class="hm__c" style="background:#D3C8FF" title="Sat W38 · 97.2%"></i><i class="hm__c" style="background:#D3C8FF" title="Sat W39 · 97.3%"></i><span class="hm__d">Sun</span><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><i class="hm__c hm__c--none"></i><span></span><span class="hm__w">W27</span><span class="hm__w"></span><span class="hm__w"></span><span class="hm__w">W30</span><span class="hm__w"></span><span class="hm__w"></span><span class="hm__w">W33</span><span class="hm__w"></span><span class="hm__w"></span><span class="hm__w">W36</span><span class="hm__w"></span><span class="hm__w"></span><span class="hm__w">W39</span></div>
+            <div class="hm__foot"><span>Mondays lowest · <b class="num">91.2%</b></span>
+              <div class="scale"><span class="num">&lt;88%</span><span><i style="background:#2A1F5C"></i><i style="background:#3E2C8F"></i><i style="background:#5B34E0"></i><i style="background:#7F5BF5"></i><i style="background:#A88BFF"></i><i style="background:#D3C8FF"></i></span><span class="num">96%+</span></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Warehouse table -->
+        <article class="card wh">
+          <div class="card__head">
+            <span class="card__title">Warehouse performance</span>
+            <a class="link" href="#" style="margin-left:auto">Open table<svg class="zi zi--xs"><use href="#zi-arrow-up-right"/></svg></a>
+          </div>
+          <table>
+            <colgroup><col style="width:38%"><col style="width:29%"><col style="width:18%"><col style="width:15%"></colgroup>
+            <thead><tr>
+              <th>Warehouse</th>
+              <th class="sorted">Orders<svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg></th>
+              <th class="r">On-time</th>
+              <th class="r">Δ pts</th>
+            </tr></thead>
+            <tbody>
+                <tr>
+                  <td><div class="wh__n"><span class="wh__cc">NL</span>Rotterdam DC</div></td>
+                  <td><div class="wh__o"><span class="wh__bar"><i style="width:100.0%"></i></span><span class="num">14,920</span></div></td>
+                  <td class="r num">96.4%</td>
+                  <td class="r num"><span class="z-delta">+3.8</span></td>
+                </tr>
+                <tr>
+                  <td><div class="wh__n"><span class="wh__cc">TR</span>Izmir plant</div></td>
+                  <td><div class="wh__o"><span class="wh__bar"><i style="width:68.4%"></i></span><span class="num">10,210</span></div></td>
+                  <td class="r num">95.3%</td>
+                  <td class="r num"><span class="z-delta">+0.6</span></td>
+                </tr>
+                <tr>
+                  <td><div class="wh__n"><span class="wh__cc">DE</span>Leipzig hub</div></td>
+                  <td><div class="wh__o"><span class="wh__bar"><i style="width:66.2%"></i></span><span class="num">9,870</span></div></td>
+                  <td class="r num below">93.9%</td>
+                  <td class="r num"><span class="z-delta">+1.2</span></td>
+                </tr>
+                <tr>
+                  <td><div class="wh__n"><span class="wh__cc">PL</span>Gdańsk DC</div></td>
+                  <td><div class="wh__o"><span class="wh__bar"><i style="width:51.9%"></i></span><span class="num">7,740</span></div></td>
+                  <td class="r num below">93.1%</td>
+                  <td class="r num"><span class="z-delta">+0.4</span></td>
+                </tr>
+                <tr>
+                  <td><div class="wh__n"><span class="wh__cc">ES</span>Bilbao DC</div></td>
+                  <td><div class="wh__o"><span class="wh__bar"><i style="width:36.7%"></i></span><span class="num">5,475</span></div></td>
+                  <td class="r num below">91.7%</td>
+                  <td class="r num"><span class="z-delta z-delta--down">−0.9</span></td>
+                </tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+    </main>
+  </div>
+</div>
+</body>
+</html>

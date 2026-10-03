@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Letterhead · Zirven V2.1 application 13</title>
+<meta name="description" content="Zirven V2.1 letterhead system: A4 first sheet, continuation sheet and DL window envelope.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  /* Every sheet is laid out in millimetres: --mm sets the drawing scale, --pt converts type to print points. */
+  .paper { --pt: calc(var(--mm) * 0.3528); position: relative; flex: none; background: #FFFFFF; color: var(--z-night);
+    box-shadow: 0 0 0 0.5px rgba(14, 11, 31, 0.06), 0 1px 2px rgba(14, 11, 31, 0.08), 0 10px 18px -10px rgba(14, 11, 31, 0.2), 0 34px 60px -30px rgba(14, 11, 31, 0.32); }
+  .paper::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: 0.55;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.4  0 0 0 0 0.37  0 0 0 0 0.5  0 0 0 0.06 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>"); }
+  .a4 { width: calc(210 * var(--mm)); height: calc(297 * var(--mm)); }
+  .dl { width: calc(220 * var(--mm)); height: calc(110 * var(--mm)); }
+  .at { position: absolute; }
+  .mm { font-size: calc(9.5 * var(--pt)); }
+
+  /* ---------- First sheet ---------- */
+  .lh__logo { left: calc(25 * var(--mm)); top: calc(18 * var(--mm)); height: calc(8.5 * var(--mm)); width: auto; }
+  .lh__desc { right: calc(20 * var(--mm)); top: calc(22.6 * var(--mm)); display: flex; align-items: center; gap: calc(2.2 * var(--mm));
+    font: 500 calc(6.5 * var(--pt))/1 var(--z-font-sans); letter-spacing: 0.1em; text-transform: uppercase; color: var(--z-ink-500); }
+  /* the summit marker: a thin violet rule climbing at 20° */
+  .marker { display: inline-block; width: calc(5 * var(--mm)); height: max(1px, calc(0.3 * var(--mm))); background: var(--z-violet); transform: rotate(-20deg); transform-origin: left center; }
+  .lh__return { left: calc(25 * var(--mm)); top: calc(47 * var(--mm)); width: calc(85 * var(--mm)); padding-bottom: calc(1 * var(--mm)); border-bottom: 0.5px solid var(--z-ink-300);
+    font: 400 calc(6 * var(--pt))/1 var(--z-font-sans); color: var(--z-ink-500); white-space: nowrap; }
+  .lh__to { left: calc(25 * var(--mm)); top: calc(53 * var(--mm)); font: 400 calc(9.5 * var(--pt))/1.47 var(--z-font-sans); }
+  .lh__to b { font-weight: 600; }
+  .lh__info { left: calc(125 * var(--mm)); top: calc(47 * var(--mm)); display: grid; grid-template-columns: calc(19 * var(--mm)) auto; row-gap: calc(1.3 * var(--mm));
+    font: 400 calc(7.5 * var(--pt))/1.3 var(--z-font-sans); }
+  .lh__info dt { color: var(--z-ink-500); }
+  .lh__info dd { margin: 0; color: var(--z-night); }
+  .lh__info .ref { font-family: var(--z-font-mono); font-size: calc(7 * var(--pt)); letter-spacing: 0.01em; }
+  .lh__body { left: calc(25 * var(--mm)); top: calc(99 * var(--mm)); width: calc(165 * var(--mm)); font: 400 calc(9.5 * var(--pt))/calc(14 * var(--pt)) var(--z-font-sans); color: #1E1A33; }
+  .lh__kicker { display: flex; align-items: center; gap: calc(2 * var(--mm)); font: 600 calc(6.5 * var(--pt))/1 var(--z-font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--z-violet); }
+  .lh__subject { margin-top: calc(2.6 * var(--mm)); font: 600 calc(12.5 * var(--pt))/1.25 var(--z-font-sans); letter-spacing: -0.01em; color: var(--z-night); }
+  .lh__body p { margin-top: calc(14 * var(--pt) * 0.62); }
+  .lh__body .salute { margin-top: calc(7 * var(--mm)); }
+  .lh__sign { margin-top: calc(4 * var(--mm)); }
+  .lh__sign svg { display: block; width: calc(34 * var(--mm)); height: auto; margin: calc(1 * var(--mm)) 0 calc(0.5 * var(--mm)) calc(-1 * var(--mm)); }
+  .lh__sign b { font-weight: 600; color: var(--z-night); }
+  .lh__sign span { color: var(--z-ink-600); }
+  .lh__enc { margin-top: calc(5 * var(--mm)); font-size: calc(7.5 * var(--pt)); color: var(--z-ink-500); }
+  .lh__foot { left: calc(25 * var(--mm)); right: calc(20 * var(--mm)); bottom: calc(10 * var(--mm)); padding-top: calc(3 * var(--mm)); border-top: 0.5px solid var(--z-ink-200);
+    display: flex; justify-content: space-between; align-items: flex-end; gap: calc(6 * var(--mm)); }
+  .lh__foot .l1 { font: 500 calc(7 * var(--pt))/1.3 var(--z-font-sans); color: var(--z-night); }
+  .lh__foot .l1 i { font-style: normal; color: var(--z-ink-300); padding: 0 0.35em; }
+  .lh__foot .l2 { margin-top: calc(1.2 * var(--mm)); font: 400 calc(6 * var(--pt))/1.3 var(--z-font-sans); color: var(--z-ink-500); }
+  .lh__foot .pg { font: 500 calc(6.5 * var(--pt))/1 var(--z-font-mono); color: var(--z-ink-500); white-space: nowrap; }
+  /* DIN fold and punch marks */
+  .fold { left: calc(4 * var(--mm)); width: calc(4 * var(--mm)); height: 0; border-top: 0.5px solid var(--z-ink-300); }
+  .fold--punch { width: calc(6 * var(--mm)); left: calc(3 * var(--mm)); }
+
+  /* ---------- Continuation sheet ---------- */
+  .ct__mark { left: calc(25 * var(--mm)); top: calc(16 * var(--mm)); height: calc(7 * var(--mm)); width: auto; }
+  .ct__run { left: calc(38 * var(--mm)); right: calc(20 * var(--mm)); top: calc(17.6 * var(--mm)); display: flex; justify-content: space-between;
+    font: 400 calc(7 * var(--pt))/1.3 var(--z-font-sans); color: var(--z-ink-500); }
+  .ct__run b { font-weight: 500; color: var(--z-night); }
+  .ct__body { left: calc(25 * var(--mm)); top: calc(40 * var(--mm)); width: calc(165 * var(--mm)); font: 400 calc(9.5 * var(--pt))/calc(14 * var(--pt)) var(--z-font-sans); color: #1E1A33; }
+  .ct__body h3 { margin-top: calc(2.4 * var(--mm)); font: 600 calc(12.5 * var(--pt))/1.25 var(--z-font-sans); letter-spacing: -0.01em; color: var(--z-night); }
+  .ct__body h4 { margin-top: calc(9 * var(--mm)); font: 600 calc(9.5 * var(--pt))/1.3 var(--z-font-sans); color: var(--z-night); }
+  .ct__table { width: 100%; margin-top: calc(4 * var(--mm)); border-collapse: collapse; font-size: calc(8.5 * var(--pt)); line-height: 1.4; }
+  .ct__table th { text-align: left; font-weight: 500; font-size: calc(7 * var(--pt)); letter-spacing: 0.06em; text-transform: uppercase; color: var(--z-ink-500); padding: 0 0 calc(1.8 * var(--mm)); border-bottom: 0.75px solid var(--z-night); }
+  .ct__table td { padding: calc(2.2 * var(--mm)) calc(3 * var(--mm)) calc(2.2 * var(--mm)) 0; border-bottom: 0.5px solid var(--z-ink-200); vertical-align: top; }
+  .ct__table td:first-child { font-family: var(--z-font-mono); font-size: calc(7.5 * var(--pt)); color: var(--z-violet); white-space: nowrap; }
+  .ct__table td:nth-child(2) { font-weight: 500; white-space: nowrap; }
+  .ct__measures { margin-top: calc(3.5 * var(--mm)); display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(4 * var(--mm)); }
+  .ct__measures div { border-top: 0.75px solid var(--z-violet); padding-top: calc(2 * var(--mm)); font-size: calc(8 * var(--pt)); line-height: 1.4; color: var(--z-ink-600); }
+  .ct__measures b { display: block; font: 600 calc(14 * var(--pt))/1.1 var(--z-font-sans); color: var(--z-night); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .ct__measures em { display: block; margin-top: calc(1 * var(--mm)); font-style: normal; color: var(--z-night); font-weight: 500; }
+  .ct__cols { margin-top: calc(3.5 * var(--mm)); display: grid; grid-template-columns: 1fr 1fr; gap: calc(8 * var(--mm)); font-size: calc(8.5 * var(--pt)); line-height: 1.5; }
+  .ct__cols b { display: block; font-weight: 600; color: var(--z-night); margin-bottom: calc(1 * var(--mm)); }
+
+  .ct__steps { list-style: none; margin: calc(3 * var(--mm)) 0 0; padding: 0; font-size: calc(8.5 * var(--pt)); line-height: 1.4; }
+  .ct__steps li { display: grid; grid-template-columns: calc(18 * var(--mm)) 1fr; padding: calc(1.8 * var(--mm)) 0; border-bottom: 0.5px solid var(--z-ink-200); }
+  .ct__steps span { font-family: var(--z-font-mono); font-size: calc(7.5 * var(--pt)); color: var(--z-violet); }
+  .ct__agree { margin-top: calc(16 * var(--mm)); display: grid; grid-template-columns: 1fr 1fr; gap: calc(8 * var(--mm)); font-size: calc(7.5 * var(--pt)); line-height: 1.5; color: var(--z-ink-600); }
+  .ct__agree i { display: block; height: 0; border-top: 0.75px solid var(--z-night); margin-bottom: calc(2 * var(--mm)); }
+  .ct__agree b { font-weight: 600; color: var(--z-night); }
+
+  /* ---------- DL envelope ---------- */
+  .env { background: #FDFDFE; }
+  .env__logo { left: calc(15 * var(--mm)); top: calc(13 * var(--mm)); height: calc(7 * var(--mm)); width: auto; }
+  .env__ret { left: calc(15 * var(--mm)); top: calc(24 * var(--mm)); font: 400 calc(6.5 * var(--pt))/1.45 var(--z-font-sans); color: var(--z-ink-500); }
+  .env__window { left: calc(20 * var(--mm)); top: calc(50 * var(--mm)); width: calc(90 * var(--mm)); height: calc(45 * var(--mm)); border-radius: calc(1.2 * var(--mm));
+    background: linear-gradient(160deg, rgba(232, 230, 242, 0.75), rgba(244, 243, 250, 0.55) 60%, rgba(226, 223, 238, 0.7));
+    box-shadow: inset 0 0 0 0.75px rgba(14, 11, 31, 0.14), inset 0 1px 2px rgba(14, 11, 31, 0.08); overflow: hidden; }
+  .env__window::before { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.55) 46%, rgba(255, 255, 255, 0) 60%); }
+  .env__addr { left: calc(5 * var(--mm)); top: calc(5.5 * var(--mm)); font: 400 calc(9.5 * var(--pt))/1.47 var(--z-font-sans); color: #2A2640; opacity: 0.92; }
+  .env__addr .ret { display: block; margin-bottom: calc(1.6 * var(--mm)); padding-bottom: calc(0.8 * var(--mm)); border-bottom: 0.5px solid var(--z-ink-300); font-size: calc(6 * var(--pt)); color: var(--z-ink-500); line-height: 1; }
+  .env__addr b { font-weight: 600; }
+  .env__mark { right: calc(15 * var(--mm)); bottom: calc(13 * var(--mm)); display: flex; align-items: center; gap: calc(2 * var(--mm)); font: 500 calc(7 * var(--pt))/1 var(--z-font-sans); color: var(--z-violet); letter-spacing: 0.02em; }
+  .env__post { right: calc(15 * var(--mm)); top: calc(13 * var(--mm)); width: calc(28 * var(--mm)); height: calc(18 * var(--mm)); border: 0.75px solid var(--z-ink-300);
+    display: grid; place-items: center; text-align: center; font: 500 calc(5.5 * var(--pt))/1.3 var(--z-font-mono); letter-spacing: 0.08em; color: var(--z-ink-400); text-transform: uppercase; }
+
+  /* ---------- Board layout ---------- */
+  .stage { display: grid; grid-template-columns: auto auto; justify-content: space-between; align-items: start; }
+  .col { display: flex; flex-direction: column; gap: 28px; }
+  .fig { margin: 0; display: flex; flex-direction: column; gap: 16px; }
+  .fig figcaption { display: flex; gap: 12px; align-items: baseline; font: 400 13px/1.45 var(--z-font-sans); color: var(--z-ink-600); }
+  .fig figcaption b { font: 600 12px/1 var(--z-font-mono); color: var(--z-violet); }
+  .fig figcaption strong { color: var(--z-night); font-weight: 500; }
+  .specs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid rgba(14, 11, 31, 0.1); border-bottom: 1px solid rgba(14, 11, 31, 0.1); }
+  .specs div { padding: 18px 18px 18px 0; display: flex; flex-direction: column; gap: 8px; }
+  .specs div + div { padding-left: 18px; border-left: 1px solid rgba(14, 11, 31, 0.1); }
+  .specs dt { font: 500 11px/1 var(--z-font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--z-ink-500); }
+  .specs dd { margin: 0; font: 400 14px/1.45 var(--z-font-sans); color: var(--z-night); }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; vertical-align: -1px; box-shadow: inset 0 0 0 1px rgba(14, 11, 31, 0.12); }
+</style>
+</head>
+<body>
+<div class="z-board">
+  <header class="z-board__head">
+    <img src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+    <span>Zirven V2.1 · Applications</span>
+    <div class="z-board__title"><b>13</b> Letterhead</div>
+  </header>
+
+  <main class="stage">
+    <!-- ===================== A4 first sheet ===================== -->
+    <figure class="fig">
+      <article class="paper a4" style="--mm:3.4px" aria-label="A4 letterhead, first sheet">
+        <img class="at lh__logo" src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+        <div class="at lh__desc"><span class="marker"></span>Software · SaaS · AI</div>
+
+        <i class="at fold" style="top:calc(99 * var(--mm))"></i>
+        <i class="at fold fold--punch" style="top:calc(148.5 * var(--mm))"></i>
+        <i class="at fold" style="top:calc(198 * var(--mm))"></i>
+
+        <div class="at lh__return">Zirven Technology · Büyükdere Cad. No. 000 · 34000 İstanbul · Türkiye</div>
+        <address class="at lh__to" style="font-style:normal">
+          <b>Helix Medical Supply B.V.</b><br>
+          Procurement<br>
+          Attn. Marco Rossi, Head of Procurement<br>
+          Industrieweg 40<br>
+          5627 BW Eindhoven<br>
+          The Netherlands
+        </address>
+
+        <dl class="at lh__info">
+          <dt>Our ref.</dt><dd class="ref">ZT-PR-2026-118</dd>
+          <dt>Your ref.</dt><dd class="ref">HMS-RFI-0931</dd>
+          <dt>Contact</dt><dd>Leyla Demir</dd>
+          <dt>Direct</dt><dd>+90 212 000 00 00</dd>
+          <dt>Email</dt><dd>leyla@zirven.com</dd>
+          <dt>Date</dt><dd>2 October 2026</dd>
+        </dl>
+
+        <div class="at lh__body">
+          <div class="lh__kicker"><span class="marker" style="width:calc(3.6 * var(--mm))"></span>Proposal</div>
+          <h1 class="lh__subject">VEVO pilot for distribution operations</h1>
+          <p class="salute">Dear Marco,</p>
+          <p>Thank you for walking us through the Eindhoven distribution centre last week. This letter sets out the pilot we discussed: what VEVO will cover, how we will run it and how we will measure the result.</p>
+          <p>VEVO brings orders, customers and reporting into one workspace. For the pilot we will connect it to your ERP and warehouse management system and cover three workflows: order intake, stock exceptions and the weekly operations report. Its assistant answers questions against your own data, shows the sources behind every answer and takes no action without approval.</p>
+          <p>The pilot runs for eight weeks with up to 40 users. Weeks one and two cover integration and data checks; weeks three to eight run in production alongside your current process. Each Friday we report three measures: order-to-dispatch time, open exceptions and hours spent on manual reporting.</p>
+          <p>The plan at a glance is on the next page, and the detailed scope and our data processing agreement are enclosed. I suggest a 45-minute review with your IT and quality leads in the week of 12 October, so integration can begin on 2 November.</p>
+          <div class="lh__sign">
+            <p style="margin:0">Kind regards,</p>
+            <svg viewBox="0 0 140 40" aria-hidden="true"><path d="M6 30c4-9 9-19 13-21 4-2 3 8 0 15-2 6-6 10-3 9 5-2 8-12 12-12 4 0 0 9 4 9 5 0 7-10 11-10 3 0 0 8 4 8 4 0 6-9 10-9s1 9 6 8c6-1 9-16 13-16 3 0 1 10-1 15m0 0c6-2 12-6 17-6 4 0 3 5 7 5 6 0 12-6 22-8" fill="none" stroke="#2B2470" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <b>Leyla Demir</b><br><span>Head of Product, Zirven Technology</span>
+          </div>
+          <p class="lh__enc">Enclosures: Pilot scope v2 · Data processing agreement</p>
+        </div>
+
+        <footer class="at lh__foot">
+          <div>
+            <div class="l1">Zirven Technology<i>·</i>zirven.com<i>·</i>Software · SaaS · AI</div>
+            <div class="l2">Registered office: Büyükdere Cad. No. 000, 34000 İstanbul, Türkiye · Trade registry no. 000000 · Tax ID 000 000 0000</div>
+          </div>
+          <span class="pg">1 / 2</span>
+        </footer>
+      </article>
+      <figcaption><b>A</b><span><strong>First sheet</strong> · A4, 210 × 297 mm, shown at 3.4 px per mm</span></figcaption>
+    </figure>
+
+    <div class="col">
+      <!-- ===================== Continuation sheet ===================== -->
+      <figure class="fig">
+        <article class="paper a4" style="--mm:2.4px" aria-label="A4 continuation sheet">
+          <img class="at ct__mark" src="../../logo/svg/zirven-symbol-light.svg" alt="Zirven">
+          <div class="at ct__run"><span><b>Helix Medical Supply</b> · VEVO pilot proposal · 2 October 2026</span><span>Ref. ZT-PR-2026-118</span></div>
+
+          <div class="at ct__body">
+            <div class="lh__kicker"><span class="marker" style="width:calc(3.6 * var(--mm))"></span>Pilot plan</div>
+            <h3>The plan at a glance</h3>
+            <table class="ct__table">
+              <thead><tr><th>Weeks</th><th>Phase</th><th>What is in place at the end</th></tr></thead>
+              <tbody>
+                <tr><td>01–02</td><td>Connect</td><td>ERP and WMS connected read-only; 12 months of order data checked</td></tr>
+                <tr><td>03–04</td><td>Run in parallel</td><td>Order intake and stock exceptions live for the pilot team</td></tr>
+                <tr><td>05–07</td><td>Operate</td><td>Weekly operations report produced in VEVO; assistant on for 40 users</td></tr>
+                <tr><td>08</td><td>Review</td><td>Results against the three measures and a rollout recommendation</td></tr>
+              </tbody>
+            </table>
+
+            <h4>How we measure</h4>
+            <div class="ct__measures">
+              <div><b>31 h</b><em>Order to dispatch</em>Current median, measured weekly</div>
+              <div><b>214</b><em>Open exceptions</em>Current backlog across both sites</div>
+              <div><b>22 h</b><em>Manual reporting</em>Team hours per week today</div>
+            </div>
+
+            <h4>Who does what</h4>
+            <div class="ct__cols">
+              <div><b>Zirven</b>Integration, configuration, data checks, training for the pilot team and the Friday report.</div>
+              <div><b>Helix Medical Supply</b>System access, one pilot lead, and two hours a week from each team lead.</div>
+            </div>
+
+            <h4>Next steps</h4>
+            <ol class="ct__steps">
+              <li><span>12 Oct</span>Review call with your IT and quality leads</li>
+              <li><span>26 Oct</span>Sandbox access to ERP and WMS confirmed</li>
+              <li><span>02 Nov</span>Pilot starts; first Friday report on 13 November</li>
+            </ol>
+
+            <div class="ct__agree">
+              <div><i></i>For Zirven Technology<br><b>Leyla Demir</b>, Head of Product</div>
+              <div><i></i>For Helix Medical Supply<br><b>Name</b>, role and date</div>
+            </div>
+          </div>
+
+          <footer class="at lh__foot">
+            <div>
+              <div class="l1">Zirven Technology<i>·</i>zirven.com<i>·</i>Software · SaaS · AI</div>
+              <div class="l2">Registered office: Büyükdere Cad. No. 000, 34000 İstanbul, Türkiye · Trade registry no. 000000</div>
+            </div>
+            <span class="pg">2 / 2</span>
+          </footer>
+        </article>
+        <figcaption><b>B</b><span><strong>Continuation sheet</strong> · symbol and running head, shown at 2.4 px per mm</span></figcaption>
+      </figure>
+
+      <!-- ===================== DL envelope ===================== -->
+      <figure class="fig">
+        <article class="paper dl env" style="--mm:2.4px" aria-label="DL window envelope">
+          <img class="at env__logo" src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+          <div class="at env__ret">Büyükdere Cad. No. 000<br>34000 İstanbul · Türkiye</div>
+          <div class="at env__window">
+            <div class="at env__addr">
+              <span class="ret">Zirven Technology · Büyükdere Cad. No. 000 · 34000 İstanbul</span>
+              <b>Helix Medical Supply B.V.</b><br>Procurement<br>Attn. Marco Rossi<br>Industrieweg 40<br>5627 BW Eindhoven
+            </div>
+          </div>
+          <div class="at env__mark"><span class="marker" style="width:calc(4 * var(--mm))"></span>zirven.com</div>
+        </article>
+        <figcaption><b>C</b><span><strong>DL envelope</strong> · 220 × 110 mm, window left 90 × 45 mm</span></figcaption>
+      </figure>
+    </div>
+  </main>
+
+  <dl class="specs">
+    <div><dt>Format</dt><dd>A4 210 × 297 mm<br>DL 220 × 110 mm</dd></div>
+    <div><dt>Paper</dt><dd>120 gsm uncoated, bright white; envelope 100 gsm</dd></div>
+    <div><dt>Grid</dt><dd>Margins 25 / 20 mm; address field 45 mm from top</dd></div>
+    <div><dt>Type</dt><dd>Readex Pro 9.5 / 14 pt; subject 12.5 pt Semibold</dd></div>
+    <div><dt>Colour</dt><dd><span class="swatch" style="background:#0E0B1F"></span>Night<br><span class="swatch" style="background:#5B34E0"></span>Zirven Violet</dd></div>
+  </dl>
+
+  <p class="z-board__note">Printed in two colours, Night and Zirven Violet (Pantone 2725 C range, to be proofed), on 120 gsm uncoated bright white; the address field follows DIN 5008 so it sits in the window of a DL envelope. The editable template uses the same grid in Readex Pro and falls back to Arial where the font is not installed.</p>
+</div>
+</body>
+</html>

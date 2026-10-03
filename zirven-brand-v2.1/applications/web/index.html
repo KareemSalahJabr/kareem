@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zirven — Building intelligent digital products</title>
+<meta name="description" content="Zirven is a technology and software company. We design, build and own SaaS platforms, AI-powered software and digital products.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  /* ---------- Hero ---------- */
+  .hero { position: relative; overflow: hidden; padding: 96px 0 0; }
+  .hero__bg { position: absolute; inset: 0; opacity: 0.9; }
+  .hero__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--z-night) 0%, rgba(14,11,31,0.86) 38%, rgba(14,11,31,0.15) 75%), linear-gradient(0deg, var(--z-night) 0%, rgba(14,11,31,0) 30%); }
+  .hero__inner { position: relative; display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr); gap: 40px; align-items: center; min-height: 600px; }
+  .hero h1 { font-size: 68px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; }
+  .hero h1 em { font-style: normal; color: var(--z-lavender); font-weight: 300; }
+  .hero .z-lead { font-size: 19px; max-width: 520px; }
+  .hero__strip { position: relative; margin-top: 72px; border-top: 1px solid var(--t-line); }
+  .hero__strip .z-container { display: flex; align-items: center; gap: 36px; height: 72px; font: 500 14px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .hero__strip b { color: var(--t-text-2); font-weight: 500; }
+
+  /* stacked product composition climbing at 20° */
+  .stack { position: relative; height: 580px; }
+  .stack > * { position: absolute; }
+  .win { background: rgba(21, 17, 43, 0.92); border: 1px solid rgba(211, 200, 255, 0.14); border-radius: 16px; box-shadow: 0 30px 80px -30px rgba(0,0,0,0.75); backdrop-filter: blur(6px); }
+  .win__head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid rgba(211, 200, 255, 0.1); font: 500 13px/1 var(--z-font-sans); color: var(--z-ink-300); }
+  .win__head .grow { color: var(--z-snow); }
+  .win--chart { width: 440px; right: 0; top: 0; }
+  .win--ai { width: 372px; left: 0; top: 150px; z-index: 2; }
+  .win--flow { width: 420px; right: 0; top: 448px; z-index: 3; }
+  .chart-legend { display: flex; gap: 16px; font: 500 12px/1 var(--z-font-sans); color: var(--z-ink-400); }
+  .chart-legend i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: 0; }
+  .msg { padding: 16px; display: flex; flex-direction: column; gap: 12px; font: 400 13.5px/1.55 var(--z-font-sans); }
+  .msg__user { align-self: flex-end; background: var(--z-ink-800); border-radius: 12px 12px 4px 12px; padding: 10px 12px; color: var(--z-snow); max-width: 85%; }
+  .msg__ai { color: var(--z-ink-300); }
+  .msg__ai b { color: var(--z-snow); font-weight: 500; }
+  .msg__ref { display: flex; gap: 8px; flex-wrap: wrap; }
+  .flow { display: flex; align-items: center; gap: 0; padding: 18px 16px; }
+  .node { flex: none; display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(211, 200, 255, 0.16); background: var(--z-ink-850); font: 500 12px/1.2 var(--z-font-sans); color: var(--z-snow); }
+  .node small { font: 400 11px/1 var(--z-font-sans); color: var(--z-ink-400); }
+  .node--ai { border-color: rgba(61, 216, 232, 0.45); }
+  .edge { flex: 1; height: 1px; min-width: 14px; background: linear-gradient(90deg, rgba(211,200,255,0.4), rgba(211,200,255,0.15)); }
+
+  /* ---------- Ecosystem ---------- */
+  .eco { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .eco__root { display: flex; justify-content: center; }
+  .eco__root .z-panel { display: flex; align-items: center; gap: 18px; padding: 18px 24px; background: var(--z-ink-900); }
+  .eco__wires { height: 72px; }
+  .eco__cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .prod { display: flex; flex-direction: column; gap: 16px; min-height: 264px; }
+  .prod__tile { width: 56px; height: 56px; }
+  .prod--future { border-style: dashed; background: transparent; }
+  .prod p { color: var(--t-text-2); font-size: 14.5px; }
+  .prod footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; }
+
+  /* ---------- What we build ---------- */
+  .build { display: flex; flex-direction: column; gap: 14px; min-height: 230px; }
+  .build p { color: var(--t-text-2); font-size: 15px; }
+  .build ul { margin: auto 0 0; padding: 0; list-style: none; display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* ---------- AI ---------- */
+  .ai-split { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 64px; align-items: center; }
+  .principle { display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding: 20px 0; border-top: 1px solid var(--t-line); }
+  .principle p { color: var(--t-text-2); font-size: 15px; margin-top: 4px; }
+  .assistant { overflow: hidden; }
+  .assistant__body { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+  .tool { border: 1px solid var(--t-line); border-radius: 12px; overflow: hidden; }
+  .tool__head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--z-ink-850); font: 500 12.5px/1 var(--z-font-sans); color: var(--z-ink-300); }
+  .tool table td, .tool table th { padding: 10px 14px; }
+  .composer { display: flex; align-items: center; gap: 10px; margin: 0 22px 22px; padding: 10px 10px 10px 16px; border-radius: 12px; border: 1px solid var(--t-line); background: var(--z-ink-900); color: var(--t-text-3); font-size: 14px; }
+
+  /* ---------- Process on the ramp ---------- */
+  .ramp { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: end; margin-top: 56px; }
+  .ramp::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--t-line); }
+  .ramp__step { border-top: 2px solid var(--z-electric); padding: 20px 0 28px; }
+  .ramp__step:nth-child(1) { margin-bottom: 0; } .ramp__step:nth-child(2) { margin-bottom: 36px; } .ramp__step:nth-child(3) { margin-bottom: 72px; } .ramp__step:nth-child(4) { margin-bottom: 108px; }
+  .ramp__step b { font: 600 13px/1 var(--z-font-mono); color: var(--z-electric); }
+  .ramp__step h3 { margin-top: 14px; }
+  .ramp__step p { color: var(--t-text-2); font-size: 14.5px; margin-top: 8px; }
+  .cap-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 32px; margin-top: 64px; }
+  .cap-list div { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-top: 1px solid var(--t-line); color: var(--t-text-2); font-size: 15px; }
+  .cap-list .zi { color: var(--z-lavender); }
+
+  /* ---------- VEVO feature ---------- */
+  .vevo { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 0; overflow: hidden; background: linear-gradient(160deg, #1A1338 0%, #120E26 55%); }
+  .vevo__copy { padding: 56px; display: flex; flex-direction: column; gap: 20px; }
+  .vevo__copy ul { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 12px; color: var(--t-text-2); font-size: 15px; }
+  .vevo__copy li { display: flex; gap: 12px; align-items: flex-start; }
+  .vevo__copy li .zi { color: var(--z-electric); margin-top: 2px; }
+  .vevo__shot { padding: 48px 0 0 0; position: relative; }
+  .vevo__ui { margin-left: 8px; border-radius: 14px 0 0 0; border: 1px solid rgba(211, 200, 255, 0.14); border-right: 0; border-bottom: 0; background: var(--z-night); height: 100%; min-height: 420px; display: grid; grid-template-columns: 56px 1fr; }
+  .vevo__rail { border-right: 1px solid var(--t-line); display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 16px 0; color: var(--z-ink-400); }
+  .vevo__rail img { width: 30px; height: 30px; border-radius: 8px; }
+  .vevo__main { padding: 20px 22px; display: flex; flex-direction: column; gap: 16px; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .kpi { border: 1px solid var(--t-line); border-radius: 12px; padding: 14px; }
+  .kpi .z-stat__value { font-size: 22px; margin-top: 6px; }
+
+  /* ---------- Engineering ---------- */
+  .eng { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+  .integr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 32px; }
+  .integr div { display: flex; align-items: center; gap: 10px; padding: 14px; border: 1px solid var(--t-line); border-radius: 12px; font: 500 14px/1.2 var(--z-font-sans); color: var(--t-text-2); background: var(--t-surface); }
+  .integr .zi { color: var(--z-lavender); }
+
+  /* ---------- About ---------- */
+  .about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; }
+  .facts { align-self: start; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--t-line); border: 1px solid var(--t-line); border-radius: 16px; overflow: hidden; }
+  .facts div { background: var(--t-bg); padding: 28px; }
+  .facts b { display: block; font: 600 34px/1 var(--z-font-sans); letter-spacing: -0.02em; }
+  .facts span { display: block; margin-top: 10px; color: var(--t-text-2); font-size: 14px; }
+  .langs { display: flex; gap: 10px; margin-top: 28px; }
+  .langs span { padding: 10px 14px; border-radius: 10px; border: 1px solid var(--t-line); font-size: 15px; }
+
+  /* ---------- Contact ---------- */
+  .contact { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; padding: 56px; position: relative; overflow: hidden; }
+  .contact__routes { display: flex; flex-direction: column; gap: 10px; margin-top: 32px; }
+  .contact__routes a { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--t-line); color: var(--t-text); background: rgba(14, 11, 31, 0.5); }
+  .contact__routes a span { color: var(--t-text-3); font-size: 14px; }
+  form.z-card { background: var(--z-night); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  form .full { grid-column: 1 / -1; }
+
+  .foot-grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 32px; }
+  .foot-grid h4 { font: 500 13px/1 var(--z-font-sans); color: var(--t-text-3); margin-bottom: 16px; }
+  .foot-grid ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; }
+
+  @media (max-width: 1080px) {
+    .hero__inner, .ai-split, .vevo, .eng, .about, .contact { grid-template-columns: 1fr; }
+    .stack { height: 560px; max-width: 560px; }
+    .eco__cards { grid-template-columns: repeat(2, 1fr); }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 44px; }
+    .z-nav__links, .hero__strip, .stack, .eco__wires { display: none; }
+    .eco__cards, .cap-list, .integr, .kpis, form.z-card { grid-template-columns: 1fr; }
+    .ramp { grid-template-columns: 1fr; } .ramp__step { margin-bottom: 0 !important; }
+    .vevo__copy, .contact { padding: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="z-nav">
+  <div class="z-container z-nav__inner">
+    <a href="index.html" aria-label="Zirven home"><img class="z-nav__logo" src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven"></a>
+    <nav class="z-nav__links" aria-label="Primary">
+      <a href="products.html">Products</a>
+      <a href="#build">What we build</a>
+      <a href="#ai">AI &amp; Technology</a>
+      <a href="#engineering">Engineering</a>
+      <a href="#about">About</a>
+    </nav>
+    <div class="grow"></div>
+    <div class="z-lang" aria-label="Language"><span aria-current="true">EN</span><span>TR</span><span>AR</span></div>
+    <a class="z-btn z-btn--secondary z-btn--sm" href="#contact">Work with us</a>
+  </div>
+</header>
+
+<main>
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero__bg z-bg-terrain-plain"></div>
+  <div class="z-glow" style="width:620px;height:620px;right:-120px;top:-160px"></div>
+  <div class="z-container hero__inner">
+    <div class="z-stack gap-8 z-rise">
+      <span class="z-overline">Software · SaaS · AI</span>
+      <h1>Building intelligent<br><em>digital products.</em></h1>
+      <p class="z-lead">We design and build SaaS platforms, AI-powered software and digital products for businesses ready to move forward.</p>
+      <div class="z-row gap-3 z-wrap">
+        <a class="z-btn z-btn--primary z-btn--lg" href="products.html">Explore our products <svg class="zi"><use href="#zi-arrow-right"/></svg></a>
+        <a class="z-btn z-btn--secondary z-btn--lg" href="#contact">Work with us</a>
+      </div>
+    </div>
+
+    <div class="stack" aria-label="Zirven product interfaces">
+      <!-- analytics window -->
+      <div class="win win--chart">
+        <div class="win__head"><svg class="zi zi--sm"><use href="#zi-analytics"/></svg><span class="grow">Operations overview</span><span class="z-chip z-chip--live">Live</span></div>
+        <div style="padding:16px 16px 10px">
+          <div class="z-row z-between"><div><div class="z-caption">Orders processed · 30 days</div><div class="z-stat__value" style="font-size:26px">48,215 <span class="z-delta" style="vertical-align:4px">+12.4%</span></div></div>
+          <div class="chart-legend"><span><i style="background:#9671FF"></i>This period</span><span><i style="background:#57516F"></i>Previous</span></div></div>
+          <svg viewBox="0 0 400 130" style="margin-top:10px;width:100%;height:auto" aria-hidden="true">
+            <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9671FF" stop-opacity="0.35"/><stop offset="1" stop-color="#9671FF" stop-opacity="0"/></linearGradient></defs>
+            <g stroke="rgba(211,200,255,0.08)"><path d="M0 30H400M0 65H400M0 100H400"/></g>
+            <path d="M0 104 C30 100 50 96 80 98 S130 88 160 84 S210 90 240 76 S300 66 330 52 S375 40 400 34" fill="none" stroke="#57516F" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <path d="M0 110 C30 104 50 92 80 94 S130 78 160 74 S210 72 240 60 S300 44 330 36 S375 20 400 14 V130 H0Z" fill="url(#ga)"/>
+            <path d="M0 110 C30 104 50 92 80 94 S130 78 160 74 S210 72 240 60 S300 44 330 36 S375 20 400 14" fill="none" stroke="#9671FF" stroke-width="2"/>
+            <circle cx="330" cy="36" r="4" fill="#0E0B1F" stroke="#3DD8E8" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+      <!-- AI assistant window -->
+      <div class="win win--ai">
+        <div class="win__head"><svg class="zi zi--sm"><use href="#zi-ai-assistant"/></svg><span class="grow">Assistant</span><span class="z-kbd">⌘ K</span></div>
+        <div class="msg">
+          <div class="msg__user">Summarise this week’s operations and flag anything that needs a decision.</div>
+          <div class="msg__ai"><span class="z-ai">Answer · from 3 sources</span><p style="margin-top:8px">Throughput is <b>up 12.4%</b>. Two workflows need review: <b>invoice matching</b> has 3 exceptions and <b>supplier onboarding</b> is waiting on approval.</p></div>
+          <div class="msg__ref"><span class="z-tag">ops_daily.sql</span><span class="z-tag">workflows/42</span><span class="z-tag">erp.sync</span></div>
+        </div>
+      </div>
+      <!-- workflow window -->
+      <div class="win win--flow">
+        <div class="win__head"><svg class="zi zi--sm"><use href="#zi-workflow"/></svg><span class="grow">Workflow · Order intake</span><span class="z-chip z-chip--success">Running</span></div>
+        <div class="flow">
+          <div class="node"><small>Trigger</small>New order</div><div class="edge"></div>
+          <div class="node"><small>Check</small>Validate</div><div class="edge"></div>
+          <div class="node node--ai"><small class="z-signal">AI step</small>Classify</div><div class="edge"></div>
+          <div class="node"><small>Action</small>Sync ERP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero__strip">
+    <div class="z-container">
+      <b>What we build</b><span>SaaS platforms</span><span>AI systems</span><span>Web &amp; mobile apps</span><span>Automation</span><span>APIs &amp; integrations</span><span>Data &amp; analytics</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRODUCT ECOSYSTEM ===================== -->
+<section class="z-section" id="products">
+  <div class="z-container">
+    <div class="z-stack gap-4 maxw-lg">
+      <span class="z-overline">Products</span>
+      <h2 class="z-h1">One company. A growing family of products.</h2>
+      <p class="z-lead">Zirven creates and owns its software. Every product shares one engineering platform, one design system and one standard for quality.</p>
+    </div>
+    <div class="eco mt-12">
+      <div class="eco__root"><div class="z-panel"><img src="../../logo/svg/zirven-symbol-dark.svg" alt="" style="height:30px"><div><div class="z-h4">Zirven</div><div class="z-caption">Parent company · shared platform</div></div></div></div>
+      <svg class="eco__wires" viewBox="0 0 1136 72" preserveAspectRatio="none" aria-hidden="true">
+        <g fill="none" stroke="rgba(211,200,255,0.28)" stroke-width="1"><path d="M568 0 V30 M142 72 V44 H994 V72 M426 72 V44 M710 72 V44"/></g>
+        <circle cx="568" cy="44" r="3.5" fill="#9671FF"/>
+      </svg>
+      <div class="eco__cards">
+        <article class="z-card z-card--interactive prod">
+          <img class="prod__tile" src="../../favicon/vevo-app-icon.svg" alt="VEVO">
+          <div><div class="z-h3">VEVO</div><div class="z-caption" style="margin-top:6px">SaaS · AI-powered business platform</div></div>
+          <p>Operations, customers and reporting in one workspace, with an assistant that understands your business data.</p>
+          <footer><span class="z-chip z-chip--live">Live</span><a href="vevo.html" class="z-row gap-2" style="font-size:14px">Discover VEVO <svg class="zi zi--sm"><use href="#zi-arrow-right"/></svg></a></footer>
+        </article>
+        <article class="z-card prod prod--future">
+          <img class="prod__tile" src="../../favicon/future-product-tile.svg" alt="">
+          <div><div class="z-h3">Product 02</div><div class="z-caption" style="margin-top:6px">SaaS platform</div></div>
+          <p>A vertical SaaS platform built on the same Zirven foundation: accounts, permissions, billing and data.</p>
+          <footer><span class="z-chip">In development</span></footer>
+        </article>
+        <article class="z-card prod prod--future">
+          <img class="prod__tile" src="../../favicon/future-product-tile.svg" alt="">
+          <div><div class="z-h3">Product 03</div><div class="z-caption" style="margin-top:6px">AI product</div></div>
+          <p>Applied AI for document-heavy work: extraction, review and decision support with people in the loop.</p>
+          <footer><span class="z-chip">Research</span></footer>
+        </article>
+        <article class="z-card z-card--interactive prod">
+          <div class="z-icon-tile prod__tile" style="width:56px;height:56px;border-radius:13px"><svg class="zi zi--lg"><use href="#zi-integrations"/></svg></div>
+          <div><div class="z-h3">Zirven Solutions</div><div class="z-caption" style="margin-top:6px">Custom software</div></div>
+          <p>For partners with problems no product solves yet, we design and build custom platforms with the same team and standards.</p>
+          <footer><span class="z-chip z-chip--accent">By engagement</span><a href="#contact" class="z-row gap-2" style="font-size:14px">Talk to us <svg class="zi zi--sm"><use href="#zi-arrow-right"/></svg></a></footer>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHAT WE BUILD ===================== -->
+<section class="z-section" id="build" style="padding-top:40px">
+  <div class="z-container">
+    <div class="z-row z-between z-wrap gap-6">
+      <div class="z-stack gap-4 maxw-md"><span class="z-overline">What we build</span><h2 class="z-h1">Software for hard problems.</h2></div>
+      <p class="z-lead maxw-sm">From the first prototype to systems running in production: products we own, and platforms we build with partners.</p>
+    </div>
+    <div class="z-grid z-grid-3 mt-12">
+      <article class="z-card build"><div class="z-icon-tile"><svg class="zi zi--lg"><use href="#zi-saas"/></svg></div><h3 class="z-h4">SaaS platforms</h3><p>Multi-tenant products with accounts, roles, billing and audit built in from day one.</p><ul><li class="z-tag">multi-tenant</li><li class="z-tag">RBAC</li><li class="z-tag">billing</li></ul></article>
+      <article class="z-card build"><div class="z-icon-tile"><svg class="zi zi--lg"><use href="#zi-ai"/></svg></div><h3 class="z-h4">AI-powered software</h3><p>Assistants, extraction and decision support, grounded in your own data and measured in production.</p><ul><li class="z-tag">LLM</li><li class="z-tag">RAG</li><li class="z-tag">evals</li></ul></article>
+      <article class="z-card build"><div class="z-icon-tile"><svg class="zi zi--lg"><use href="#zi-web"/></svg></div><h3 class="z-h4">Web applications</h3><p>Fast, accessible interfaces for complex work, designed as a single system across every screen.</p><ul><li class="z-tag">TypeScript</li><li class="z-tag">design systems</li></ul></article>
+      <article class="z-card build"><div class="z-icon-tile"><svg class="zi zi--lg"><use href="#zi-mobile"/></svg></div><h3 class="z-h4">Mobile applications</h3><p>Native-quality iOS and Android apps for teams in the field, online or offline.</p><ul><li class="z-tag">iOS</li><li class="z-tag">Android</li><li class="z-tag">offline-first</li></ul></article>
+      <article class="z-card build"><div class="z-icon-tile"><svg class="zi zi--lg"><use href="#zi-automation"/></svg></div><h3 class="z-h4">Automation &amp; integrations</h3><p>Workflows that connect ERP, CRM and internal tools, so repetitive work runs by itself.</p><ul><li class="z-tag">workflows</li><li class="z-tag">APIs</li><li class="z-tag">webhooks</li></ul></article>
+      <article class="z-card build"><div class="z-icon-tile"><svg class="zi zi--lg"><use href="#zi-analytics"/></svg></div><h3 class="z-h4">Data &amp; analytics</h3><p>Pipelines, models and dashboards that turn operational data into decisions people trust.</p><ul><li class="z-tag">pipelines</li><li class="z-tag">warehousing</li><li class="z-tag">BI</li></ul></article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AI & TECHNOLOGY ===================== -->
+<section class="z-section" id="ai" style="background:linear-gradient(180deg, transparent, rgba(36,22,84,0.35) 30%, rgba(36,22,84,0.35) 70%, transparent)">
+  <div class="z-container ai-split">
+    <div>
+      <span class="z-overline">AI &amp; Technology</span>
+      <h2 class="z-h1 mt-4">AI that does real work.</h2>
+      <p class="z-lead mt-4">We treat AI as engineering, not decoration. Every AI feature we ship is grounded, reviewable and measured.</p>
+      <div class="mt-8">
+        <div class="principle"><div class="z-icon-tile"><svg class="zi"><use href="#zi-database"/></svg></div><div><h3 class="z-h4">Grounded in your data</h3><p>Answers cite the records, documents and queries they came from.</p></div></div>
+        <div class="principle"><div class="z-icon-tile"><svg class="zi"><use href="#zi-teams"/></svg></div><div><h3 class="z-h4">People stay in control</h3><p>Actions that change data wait for approval. Every step is logged.</p></div></div>
+        <div class="principle"><div class="z-icon-tile"><svg class="zi"><use href="#zi-security"/></svg></div><div><h3 class="z-h4">Private by design</h3><p>Tenant isolation, regional hosting options and no training on customer data.</p></div></div>
+      </div>
+    </div>
+    <div class="z-panel assistant" aria-label="AI assistant interface">
+      <div class="win__head" style="padding:16px 22px"><svg class="zi zi--sm" style="color:var(--z-cyan)"><use href="#zi-ai-assistant"/></svg><span class="grow">VEVO Assistant</span><span class="z-chip">Workspace: Operations</span></div>
+      <div class="assistant__body">
+        <div class="msg__user" style="align-self:flex-end;font-size:14px">Which suppliers missed delivery targets last month?</div>
+        <div><span class="z-ai">Ran 1 query · 0.8 s</span></div>
+        <div class="tool">
+          <div class="tool__head"><svg class="zi zi--sm"><use href="#zi-data"/></svg>supplier_performance · September</div>
+          <table class="z-table">
+            <thead><tr><th>Supplier</th><th>On time</th><th>Target</th><th>Trend</th></tr></thead>
+            <tbody>
+              <tr><td>Northline Components</td><td>86.2%</td><td>95%</td><td><span class="z-delta z-delta--down">−4.1</span></td></tr>
+              <tr><td>Arcadia Packaging</td><td>91.0%</td><td>95%</td><td><span class="z-delta z-delta--down">−1.6</span></td></tr>
+              <tr><td>Meridian Logistics</td><td>93.4%</td><td>95%</td><td><span class="z-delta">+0.8</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="color:var(--z-ink-300);font-size:14.5px">Three of 41 suppliers were below target. Northline’s delays cluster on Mondays. <span style="color:var(--z-snow)">Draft a review request for Northline?</span></p>
+        <div class="z-row gap-2"><button class="z-btn z-btn--primary z-btn--sm">Draft request</button><button class="z-btn z-btn--secondary z-btn--sm">Open report</button></div>
+      </div>
+      <div class="composer"><span class="grow">Ask about your workspace…</span><span class="z-kbd">↵</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CAPABILITIES ===================== -->
+<section class="z-section" id="capabilities">
+  <div class="z-container">
+    <div class="z-stack gap-4 maxw-lg"><span class="z-overline">Capabilities</span><h2 class="z-h1">From first sketch to the next version.</h2>
+    <p class="z-lead">Products are never finished. We build in short, measured steps, and every release climbs from the one before.</p></div>
+    <div class="ramp">
+      <div class="ramp__step"><b>01</b><h3 class="z-h3">Discover</h3><p>Research, technical discovery and a clear definition of the problem worth solving.</p></div>
+      <div class="ramp__step"><b>02</b><h3 class="z-h3">Design</h3><p>Product, interface and system architecture, designed together.</p></div>
+      <div class="ramp__step"><b>03</b><h3 class="z-h3">Build</h3><p>Typed, tested, reviewed code shipped continuously to real users.</p></div>
+      <div class="ramp__step"><b>04</b><h3 class="z-h3">Operate &amp; evolve</h3><p>Monitoring, security and the roadmap to the next level.</p></div>
+    </div>
+    <div class="cap-list">
+      <div><svg class="zi"><use href="#zi-products"/></svg>Product strategy &amp; discovery</div>
+      <div><svg class="zi"><use href="#zi-web"/></svg>UX, UI &amp; design systems</div>
+      <div><svg class="zi"><use href="#zi-cloud"/></svg>Cloud architecture</div>
+      <div><svg class="zi"><use href="#zi-ai"/></svg>AI &amp; ML engineering</div>
+      <div><svg class="zi"><use href="#zi-database"/></svg>Data engineering</div>
+      <div><svg class="zi"><use href="#zi-security"/></svg>Security &amp; compliance</div>
+      <div><svg class="zi"><use href="#zi-api"/></svg>API design</div>
+      <div><svg class="zi"><use href="#zi-mobile"/></svg>iOS &amp; Android</div>
+      <div><svg class="zi"><use href="#zi-git-branch"/></svg>DevOps &amp; quality</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURED PRODUCT: VEVO ===================== -->
+<section class="z-section" id="vevo" style="padding-top:40px">
+  <div class="z-container">
+    <div class="z-panel vevo">
+      <div class="vevo__copy">
+        <span class="z-overline">Featured product</span>
+        <img src="../../logo/svg/vevo-endorsed-dark.svg" alt="VEVO — a product by Zirven" style="height:52px;width:auto;align-self:flex-start">
+        <h2 class="z-h2">The AI-powered business platform.</h2>
+        <p class="z-lead" style="font-size:17px">VEVO brings operations, customers and reporting into one workspace, and puts an assistant beside every team.</p>
+        <ul>
+          <li><svg class="zi"><use href="#zi-check"/></svg>Live dashboards across every location and team</li>
+          <li><svg class="zi"><use href="#zi-check"/></svg>Workflows that run approvals, sync and alerts automatically</li>
+          <li><svg class="zi"><use href="#zi-check"/></svg>An assistant that answers with sources, not guesses</li>
+        </ul>
+        <div class="z-row gap-3 mt-4"><a class="z-btn z-btn--primary" href="vevo.html">Discover VEVO <svg class="zi"><use href="#zi-arrow-right"/></svg></a><a class="z-btn z-btn--ghost" href="vevo.html#demo">Book a demo</a></div>
+      </div>
+      <div class="vevo__shot">
+        <div class="vevo__ui">
+          <div class="vevo__rail"><img src="../../favicon/vevo-app-icon.svg" alt=""><svg class="zi"><use href="#zi-home"/></svg><svg class="zi" style="color:var(--z-electric)"><use href="#zi-analytics"/></svg><svg class="zi"><use href="#zi-workflow"/></svg><svg class="zi"><use href="#zi-teams"/></svg><svg class="zi"><use href="#zi-settings"/></svg></div>
+          <div class="vevo__main">
+            <div class="z-row z-between"><div><div class="z-caption">Workspace · Operations</div><div class="z-h4" style="margin-top:4px">Good morning, Leyla</div></div><div class="z-search" style="width:220px;height:34px"><svg class="zi zi--sm"><use href="#zi-search"/></svg>Search or ask…</div></div>
+            <div class="kpis">
+              <div class="kpi"><div class="z-stat__label">Open orders</div><div class="z-stat__value">1,284</div><span class="z-delta">+6.2%</span></div>
+              <div class="kpi"><div class="z-stat__label">Automation rate</div><div class="z-stat__value">73%</div><span class="z-delta">+4.0 pts</span></div>
+              <div class="kpi"><div class="z-stat__label">Avg. cycle time</div><div class="z-stat__value">2.4 d</div><span class="z-delta">−0.3 d</span></div>
+            </div>
+            <div class="kpi" style="padding:16px">
+              <div class="z-row z-between"><span class="z-stat__label">Throughput by team</span><span class="z-caption">Last 12 weeks</span></div>
+              <svg viewBox="0 0 520 140" style="width:100%;height:auto;margin-top:12px" aria-hidden="true">
+                <g stroke="rgba(211,200,255,0.08)"><path d="M0 20H520M0 60H520M0 100H520"/></g>
+                <g fill="#9671FF">
+                  <rect x="8" y="78" width="26" height="62" rx="3"/><rect x="51" y="70" width="26" height="70" rx="3"/><rect x="94" y="74" width="26" height="66" rx="3"/><rect x="137" y="62" width="26" height="78" rx="3"/>
+                  <rect x="180" y="58" width="26" height="82" rx="3"/><rect x="223" y="64" width="26" height="76" rx="3"/><rect x="266" y="50" width="26" height="90" rx="3"/><rect x="309" y="44" width="26" height="96" rx="3"/>
+                  <rect x="352" y="46" width="26" height="94" rx="3"/><rect x="395" y="34" width="26" height="106" rx="3"/><rect x="438" y="30" width="26" height="110" rx="3"/>
+                </g>
+                <rect x="481" y="22" width="26" height="118" rx="3" fill="#D3C8FF"/>
+              </svg>
+            </div>
+            <div class="kpi" style="padding:0">
+              <table class="z-table">
+                <thead><tr><th>Workflow</th><th>Runs today</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Order intake</td><td>412</td><td><span class="z-chip z-chip--success">Healthy</span></td></tr>
+                  <tr><td>Invoice matching</td><td>96</td><td><span class="z-chip z-chip--warning">3 exceptions</span></td></tr>
+                  <tr><td>Supplier onboarding</td><td>7</td><td><span class="z-chip">Awaiting approval</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ENGINEERING / INTEGRATIONS ===================== -->
+<section class="z-section" id="engineering">
+  <div class="z-container eng">
+    <div>
+      <span class="z-overline">Engineering &amp; Integrations</span>
+      <h2 class="z-h1 mt-4">Built to connect.</h2>
+      <p class="z-lead mt-4">Every Zirven product is API-first. Teams connect our software to the systems they already run, and build on it.</p>
+      <div class="integr">
+        <div><svg class="zi"><use href="#zi-api"/></svg>REST &amp; GraphQL</div>
+        <div><svg class="zi"><use href="#zi-webhook"/></svg>Webhooks</div>
+        <div><svg class="zi"><use href="#zi-lock"/></svg>SSO · SAML</div>
+        <div><svg class="zi"><use href="#zi-database"/></svg>ERP &amp; CRM</div>
+        <div><svg class="zi"><use href="#zi-cloud"/></svg>Data warehouses</div>
+        <div><svg class="zi"><use href="#zi-mail"/></svg>Messaging</div>
+      </div>
+    </div>
+    <div class="z-stack gap-3">
+      <div class="z-row z-between"><span class="z-caption">POST /v1/workflows/{id}/runs</span><span class="z-chip z-chip--success">200 OK · 142 ms</span></div>
+<pre class="z-code"><span class="tk-c"># Start a workflow run from any system</span>
+<span class="tk-f">curl</span> -X POST \
+  https://api.zirven.com/v1/workflows/order_intake/runs \
+  -H <span class="tk-s">"Authorization: Bearer $ZIRVEN_API_KEY"</span> \
+  -H <span class="tk-s">"Content-Type: application/json"</span> \
+  -d <span class="tk-s">'{ "input": { "order_id": "SO-20481" } }'</span>
+
+<span class="tk-p">{</span>
+  <span class="tk-k">"id"</span><span class="tk-p">:</span> <span class="tk-s">"run_7Hq2kV9"</span><span class="tk-p">,</span>
+  <span class="tk-k">"status"</span><span class="tk-p">:</span> <span class="tk-s">"running"</span><span class="tk-p">,</span>
+  <span class="tk-k">"steps"</span><span class="tk-p">:</span> <span class="tk-n">4</span><span class="tk-p">,</span>
+  <span class="tk-k">"ai_steps"</span><span class="tk-p">:</span> <span class="tk-p">[</span><span class="tk-s">"classify"</span><span class="tk-p">],</span>
+  <span class="tk-k">"started_at"</span><span class="tk-p">:</span> <span class="tk-s">"2026-10-03T09:14:22Z"</span>
+<span class="tk-p">}</span></pre>
+      <div class="z-row gap-3 z-wrap"><a class="z-btn z-btn--secondary z-btn--sm" href="#"><svg class="zi zi--sm"><use href="#zi-terminal"/></svg>API reference</a><a class="z-btn z-btn--ghost z-btn--sm" href="#"><svg class="zi zi--sm"><use href="#zi-github"/></svg>github.com/zirven</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section class="z-section" id="about" style="padding-top:40px">
+  <div class="z-container about">
+    <div>
+      <span class="z-overline">About Zirven</span>
+      <h2 class="z-h1 mt-4">We build products, and we keep building them.</h2>
+      <p class="z-lead mt-6">Zirven is a technology and software company. Its name comes from <i>zirve</i>, Turkish for summit. We take on difficult problems, build software that solves them, and keep improving that software long after launch.</p>
+      <p class="z-lead mt-4">We work internationally, in English, Turkish and Arabic, with one engineering standard across every product.</p>
+      <div class="langs"><span>English</span><span>Türkçe</span><span dir="rtl" lang="ar">العربية</span></div>
+    </div>
+    <div class="facts">
+      <div><b>1</b><span>Shared product platform</span></div>
+      <div><b>3</b><span>Product lines in market or in build</span></div>
+      <div><b>99.95%</b><span>Platform uptime target</span></div>
+      <div><b>EN · TR · AR</b><span>Languages supported natively</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="z-section" id="contact" style="padding-top:40px">
+  <div class="z-container">
+    <div class="z-panel contact z-bg-ascent">
+      <div style="position:relative">
+        <span class="z-overline">Contact</span>
+        <h2 class="z-h1 mt-4">Have a hard problem worth solving?</h2>
+        <p class="z-lead mt-4">Tell us what you are building. We reply within two working days.</p>
+        <div class="contact__routes">
+          <a href="#">Product demos <span>VEVO and early access →</span></a>
+          <a href="#">Custom software <span>Zirven Solutions →</span></a>
+          <a href="#">Careers <span>Engineering, design, AI →</span></a>
+        </div>
+      </div>
+      <form class="z-card" onsubmit="return false" style="position:relative">
+        <div class="z-field"><label class="z-label" for="n">Name</label><input class="z-input" id="n" placeholder="Your name"></div>
+        <div class="z-field"><label class="z-label" for="c">Company</label><input class="z-input" id="c" placeholder="Company"></div>
+        <div class="z-field full"><label class="z-label" for="e">Work email</label><input class="z-input" id="e" placeholder="name@company.com"></div>
+        <div class="z-field full"><label class="z-label" for="m">What are you building?</label><textarea class="z-textarea" id="m" placeholder="A few lines about the product, the users and the timeline."></textarea></div>
+        <div class="full z-row z-between"><span class="z-caption">hello@zirven.com</span><button class="z-btn z-btn--primary">Send message <svg class="zi"><use href="#zi-send"/></svg></button></div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="z-footer">
+  <div class="z-container">
+    <div class="foot-grid">
+      <div class="z-stack gap-4"><img src="../../logo/svg/zirven-logo-descriptor-en-dark.svg" alt="Zirven — Software · SaaS · AI" style="height:44px;width:auto;align-self:flex-start"><p class="z-small z-muted maxw-sm">Building intelligent digital products.</p></div>
+      <div><h4>Products</h4><ul><li><a href="vevo.html">VEVO</a></li><li><a href="products.html">All products</a></li><li><a href="products.html#roadmap">Roadmap</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#about">About</a></li><li><a href="#">Careers</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div><h4>Developers</h4><ul><li><a href="#">API reference</a></li><li><a href="#">Status</a></li><li><a href="#">GitHub</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Security</a></li><li><a href="#">Terms</a></li></ul></div>
+    </div>
+    <div class="z-row z-between mt-16 z-caption"><span>© 2026 Zirven Technology</span><span>Software · SaaS · AI</span></div>
+  </div>
+</footer>
+</body>
+</html>

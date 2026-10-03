@@ -1,0 +1,153 @@
+{
+  "date": "2026-10-03",
+  "files_scanned": 149,
+  "violations": [],
+  "allowed_references": [
+    {
+      "file": "guidelines/index.html",
+      "line": 186,
+      "category": "voice",
+      "term": "hype",
+      "match": "AI-powered everything",
+      "context": "r><td>Engineering-led, measured and specific</td><td>\"AI-powered everything\", hype or vague futurism</td></tr>",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 204,
+      "category": "voice",
+      "term": "hype",
+      "match": "Revolutionizing",
+      "context": "<div class=\"tagline\"><div><q>Revolutionizing the future · Innovating tomorrow · Next-generation solutions · ",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 204,
+      "category": "voice",
+      "term": "hype",
+      "match": "Innovating tomorrow",
+      "context": "iv class=\"tagline\"><div><q>Revolutionizing the future · Innovating tomorrow · Next-generation solutions · AI-powered everything</q><small>G",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 204,
+      "category": "voice",
+      "term": "hype",
+      "match": "Next-generation",
+      "context": "v><q>Revolutionizing the future · Innovating tomorrow · Next-generation solutions · AI-powered everything</q><small>Generic hype. These",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 204,
+      "category": "voice",
+      "term": "hype",
+      "match": "AI-powered everything",
+      "context": "ure · Innovating tomorrow · Next-generation solutions · AI-powered everything</q><small>Generic hype. These lines could belong to anyone and ",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 223,
+      "category": "voice",
+      "term": "hype",
+      "match": "Revolutionizing",
+      "context": "m high and say so plainly: \"the next level\".</td><td>\"Revolutionizing\", \"changing the world\"</td></tr>",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 638,
+      "category": "voice",
+      "term": "hype",
+      "match": "Revolutionizing",
+      "context": "<div class=\"box\"><h4>Don't write</h4><ul><li>\"Revolutionizing business with next-generation AI.\"</li><li>\"Unleash the power o",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 638,
+      "category": "voice",
+      "term": "hype",
+      "match": "next-generation",
+      "context": ">Don't write</h4><ul><li>\"Revolutionizing business with next-generation AI.\"</li><li>\"Unleash the power of seamless synergy.\"</li><li>\"",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 638,
+      "category": "voice",
+      "term": "hype",
+      "match": "Unleash",
+      "context": "lutionizing business with next-generation AI.\"</li><li>\"Unleash the power of seamless synergy.\"</li><li>\"The future of everythi",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 638,
+      "category": "voice",
+      "term": "hype",
+      "match": "seamless",
+      "context": "with next-generation AI.\"</li><li>\"Unleash the power of seamless synergy.\"</li><li>\"The future of everything, today.\"</li><li>\"W",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 638,
+      "category": "voice",
+      "term": "hype",
+      "match": "synergy",
+      "context": "-generation AI.\"</li><li>\"Unleash the power of seamless synergy.\"</li><li>\"The future of everything, today.\"</li><li>\"World-cla",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 638,
+      "category": "voice",
+      "term": "hype",
+      "match": "World-class",
+      "context": "y.\"</li><li>\"The future of everything, today.\"</li><li>\"World-class, cutting-edge, game-changing solutions.\"</li></ul></div>",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 638,
+      "category": "voice",
+      "term": "hype",
+      "match": "cutting-edge",
+      "context": "The future of everything, today.\"</li><li>\"World-class, cutting-edge, game-changing solutions.\"</li></ul></div>",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 638,
+      "category": "voice",
+      "term": "hype",
+      "match": "game-changing",
+      "context": "everything, today.\"</li><li>\"World-class, cutting-edge, game-changing solutions.\"</li></ul></div>",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 650,
+      "category": "voice",
+      "term": "hype",
+      "match": "revolutionize",
+      "context": "<tr><td>build, ship, run, improve</td><td>revolutionize, disrupt, transform</td></tr>",
+      "status": "allowed (documented 'never use' example)"
+    },
+    {
+      "file": "guidelines/index.html",
+      "line": 654,
+      "category": "voice",
+      "term": "hype",
+      "match": "next-generation",
+      "context": "level, the next version</td><td>the future, tomorrow, next-generation</td></tr>",
+      "status": "allowed (documented 'never use' example)"
+    }
+  ],
+  "info": [],
+  "technology_signal_terms": 1178
+}

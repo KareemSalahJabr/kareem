@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LinkedIn company post · Zirven V2.1 application 15</title>
+<meta name="description" content="Zirven company page posts for a professional network feed: a VEVO Assistant product announcement and a hiring post, with master artwork at 1200 × 627 and 1200 × 1200.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  /* ---------- Board layout ---------- */
+  .z-board__head .brand { display: flex; align-items: center; gap: 16px; }
+  .z-board__head .brand i { width: 1px; height: 16px; background: rgba(211, 200, 255, 0.18); }
+  .stage { display: grid; grid-template-columns: 600px minmax(0, 1fr); gap: 56px; align-items: start; }
+
+  /* ---------- Scaled artwork (built at true pixel size, scaled to fit) ---------- */
+  .art { position: relative; overflow: hidden; width: calc(var(--w) * var(--s) * 1px); height: calc(var(--h) * var(--s) * 1px); }
+  .art > .cv { position: absolute; left: 0; top: 0; width: calc(var(--w) * 1px); height: calc(var(--h) * 1px); transform: scale(var(--s)); transform-origin: 0 0; overflow: hidden; }
+
+  /* ---------- Generic feed chrome (neutral, light) ---------- */
+  .feed { background: #F2F1EE; border-radius: 18px; overflow: hidden; box-shadow: 0 50px 100px -40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06); color: #1F1E24; }
+  .feed__bar { height: 56px; display: flex; align-items: center; gap: 20px; padding: 0 24px; background: #fff; border-bottom: 1px solid #E2E0DB; }
+  .feed__search { flex: 1; display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border-radius: 8px; background: #EEEDF0; color: #74727C; font: 400 13px/1 var(--z-font-sans); }
+  .feed__nav { display: flex; gap: 22px; color: #6E6C75; }
+  .feed__nav span { display: flex; flex-direction: column; align-items: center; gap: 4px; font: 400 10.5px/1 var(--z-font-sans); }
+  .feed__nav span[aria-current] { color: #1F1E24; position: relative; }
+  .feed__nav span[aria-current]::after { content: ""; position: absolute; left: -4px; right: -4px; bottom: -11px; height: 2px; background: #1F1E24; }
+  .feed__me { width: 24px; height: 24px; border-radius: 50%; background: #D9D6E3; color: #3A3456; display: grid; place-items: center; font: 600 9.5px/1 var(--z-font-sans); }
+  .feed__col { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .feed__sort { display: flex; align-items: center; gap: 10px; font: 400 12px/1 var(--z-font-sans); color: #6E6C75; }
+  .feed__sort hr { flex: 1; border: 0; height: 1px; background: #D8D6D0; margin: 0; }
+  .feed__sort b { color: #1F1E24; font-weight: 500; }
+
+  .post { background: #fff; border: 1px solid #E0DED8; border-radius: 10px; overflow: hidden; }
+  .post__head { display: flex; gap: 10px; padding: 14px 16px 0; }
+  .post__avatar { width: 48px; height: 48px; flex: none; }
+  .post__who { flex: 1; min-width: 0; }
+  .post__name { display: flex; align-items: center; gap: 6px; font: 600 14px/1.3 var(--z-font-sans); }
+  .post__meta { font: 400 12px/1.4 var(--z-font-sans); color: #6E6C75; }
+  .post__meta .zi { display: inline-block; vertical-align: -2px; width: 12px; height: 12px; }
+  .post__follow { display: flex; align-items: center; gap: 4px; height: 28px; padding: 0 10px; border-radius: 999px; font: 600 13px/1 var(--z-font-sans); color: #3A3456; }
+  .post__more { color: #6E6C75; }
+  .post__text { padding: 12px 16px 14px; font: 400 14px/1.5 var(--z-font-sans); color: #26252B; display: flex; flex-direction: column; gap: 10px; }
+  .post__text b { font-weight: 600; }
+  .post__text a { color: var(--z-violet); font-weight: 500; }
+  .post__text .tags { color: var(--z-violet); font-weight: 500; }
+  .post__counts { display: flex; align-items: center; gap: 8px; padding: 10px 16px; font: 400 12px/1 var(--z-font-sans); color: #6E6C75; }
+  .post__counts .grow { display: flex; align-items: center; gap: 6px; }
+  .rx { display: flex; }
+  .rx i { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid #fff; margin-left: -4px; }
+  .rx i:first-child { margin-left: 0; }
+  .rx svg { width: 10px; height: 10px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .post__actions { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #ECEAE5; margin: 0 12px; padding: 4px 0; }
+  .post__actions span { display: flex; align-items: center; justify-content: center; gap: 7px; height: 40px; border-radius: 6px; font: 500 13px/1 var(--z-font-sans); color: #5C5A63; }
+  .post__actions svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- Master artwork column ---------- */
+  .masters { display: flex; flex-direction: column; gap: 40px; padding-top: 4px; }
+  .master__label { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+  .master__label h3 { font: 500 15px/1.3 var(--z-font-sans); color: var(--z-snow); }
+  .master__label span { font: 500 12px/1 var(--z-font-mono); color: var(--z-ink-400); }
+  .ruler { position: relative; }
+  .ruler .art { border-radius: 4px; box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(211, 200, 255, 0.1); }
+  .ruler__x { display: flex; align-items: center; gap: 10px; margin-top: 12px; font: 500 11px/1 var(--z-font-mono); color: var(--z-ink-500); }
+  .ruler__x::before, .ruler__x::after { content: ""; flex: 1; height: 1px; background: rgba(211, 200, 255, 0.18); }
+  .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(211, 200, 255, 0.1); border: 1px solid rgba(211, 200, 255, 0.1); border-radius: 14px; overflow: hidden; }
+  .specs div { background: #0C0A19; padding: 16px 18px; }
+  .specs dt { font: 500 11px/1 var(--z-font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--z-ink-500); }
+  .specs dd { margin: 8px 0 0; font: 400 13.5px/1.5 var(--z-font-sans); color: var(--z-ink-300); }
+  .specs .wide { grid-column: 1 / -1; }
+  .specs .alt { font-style: italic; color: var(--z-ink-400); }
+
+  /* ---------- Artwork A: VEVO Assistant link image, 1200 × 627 ---------- */
+  .a1 { background: var(--z-night) url("../../pattern/terrain-dark.svg") right -360px top -260px / 1760px auto no-repeat; color: var(--z-snow); }
+  .a1::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #0E0B1F 0%, rgba(14, 11, 31, 0.94) 36%, rgba(14, 11, 31, 0.35) 62%, rgba(14, 11, 31, 0.1) 100%); }
+  .a1__copy { position: absolute; left: 72px; top: 68px; bottom: 64px; width: 600px; display: flex; flex-direction: column; }
+  .a1__lockup { height: 54px; width: auto; align-self: flex-start; }
+  .a1 h2 { margin-top: auto; font: 600 54px/1.08 var(--z-font-sans); letter-spacing: -0.03em; white-space: nowrap; }
+  .a1 h2 em { display: block; font-style: normal; font-weight: 300; color: var(--z-lavender); }
+  .a1 p { margin-top: 22px; font: 400 22px/1.45 var(--z-font-sans); color: var(--z-ink-300); max-width: 470px; }
+  .a1__foot { margin-top: 40px; display: flex; align-items: center; gap: 14px; font: 500 17px/1 var(--z-font-sans); color: var(--z-ink-400); }
+  .a1__foot b { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border-radius: 999px; background: rgba(150, 113, 255, 0.16); border: 1px solid rgba(150, 113, 255, 0.35); color: var(--z-lavender); font-weight: 500; }
+  .a1__ui { position: absolute; left: 700px; top: 96px; right: -30px; bottom: -30px; border-radius: 20px; background: rgba(21, 17, 43, 0.94); border: 1px solid rgba(211, 200, 255, 0.16); box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.85); overflow: hidden; }
+  .a1__ui header { display: flex; align-items: center; gap: 12px; padding: 18px 52px 18px 22px; border-bottom: 1px solid rgba(211, 200, 255, 0.1); font: 500 17px/1 var(--z-font-sans); color: var(--z-snow); }
+  .a1__ui header .zi { width: 22px; height: 22px; color: var(--z-cyan); }
+  .a1__ui header small { margin-left: auto; font: 500 14px/1 var(--z-font-sans); color: var(--z-ink-400); padding: 7px 12px; border-radius: 999px; border: 1px solid rgba(211, 200, 255, 0.14); background: var(--z-ink-850); }
+  .a1__body { padding: 22px 52px 22px 22px; display: flex; flex-direction: column; gap: 16px; }
+  .a1__q { align-self: flex-end; max-width: 82%; background: var(--z-ink-800); border-radius: 16px 16px 5px 16px; padding: 13px 16px; font: 400 17px/1.45 var(--z-font-sans); color: var(--z-snow); }
+  .a1__mark { display: inline-flex; align-items: center; gap: 9px; color: var(--z-cyan); font: 500 15px/1 var(--z-font-sans); }
+  .a1__mark::before { content: ""; width: 16px; height: 16px; background: currentColor; clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
+  .a1__a { font: 400 17.5px/1.55 var(--z-font-sans); color: var(--z-ink-300); }
+  .a1__a b { color: var(--z-snow); font-weight: 500; }
+  .a1__src { display: flex; gap: 8px; flex-wrap: wrap; }
+  .a1__src span { height: 28px; padding: 0 10px; border-radius: 7px; background: var(--z-ink-850); border: 1px solid rgba(211, 200, 255, 0.1); color: var(--z-ink-300); font: 500 13.5px/28px var(--z-font-mono); }
+  .a1__act { border: 1px solid rgba(211, 200, 255, 0.14); border-radius: 14px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; background: var(--z-ink-900); }
+  .a1__act div { flex: 1; font: 400 14px/1.4 var(--z-font-sans); color: var(--z-ink-400); }
+  .a1__act div b { display: block; font: 500 16px/1.35 var(--z-font-sans); color: var(--z-snow); margin-bottom: 3px; }
+  .a1__btn { height: 40px; padding: 0 18px; border-radius: 10px; display: inline-flex; align-items: center; font: 500 15px/1 var(--z-font-sans); }
+  .a1__btn--p { background: var(--z-electric); color: var(--z-night); }
+  .a1__btn--s { border: 1px solid rgba(211, 200, 255, 0.18); color: var(--z-snow); }
+
+  /* ---------- Artwork B: hiring, 1200 × 1200 ---------- */
+  .a2 { background: var(--z-snow); color: var(--z-night); }
+  .a2__terrain { position: absolute; left: 60px; top: -520px; width: 1600px; height: 1000px; background: url("../../pattern/terrain-light.svg") center / 1600px 1000px no-repeat; -webkit-mask-image: linear-gradient(215deg, #000 30%, transparent 66%); mask-image: linear-gradient(215deg, #000 30%, transparent 66%); }
+  .a2__in { position: absolute; inset: 80px; display: flex; flex-direction: column; }
+  .a2__top { display: flex; align-items: center; justify-content: space-between; }
+  .a2__top img { height: 52px; width: auto; }
+  .a2__top span { font: 500 20px/1 var(--z-font-sans); color: var(--z-ink-600); letter-spacing: 0.01em; }
+  .a2__over { margin-top: 128px; display: inline-flex; align-items: center; gap: 18px; font: 600 24px/1 var(--z-font-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--z-violet); }
+  .a2__over::before { content: ""; width: 40px; height: 4px; border-radius: 4px; background: currentColor; transform: rotate(-20deg); transform-origin: left center; margin-top: 10px; }
+  .a2 h2 { margin-top: 30px; font: 600 156px/0.96 var(--z-font-sans); letter-spacing: -0.04em; }
+  .a2__sub { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .a2__sub span { height: 52px; padding: 0 22px; border-radius: 999px; border: 1.5px solid #D9D3F2; background: rgba(255, 255, 255, 0.7); display: inline-flex; align-items: center; gap: 10px; font: 500 22px/1 var(--z-font-sans); color: var(--z-ink-700); }
+  .a2__sub .zi { width: 24px; height: 24px; color: var(--z-violet); }
+  .a2__list { margin-top: auto; }
+  .a2__list h4 { font: 600 18px/1 var(--z-font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--z-ink-500); margin-bottom: 8px; }
+  .a2__row { display: grid; grid-template-columns: 1fr 330px 40px; align-items: center; gap: 24px; padding: 22px 0; border-top: 1.5px solid #DDD9EC; font: 500 28px/1.2 var(--z-font-sans); }
+  .a2__row small { font: 400 21px/1.2 var(--z-font-sans); color: var(--z-ink-500); }
+  .a2__row .zi { width: 30px; height: 30px; color: var(--z-violet); }
+  .a2__foot { display: flex; justify-content: space-between; padding-top: 26px; border-top: 1.5px solid #DDD9EC; font: 500 20px/1 var(--z-font-sans); color: var(--z-ink-600); }
+  .a2__foot b { color: var(--z-violet); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="z-board" data-theme="dark">
+  <header class="z-board__head">
+    <div class="brand"><img src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven"><i></i><span>Zirven V2.1 · Applications</span></div>
+    <div class="z-board__title"><b>15</b> LinkedIn company post</div>
+  </header>
+
+  <main class="stage">
+    <!-- ============ Feed mockup (generic professional-network chrome) ============ -->
+    <section class="feed" data-theme="light" aria-label="Company page posts in a professional network feed">
+      <div class="feed__bar">
+        <div class="feed__search"><svg class="zi zi--sm"><use href="#zi-search"/></svg>Search</div>
+        <nav class="feed__nav" aria-hidden="true">
+          <span aria-current="true"><svg class="zi"><use href="#zi-home"/></svg>Home</span>
+          <span><svg class="zi"><use href="#zi-users"/></svg>Network</span>
+          <span><svg class="zi"><use href="#zi-inbox"/></svg>Messages</span>
+          <span><svg class="zi"><use href="#zi-bell"/></svg>Alerts</span>
+          <span><i class="feed__me">SL</i>Me</span>
+        </nav>
+      </div>
+
+      <div class="feed__col">
+        <div class="feed__sort"><hr><span>Sort by: <b>Top</b></span></div>
+
+        <!-- Post 1 · product announcement -->
+        <article class="post">
+          <div class="post__head">
+            <img class="post__avatar" src="../../favicon/app-icon.svg" alt="Zirven">
+            <div class="post__who">
+              <div class="post__name">Zirven</div>
+              <div class="post__meta">Technology, Information and Internet · 2,418 followers</div>
+              <div class="post__meta">2d · <svg class="zi"><use href="#zi-globe"/></svg></div>
+            </div>
+            <span class="post__follow"><svg class="zi zi--sm"><use href="#zi-plus"/></svg>Follow</span>
+            <svg class="zi post__more"><use href="#zi-more"/></svg>
+          </div>
+          <div class="post__text">
+            <p><b>VEVO Assistant is now available to every VEVO workspace.</b></p>
+            <p>Ask about orders, suppliers or cash flow and get an answer with its sources: the query, the records and the documents it used. When an answer points to a change, the assistant drafts it and waits for your approval.</p>
+            <p>Built by our product team in Istanbul, in English, Turkish and Arabic. Read how it works: <a href="#">vevo.zirven.com/assistant</a></p>
+            <p class="tags">#SaaS #AppliedAI #ProductEngineering</p>
+          </div>
+          <div class="art" data-art="art-link" style="--w:1200;--h:627;--s:0.46"></div>
+          <div class="post__counts">
+            <span class="grow"><span class="rx"><i style="background:#5B34E0"><svg viewBox="0 0 24 24"><use href="#rx-like"/></svg></i><i style="background:#241654"><svg viewBox="0 0 24 24"><use href="#rx-bulb"/></svg></i><i style="background:#9671FF"><svg viewBox="0 0 24 24"><use href="#rx-heart"/></svg></i></span>Leyla Demir and 312 others</span>
+            <span>28 comments · 14 reposts</span>
+          </div>
+          <div class="post__actions" aria-hidden="true">
+            <span><svg viewBox="0 0 24 24"><use href="#rx-like"/></svg>Like</span>
+            <span><svg viewBox="0 0 24 24"><use href="#rx-comment"/></svg>Comment</span>
+            <span><svg viewBox="0 0 24 24"><use href="#rx-repost"/></svg>Repost</span>
+            <span><svg viewBox="0 0 24 24"><use href="#zi-send"/></svg>Send</span>
+          </div>
+        </article>
+
+        <!-- Post 2 · hiring -->
+        <article class="post">
+          <div class="post__head">
+            <img class="post__avatar" src="../../favicon/app-icon.svg" alt="Zirven">
+            <div class="post__who">
+              <div class="post__name">Zirven</div>
+              <div class="post__meta">Technology, Information and Internet · 2,418 followers</div>
+              <div class="post__meta">5d · <svg class="zi"><use href="#zi-globe"/></svg></div>
+            </div>
+            <span class="post__follow"><svg class="zi zi--sm"><use href="#zi-plus"/></svg>Follow</span>
+            <svg class="zi post__more"><use href="#zi-more"/></svg>
+          </div>
+          <div class="post__text">
+            <p><b>We’re hiring: Senior AI Engineer, Istanbul or remote.</b></p>
+            <p>You will build the retrieval, evaluation and tool-use layer behind VEVO Assistant, and ship it to operations teams who rely on it every day. Python and TypeScript, measured in production, reviewed by people who care about the details.</p>
+            <p>Three more roles are open across product, design and data. <a href="#">zirven.com/careers</a></p>
+            <p class="tags">#Hiring #AppliedAI #Istanbul</p>
+          </div>
+          <div class="art" data-art="art-hiring" style="--w:1200;--h:1200;--s:0.46"></div>
+          <div class="post__counts">
+            <span class="grow"><span class="rx"><i style="background:#5B34E0"><svg viewBox="0 0 24 24"><use href="#rx-like"/></svg></i><i style="background:#9671FF"><svg viewBox="0 0 24 24"><use href="#rx-heart"/></svg></i></span>Omar Haddad and 187 others</span>
+            <span>41 comments · 36 reposts</span>
+          </div>
+          <div class="post__actions" aria-hidden="true">
+            <span><svg viewBox="0 0 24 24"><use href="#rx-like"/></svg>Like</span>
+            <span><svg viewBox="0 0 24 24"><use href="#rx-comment"/></svg>Comment</span>
+            <span><svg viewBox="0 0 24 24"><use href="#rx-repost"/></svg>Repost</span>
+            <span><svg viewBox="0 0 24 24"><use href="#zi-send"/></svg>Send</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ Master artwork + specs ============ -->
+    <aside class="masters">
+      <div>
+        <span class="z-overline">Master artwork</span>
+        <h2 class="z-h3" style="margin-top:12px">Product news on Night. Hiring on Snow.</h2>
+        <p class="z-small z-muted" style="margin-top:8px;max-width:600px">One template for every company post: logo or lockup top-left, a two-line statement, and a real product detail instead of stock imagery.</p>
+      </div>
+
+      <div class="ruler">
+        <div class="master__label"><h3>Link image · VEVO Assistant launch</h3><span>1200 × 627 · 1.91 : 1</span></div>
+        <div class="art" data-art="art-link" style="--w:1200;--h:627;--s:0.5733"></div>
+        <div class="ruler__x">1200 px</div>
+      </div>
+
+      <div class="ruler">
+        <div class="master__label"><h3>Square image · Hiring</h3><span>1200 × 1200 · 1 : 1</span></div>
+        <div class="art" data-art="art-hiring" style="--w:1200;--h:1200;--s:0.5733"></div>
+        <div class="ruler__x">1200 px</div>
+      </div>
+
+      <dl class="specs">
+        <div><dt>Safe area</dt><dd>72–80 px inside every edge. Logo, copy and UI detail stay inside it.</dd></div>
+        <div><dt>Export</dt><dd>PNG, sRGB, 2× source. Under 5 MB per image.</dd></div>
+        <div><dt>Copy</dt><dd>Bold first line under 140 characters. Three short paragraphs, three hashtags, one link.</dd></div>
+        <div><dt>Colour</dt><dd>Night or Snow. Intelligence Cyan only on the AI answer marker.</dd></div>
+        <div class="wide"><dt>Alt text</dt><dd class="alt">“VEVO Assistant answering a question about invoices on hold, citing three sources and proposing an action that waits for approval. Headline: Answers with sources. Actions with approval.”</dd></div>
+      </dl>
+    </aside>
+  </main>
+
+  <p class="z-board__note">Company page posts for a professional network feed, shown in neutral feed chrome. Link image 1200 × 627 px (1.91:1) and square image 1200 × 1200 px, PNG in sRGB; Night with the data terrain for product news, Snow for hiring, Readex Pro throughout.</p>
+</div>
+
+<!-- Generic reaction glyphs (not platform logos) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="rx-like" viewBox="0 0 24 24"><path d="M7 10.5V20H4.5a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1H7Zm0 0 3.6-6.4a1.9 1.9 0 0 1 3.5 1.3L13.3 9h5.1a2 2 0 0 1 2 2.3l-1.1 6.9a2.2 2.2 0 0 1-2.2 1.8H7"/></symbol>
+  <symbol id="rx-comment" viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2h-7.5L6 20.5v-4H6a2 2 0 0 1-2-2Z"/></symbol>
+  <symbol id="rx-repost" viewBox="0 0 24 24"><path d="m16.5 3.5 3 3-3 3"/><path d="M19.5 6.5H8a4 4 0 0 0-4 4v1"/><path d="m7.5 20.5-3-3 3-3"/><path d="M4.5 17.5H16a4 4 0 0 0 4-4v-1"/></symbol>
+  <symbol id="rx-bulb" viewBox="0 0 24 24"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.1V16h5v-.1c0-.8.4-1.6 1.1-2.1A6 6 0 0 0 12 3Z"/></symbol>
+  <symbol id="rx-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20Z"/></symbol>
+</svg>
+
+<!-- ============ Artwork sources (each rendered once per placement) ============ -->
+<template id="art-link">
+  <div class="cv a1" role="img" aria-label="VEVO Assistant launch image: Answers with sources. Actions with approval.">
+    <div class="a1__copy">
+      <img class="a1__lockup" src="../../logo/svg/vevo-endorsed-dark.svg" alt="VEVO, a product by Zirven">
+      <h2>Answers with sources.<em>Actions with approval.</em></h2>
+      <p>VEVO Assistant is now available in every workspace.</p>
+      <div class="a1__foot"><b>Available today</b>vevo.zirven.com</div>
+    </div>
+    <div class="a1__ui">
+      <header><svg class="zi"><use href="#zi-ai-assistant"/></svg>VEVO Assistant<small>Finance ops</small></header>
+      <div class="a1__body">
+        <div class="a1__q">Which invoices are blocking supplier payments this week?</div>
+        <span class="a1__mark">Answer · from 3 sources</span>
+        <p class="a1__a"><b>7 invoices</b> are on hold, worth <b>€184,200</b>. Five are waiting for goods receipts from Meridian Logistics; two are outside the 2% price tolerance.</p>
+        <div class="a1__src"><span>ap_holds.sql</span><span>erp.goods_receipts</span><span>tolerance_policy.pdf</span></div>
+        <div class="a1__act"><div><b>Request 5 goods receipts</b>Draft ready · waits for approval</div><span class="a1__btn a1__btn--s">Edit</span><span class="a1__btn a1__btn--p">Approve</span></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="art-hiring">
+  <div class="cv a2" role="img" aria-label="Hiring image: Senior AI Engineer, Istanbul or remote, with three more open roles.">
+    <div class="a2__terrain"></div>
+    <div class="a2__in">
+      <div class="a2__top"><img src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven"><span>Careers · 2026</span></div>
+      <span class="a2__over">We’re hiring</span>
+      <h2>Senior AI<br>Engineer</h2>
+      <div class="a2__sub">
+        <span><svg class="zi"><use href="#zi-ai"/></svg>AI Platform</span>
+        <span><svg class="zi"><use href="#zi-map-pin"/></svg>Istanbul or remote</span>
+        <span><svg class="zi"><use href="#zi-calendar"/></svg>Full-time</span>
+      </div>
+      <div class="a2__list">
+        <h4>Also open</h4>
+        <div class="a2__row">Staff Backend Engineer<small>VEVO Core · Istanbul</small><svg class="zi"><use href="#zi-arrow-up-right"/></svg></div>
+        <div class="a2__row">Product Designer<small>Design Systems · Remote</small><svg class="zi"><use href="#zi-arrow-up-right"/></svg></div>
+        <div class="a2__row">Data Engineer<small>Analytics · Istanbul or remote</small><svg class="zi"><use href="#zi-arrow-up-right"/></svg></div>
+      </div>
+      <div class="a2__foot"><b>zirven.com/careers</b><span>Building intelligent digital products.</span></div>
+    </div>
+  </div>
+</template>
+
+<script>
+  document.querySelectorAll('[data-art]').forEach(function (el) {
+    el.appendChild(document.getElementById(el.dataset.art).content.cloneNode(true));
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Applications · Zirven V2.1</title>
+<meta name="description" content="The twenty Zirven V2.1 applications: corporate website, product interfaces, print, social, signage, presentation and developer branding.">
+<link rel="icon" href="../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/zirven.css">
+<style>
+  body { background: var(--z-snow); }
+  header { padding: 56px 0 24px; }
+  .grp { margin-top: 48px; }
+  .grp h2 { font: 600 13px/1 var(--z-font-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--t-text-3); margin-bottom: 16px; }
+  .apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .app { display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid var(--t-line); color: var(--t-text); transition: transform var(--z-duration-base) var(--z-ease-summit), border-color var(--z-duration-base); }
+  .app:hover { transform: translateY(-2px); border-color: var(--z-violet); text-decoration: none; }
+  .app img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; background: var(--z-night); }
+  .app div { padding: 14px 16px; display: flex; gap: 10px; align-items: baseline; }
+  .app b { font: 600 12px/1 var(--z-font-mono); color: var(--z-violet); }
+  .app span { font: 500 14.5px/1.3 var(--z-font-sans); }
+  @media (max-width: 960px) { .apps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .apps { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main class="z-container" style="padding-bottom:80px">
+  <header class="z-stack gap-4">
+    <a href="../index.html"><img src="../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven" style="height:28px"></a>
+    <span class="z-overline mt-6">Zirven V2.1 · Applications</span>
+    <h1 class="z-h1">Twenty applications of a software company.</h1>
+    <p class="z-lead maxw-lg">Every application is built in HTML with the shared tokens, stylesheet, icons and logo files. Open any card to see the live page.</p>
+  </header>
+
+  <section class="grp"><h2>Corporate website</h2><div class="apps">
+    <a class="app" href="web/index.html"><img src="../previews/app-01-website-home.png" alt=""><div><b>01</b><span>Zirven corporate website</span></div></a>
+    <a class="app" href="web/index.html"><img src="../previews/app-02-homepage-hero.png" alt=""><div><b>02</b><span>Homepage hero</span></div></a>
+    <a class="app" href="web/products.html"><img src="../previews/app-03-products-page.png" alt=""><div><b>03</b><span>Products page</span></div></a>
+    <a class="app" href="web/products.html#ecosystem"><img src="../previews/app-03-products-page.png" alt="" style="object-position:center 22%"><div><b>04</b><span>Product ecosystem section</span></div></a>
+    <a class="app" href="web/vevo.html"><img src="../previews/app-05-vevo-product-page.png" alt=""><div><b>05</b><span>VEVO product page &amp; card</span></div></a>
+  </div></section>
+
+  <section class="grp"><h2>Product interfaces</h2><div class="apps">
+    <a class="app" href="product/dashboard.html"><img src="../previews/app-06-saas-dashboard.png" alt=""><div><b>06</b><span>SaaS dashboard concept</span></div></a>
+    <a class="app" href="product/ai-assistant.html"><img src="../previews/app-07-ai-assistant.png" alt=""><div><b>07</b><span>AI assistant interface</span></div></a>
+    <a class="app" href="product/analytics.html"><img src="../previews/app-08-analytics.png" alt=""><div><b>08</b><span>Analytics interface</span></div></a>
+    <a class="app" href="product/automation.html"><img src="../previews/app-09-automation-workflow.png" alt=""><div><b>09</b><span>Automation / workflow</span></div></a>
+    <a class="app" href="product/mobile.html"><img src="../previews/app-10-mobile-app.png" alt=""><div><b>10</b><span>Mobile app concept</span></div></a>
+    <a class="app" href="product/api-integrations.html"><img src="../previews/app-11-api-integrations.png" alt=""><div><b>11</b><span>API &amp; integrations</span></div></a>
+  </div></section>
+
+  <section class="grp"><h2>Print, communication &amp; environment</h2><div class="apps">
+    <a class="app" href="print/business-card.html"><img src="../previews/app-12-business-card.png" alt=""><div><b>12</b><span>Business card</span></div></a>
+    <a class="app" href="print/letterhead.html"><img src="../previews/app-13-letterhead.png" alt=""><div><b>13</b><span>Letterhead</span></div></a>
+    <a class="app" href="comms/email-signature.html"><img src="../previews/app-14-email-signature.png" alt=""><div><b>14</b><span>Email signature</span></div></a>
+    <a class="app" href="social/linkedin-post.html"><img src="../previews/app-15-linkedin-post.png" alt=""><div><b>15</b><span>LinkedIn company post</span></div></a>
+    <a class="app" href="social/announcement.html"><img src="../previews/app-16-social-announcement.png" alt=""><div><b>16</b><span>Social media announcement</span></div></a>
+    <a class="app" href="environment/signage.html"><img src="../previews/app-17-office-signage.png" alt=""><div><b>17</b><span>Office / building signage</span></div></a>
+    <a class="app" href="presentation/deck-cover.html"><img src="../previews/app-18-pitch-deck-cover.png" alt=""><div><b>18</b><span>Pitch deck cover</span></div></a>
+    <a class="app" href="developer/github.html"><img src="../previews/app-19-github-developer.png" alt=""><div><b>19</b><span>GitHub / developer branding</span></div></a>
+    <a class="app" href="app-icon/index.html"><img src="../previews/app-20-app-icon-favicon.png" alt=""><div><b>20</b><span>App icon &amp; favicon</span></div></a>
+  </div></section>
+</main>
+</body>
+</html>

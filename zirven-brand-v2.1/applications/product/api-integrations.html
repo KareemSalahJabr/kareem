@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zirven Developers — API &amp; integrations · Zirven V2.1 application 11</title>
+<meta name="description" content="The Zirven developer platform: connectors, API keys, webhooks, request inspector and usage, shared by every Zirven product. Shown here for VEVO.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  .zi--xs { width: 14px; height: 14px; }
+  .mono { font-family: var(--z-font-mono); }
+
+  /* ---------- Console frame ---------- */
+  .console { height: 100vh; display: grid; grid-template-rows: 56px minmax(0, 1fr); }
+  .body { display: grid; grid-template-columns: 208px minmax(0, 1fr) 404px; min-height: 0; }
+
+  /* header */
+  .hdr { display: flex; align-items: center; gap: 14px; padding: 0 20px 0 22px; border-bottom: 1px solid var(--t-line); background: var(--t-bg); }
+  .hdr__logo { height: 19px; width: auto; }
+  .hdr__label { font: 500 14px/1 var(--z-font-sans); color: var(--t-text-2); padding-left: 14px; border-left: 1px solid var(--t-line); height: 20px; display: flex; align-items: center; }
+  .slash { color: var(--z-ink-700); font: 300 20px/1 var(--z-font-sans); }
+  .switch { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px 0 6px; border-radius: 9px; border: 1px solid var(--t-line); background: var(--t-surface); font: 500 13.5px/1 var(--z-font-sans); }
+  .switch img { width: 20px; height: 20px; border-radius: 5px; }
+  .switch .zi { color: var(--t-text-3); }
+  .switch small { font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .org { font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text-2); display: inline-flex; align-items: center; gap: 8px; }
+  .org .zi { color: var(--t-text-3); }
+  .env { display: inline-flex; padding: 3px; gap: 2px; border-radius: 9px; border: 1px solid var(--t-line); font: 500 12px/1 var(--z-font-sans); }
+  .env span { height: 24px; padding: 0 10px; display: inline-flex; align-items: center; gap: 6px; border-radius: 6px; color: var(--t-text-3); }
+  .env span[aria-current] { background: var(--t-surface-2); color: var(--t-text); }
+  .env span[aria-current]::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--z-success); }
+  .z-search { width: 280px; height: 34px; font-size: 13px; }
+  .z-search .z-kbd { margin-left: auto; }
+  .hdr__link { font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text-2); display: inline-flex; align-items: center; gap: 6px; }
+  .hdr__link .zi { color: var(--t-text-3); }
+
+  /* left nav */
+  .nav { border-right: 1px solid var(--t-line); padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; min-height: 0; }
+  .nav a { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px; border-radius: 8px; color: var(--t-text-2); font: 500 13.5px/1 var(--z-font-sans); text-decoration: none; }
+  .nav a .zi { color: var(--t-text-3); }
+  .nav a[aria-current] { background: var(--t-accent-soft); color: var(--t-text); }
+  .nav a[aria-current] .zi { color: var(--t-accent); }
+  .nav a .ext { margin-left: auto; width: 13px; height: 13px; }
+  .nav a .n { margin-left: auto; font: 500 11.5px/1 var(--z-font-mono); color: var(--t-text-3); }
+  .nav__sec { font: 500 11px/1 var(--z-font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--z-ink-500); padding: 18px 10px 8px; }
+  .nav__foot { margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding: 14px 10px 4px; border-top: 1px solid var(--t-line); }
+  .kv { display: flex; justify-content: space-between; align-items: center; font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .kv b { font: 500 11.5px/1 var(--z-font-mono); color: var(--t-text-2); }
+  .ok { display: inline-flex; align-items: center; gap: 7px; font: 500 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .ok::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--z-success); box-shadow: 0 0 0 3px rgba(46, 182, 125, 0.18); }
+
+  /* main */
+  .main { overflow: hidden; padding: 22px 26px 24px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .phead { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .phead h1 { font: 600 24px/1.15 var(--z-font-sans); letter-spacing: -0.01em; }
+  .phead p { font: 400 13.5px/1.4 var(--z-font-sans); color: var(--t-text-3); margin-top: 6px; }
+  .phead .z-btn--sm { height: 34px; font-size: 13px; }
+  .sec__h { display: flex; align-items: baseline; gap: 10px; margin-bottom: 11px; }
+  .sec__h h2 { font: 600 15px/1 var(--z-font-sans); }
+  .sec__h span { font: 400 12.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .sec__h a { margin-left: auto; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); display: inline-flex; gap: 4px; align-items: center; }
+
+  /* connectors */
+  .conns { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .conn { border: 1px solid var(--t-line); border-radius: 12px; background: var(--t-surface); padding: 12px 12px 12px 14px; display: flex; flex-direction: column; gap: 12px; }
+  .conn__top { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .conn__top .grow { min-width: 0; }
+  .mono-tile { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; flex: none; font: 600 12px/1 var(--z-font-mono); letter-spacing: -0.02em; color: var(--z-lavender); background: #221B44; border: 1px solid rgba(211, 200, 255, 0.14); }
+  .mono-tile--b { background: #1B1636; color: #C4C0D3; }
+  .mono-tile--c { background: #2A1F5C; color: #E4DCFF; }
+  .mono-tile--off { background: transparent; color: var(--t-text-3); border-style: dashed; }
+  .conn__name { font: 500 13.5px/1.25 var(--z-font-sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conn__cat { font: 400 11.5px/1.3 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conn__foot { display: flex; align-items: center; justify-content: space-between; height: 24px; padding-top: 10px; border-top: 1px solid var(--t-line); box-sizing: content-box; }
+  .st { display: inline-flex; align-items: center; gap: 6px; font: 400 11.5px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .st::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--z-success); flex: none; }
+  .st--warn { color: var(--z-warning); } .st--warn::before { background: var(--z-warning); }
+  .st--off::before { background: transparent; box-shadow: inset 0 0 0 1.5px var(--z-ink-600); }
+  .mini-btn { height: 24px; padding: 0 9px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px; font: 500 11.5px/1 var(--z-font-sans); color: var(--t-text); border: 1px solid var(--t-line); background: var(--t-surface-2); }
+  .mini-btn--accent { background: var(--z-electric); color: var(--z-night); border-color: transparent; }
+  .conn .more { color: var(--t-text-3); width: 16px; height: 16px; }
+
+  /* tables */
+  .card { border: 1px solid var(--t-line); border-radius: 12px; background: var(--t-surface); overflow: hidden; }
+  .keys .z-table th { padding: 11px 12px; font-size: 11.5px; background: var(--z-ink-850); white-space: nowrap; }
+  .keys .z-table td { padding: 9px 12px; font-size: 13px; white-space: nowrap; vertical-align: middle; }
+  .keys .z-table td:last-child, .keys .z-table th:last-child { padding-left: 0; width: 34px; color: var(--t-text-3); }
+  .keys .z-table td:first-child, .keys .z-table th:first-child { padding-left: 16px; }
+  .key-name { font-weight: 500; color: var(--t-text); }
+  .key-sub { display: block; font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 3px; }
+  .prefix { display: inline-flex; align-items: center; gap: 6px; font: 400 12px/1 var(--z-font-mono); color: var(--t-text-2); }
+  .prefix .zi { width: 13px; height: 13px; color: var(--t-text-3); }
+  .scopes { display: flex; gap: 4px; }
+  .scopes .z-tag { height: 20px; font-size: 11px; padding: 0 6px; border: 1px solid var(--t-line); background: transparent; }
+  .scopes .z-tag.w { color: var(--z-lavender); border-color: rgba(150, 113, 255, 0.3); background: rgba(150, 113, 255, 0.08); }
+  .t3 { color: var(--t-text-3); }
+  .t2 { color: var(--t-text-2); }
+
+  /* webhooks */
+  .hook { display: grid; grid-template-columns: minmax(0, 1fr) 184px; }
+  .hook__l { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+  .hook__ep { display: flex; align-items: center; gap: 10px; }
+  .hook__ep .method { font: 600 10.5px/1 var(--z-font-mono); color: var(--z-night); background: var(--z-lavender); padding: 4px 6px; border-radius: 5px; }
+  .hook__url { font: 500 13px/1 var(--z-font-mono); color: var(--t-text); }
+  .hook__ev { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .hook__ev .lbl { font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); margin-right: 4px; }
+  .ev { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 7px; border-radius: 6px; font: 400 11px/1 var(--z-font-mono); color: var(--t-text-2); background: var(--t-surface-2); border: 1px solid var(--t-line); }
+  .ev .zi { width: 11px; height: 11px; color: var(--z-success); stroke-width: 2.6; }
+  .hook__meta { display: flex; gap: 16px; font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .hook__meta b { font-weight: 500; color: var(--t-text-2); }
+  .hook__r { border-left: 1px solid var(--t-line); padding: 14px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .hook__r .lbl { display: flex; justify-content: space-between; font: 400 11.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .hook__r .big { font: 600 20px/1 var(--z-font-sans); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .hook__r .big small { font: 400 12px/1 var(--z-font-sans); color: var(--z-success); margin-left: 6px; letter-spacing: 0; }
+
+  .dlv { grid-column: 1 / -1; border-top: 1px solid var(--t-line); background: rgba(14, 11, 31, 0.35); }
+  .dlv__row { display: grid; grid-template-columns: 104px minmax(0, 1fr) 90px 90px 64px; align-items: center; height: 36px; padding: 0 16px; font: 400 12px/1 var(--z-font-mono); color: var(--t-text-2); }
+  .dlv__row + .dlv__row { border-top: 1px solid var(--t-line); }
+  .dlv__row .z-tag { justify-self: start; }
+  .dlv__ev { color: var(--t-text); }
+  .dlv__s { color: var(--z-success); }
+  .dlv__s--r { color: var(--z-warning); }
+  .dlv__l, .dlv__t { color: var(--t-text-3); }
+  .dlv__t { text-align: right; }
+
+  /* inspector */
+  .insp { border-left: 1px solid var(--t-line); background: rgba(21, 17, 43, 0.4); display: flex; flex-direction: column; min-height: 0; }
+  .insp__head { display: flex; align-items: center; gap: 10px; padding: 0 16px 0 18px; height: 52px; border-bottom: 1px solid var(--t-line); flex: none; }
+  .insp__head h2 { font: 600 14px/1 var(--z-font-sans); }
+  .live { display: inline-flex; align-items: center; gap: 6px; font: 500 11.5px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--z-cyan); box-shadow: 0 0 0 3px rgba(61, 216, 232, 0.2); }
+  .reqs { padding: 8px 8px 6px; border-bottom: 1px solid var(--t-line); flex: none; }
+  .req { display: grid; grid-template-columns: 40px minmax(0, 1fr) 38px 48px; align-items: center; gap: 8px; height: 30px; padding: 0 10px; border-radius: 7px; font: 400 12px/1 var(--z-font-mono); color: var(--t-text-2); }
+  .req[aria-current] { background: var(--t-accent-soft); color: var(--t-text); box-shadow: inset 2px 0 0 var(--z-electric); }
+  .req .m { font-size: 10.5px; font-weight: 600; color: var(--t-text-3); }
+  .req .p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .req .s { color: var(--z-success); text-align: right; }
+  .req .s.e { color: #FF8589; }
+  .req .l { color: var(--t-text-3); text-align: right; }
+  .detail { padding: 14px 16px 0; display: flex; flex-direction: column; gap: 10px; flex: none; }
+  .detail__line { display: flex; align-items: center; gap: 8px; font: 500 13px/1 var(--z-font-mono); }
+  .verb { font: 600 10.5px/1 var(--z-font-mono); color: var(--z-night); background: var(--z-electric); padding: 4px 6px; border-radius: 5px; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chips .z-chip { height: 24px; font-size: 11.5px; padding: 0 9px; }
+  .chips .z-chip.mono { font-family: var(--z-font-mono); font-size: 11px; }
+  .codebar { display: flex; align-items: center; gap: 2px; margin: 12px 16px 0; padding: 4px 6px 0; border: 1px solid rgba(211, 200, 255, 0.12); border-bottom: 0; border-radius: 12px 12px 0 0; background: #110E22; flex: none; }
+  .codebar a { padding: 7px 9px 9px; font: 500 12px/1 var(--z-font-sans); color: var(--t-text-3); border-bottom: 2px solid transparent; }
+  .codebar a[aria-current] { color: var(--t-text); border-color: var(--z-electric); }
+  .codebar .copy { margin-left: auto; color: var(--t-text-3); display: inline-flex; align-items: center; gap: 5px; font: 500 11.5px/1 var(--z-font-sans); padding-right: 6px; }
+  .insp .z-code { margin: 0 16px; border-radius: 0 0 12px 12px; font-size: 11.6px; line-height: 1.62; padding: 12px 14px; overflow: hidden; flex: none; }
+  .usage { margin: 14px 16px 16px; padding: 12px 14px; border: 1px solid var(--t-line); border-radius: 12px; background: var(--t-surface); flex: none; }
+  .usage__top { display: flex; align-items: baseline; justify-content: space-between; }
+  .usage__top b { font: 600 18px/1 var(--z-font-sans); font-variant-numeric: tabular-nums; }
+  .usage__top b small { font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); margin-left: 6px; }
+  .usage__top span { font: 400 11.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .usage svg { width: 100%; height: auto; margin-top: 10px; }
+  .meter { margin-top: 10px; display: flex; align-items: center; gap: 10px; font: 400 11.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .meter__bar { flex: 1; height: 6px; border-radius: 99px; background: rgba(211, 200, 255, 0.1); overflow: hidden; }
+  .meter__bar i { display: block; height: 100%; width: 41%; border-radius: 99px; background: var(--z-electric); }
+  .meter b { font: 500 11.5px/1 var(--z-font-mono); color: var(--t-text-2); }
+</style>
+</head>
+<body>
+<div class="console">
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="hdr">
+    <img class="hdr__logo" src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven">
+    <span class="hdr__label">Developers</span>
+    <span class="slash">/</span>
+    <span class="org">Corvane Industrial</span>
+    <span class="slash">/</span>
+    <span class="switch" role="button" aria-label="Switch product"><img src="../../favicon/vevo-app-icon.svg" alt="">VEVO<svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg></span>
+    <span class="env" aria-label="Environment"><span aria-current="true">Live</span><span>Sandbox</span></span>
+    <span class="grow"></span>
+    <div class="z-search"><svg class="zi zi--sm"><use href="#zi-search"/></svg>Search docs, keys, logs…<span class="z-kbd">⌘K</span></div>
+    <a class="hdr__link" href="#"><svg class="zi zi--sm"><use href="#zi-file"/></svg>API reference</a>
+    <span class="z-avatar">KM</span>
+  </header>
+
+  <div class="body">
+    <!-- ===================== NAV ===================== -->
+    <nav class="nav" aria-label="Developer console">
+      <a href="#" aria-current="page"><svg class="zi zi--sm"><use href="#zi-layers"/></svg>Overview</a>
+      <a href="#"><svg class="zi zi--sm"><use href="#zi-key"/></svg>API keys<span class="n">4</span></a>
+      <a href="#"><svg class="zi zi--sm"><use href="#zi-webhook"/></svg>Webhooks<span class="n">1</span></a>
+      <a href="#"><svg class="zi zi--sm"><use href="#zi-integrations"/></svg>Integrations<span class="n">5</span></a>
+      <a href="#"><svg class="zi zi--sm"><use href="#zi-terminal"/></svg>Logs</a>
+      <a href="#"><svg class="zi zi--sm"><use href="#zi-activity"/></svg>Usage</a>
+      <a href="#"><svg class="zi zi--sm"><use href="#zi-file"/></svg>Docs<svg class="zi ext"><use href="#zi-arrow-up-right"/></svg></a>
+
+      <div class="nav__sec">Tools</div>
+      <a href="#"><svg class="zi zi--sm"><use href="#zi-git-branch"/></svg>SDKs &amp; CLI</a>
+      <a href="#"><svg class="zi zi--sm"><use href="#zi-security"/></svg>Audit log</a>
+      <a href="#"><svg class="zi zi--sm"><use href="#zi-users"/></svg>Team access</a>
+
+      <div class="nav__foot">
+        <span class="ok">All systems operational</span>
+        <div class="kv">API version<b>2026-09-01</b></div>
+        <div class="kv">Region<b>eu-central</b></div>
+      </div>
+    </nav>
+
+    <!-- ===================== MAIN ===================== -->
+    <main class="main">
+      <div class="phead">
+        <div>
+          <h1>Overview</h1>
+          <p>Connect VEVO to the systems you already run, and build on its API.</p>
+        </div>
+        <div class="z-row gap-2">
+          <a class="z-btn z-btn--secondary z-btn--sm" href="#"><svg class="zi zi--sm"><use href="#zi-terminal"/></svg>Quickstart</a>
+          <a class="z-btn z-btn--primary z-btn--sm" href="#"><svg class="zi zi--sm"><use href="#zi-plus"/></svg>Create API key</a>
+        </div>
+      </div>
+
+      <!-- Integrations -->
+      <section>
+        <div class="sec__h"><h2>Integrations</h2><span>5 connected · 3 available</span><a href="#">Browse catalog <svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a></div>
+        <div class="conns">
+          <article class="conn">
+            <div class="conn__top"><span class="mono-tile mono-tile--c">ERP</span><div class="grow"><div class="conn__name">ERP</div><div class="conn__cat">SAP-compatible</div></div></div>
+            <div class="conn__foot"><span class="st">Synced 4 min ago</span><svg class="zi more"><use href="#zi-more"/></svg></div>
+          </article>
+          <article class="conn">
+            <div class="conn__top"><span class="mono-tile">CRM</span><div class="grow"><div class="conn__name">CRM</div><div class="conn__cat">Accounts, contacts</div></div></div>
+            <div class="conn__foot"><span class="st">Synced 12 min ago</span><svg class="zi more"><use href="#zi-more"/></svg></div>
+          </article>
+          <article class="conn">
+            <div class="conn__top"><span class="mono-tile mono-tile--b">ACC</span><div class="grow"><div class="conn__name">Accounting</div><div class="conn__cat">Ledger, payables</div></div></div>
+            <div class="conn__foot"><span class="st st--warn">Expires 9 Oct</span><span class="mini-btn">Renew</span></div>
+          </article>
+          <article class="conn">
+            <div class="conn__top"><span class="mono-tile mono-tile--b">DW</span><div class="grow"><div class="conn__name">Data warehouse</div><div class="conn__cat">SQL · nightly</div></div></div>
+            <div class="conn__foot"><span class="st">Exported 02:00</span><svg class="zi more"><use href="#zi-more"/></svg></div>
+          </article>
+          <article class="conn">
+            <div class="conn__top"><span class="mono-tile mono-tile--c">ID</span><div class="grow"><div class="conn__name">Identity</div><div class="conn__cat">SAML · OIDC</div></div></div>
+            <div class="conn__foot"><span class="st">48 users provisioned</span><svg class="zi more"><use href="#zi-more"/></svg></div>
+          </article>
+          <article class="conn">
+            <div class="conn__top"><span class="mono-tile mono-tile--off">MSG</span><div class="grow"><div class="conn__name">Messaging</div><div class="conn__cat">Chat and email</div></div></div>
+            <div class="conn__foot"><span class="st st--off">Available</span><span class="mini-btn">Connect</span></div>
+          </article>
+          <article class="conn">
+            <div class="conn__top"><span class="mono-tile mono-tile--off">OBJ</span><div class="grow"><div class="conn__name">Object storage</div><div class="conn__cat">S3-compatible</div></div></div>
+            <div class="conn__foot"><span class="st st--off">Available</span><span class="mini-btn">Connect</span></div>
+          </article>
+          <article class="conn">
+            <div class="conn__top"><span class="mono-tile mono-tile--off">{ }</span><div class="grow"><div class="conn__name">Custom REST</div><div class="conn__cat">Any OpenAPI 3.1</div></div></div>
+            <div class="conn__foot"><span class="st st--off">Available</span><span class="mini-btn">Configure</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- API keys -->
+      <section>
+        <div class="sec__h"><h2>API keys</h2><span>Live mode · secret keys are shown once</span><a href="#">Manage keys <svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a></div>
+        <div class="card keys">
+          <table class="z-table">
+            <thead><tr><th>Name</th><th>Key</th><th>Scopes</th><th>Last used</th><th>Created</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><span class="key-name">ERP connector</span></td><td><span class="prefix">zk_live_7Hq2…</span></td><td><div class="scopes"><span class="z-tag w">orders:write</span><span class="z-tag">inventory:read</span></div></td><td class="t2">2 min ago</td><td class="t3">12 Mar 2026</td><td><svg class="zi zi--sm"><use href="#zi-more"/></svg></td></tr>
+              <tr><td><span class="key-name">CRM sync</span></td><td><span class="prefix">zk_live_3PxM…</span></td><td><div class="scopes"><span class="z-tag w">customers:write</span><span class="z-tag">orders:read</span></div></td><td class="t2">14 min ago</td><td class="t3">28 Apr 2026</td><td><svg class="zi zi--sm"><use href="#zi-more"/></svg></td></tr>
+              <tr><td><span class="key-name">Warehouse export</span></td><td><span class="prefix">zk_live_Q8nT…</span></td><td><div class="scopes"><span class="z-tag">analytics:read</span></div></td><td class="t2">02:00 today</td><td class="t3">03 Jun 2026</td><td><svg class="zi zi--sm"><use href="#zi-more"/></svg></td></tr>
+              <tr><td><span class="key-name">Field app · restricted</span></td><td><span class="prefix">zk_live_b2Kd…</span></td><td><div class="scopes"><span class="z-tag">orders:read</span><span class="z-tag w">assistant:invoke</span></div></td><td class="t2">38 s ago</td><td class="t3">19 Aug 2026</td><td><svg class="zi zi--sm"><use href="#zi-more"/></svg></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Webhooks -->
+      <section>
+        <div class="sec__h"><h2>Webhooks</h2><span>Signed with HMAC-SHA256 · retried for 72 h</span><a href="#">Add endpoint <svg class="zi zi--xs"><use href="#zi-plus"/></svg></a></div>
+        <div class="card hook">
+          <div class="hook__l">
+            <div class="hook__ep">
+              <span class="method">POST</span>
+              <span class="hook__url">https://hooks.corvane-industrial.com/vevo</span>
+              <span class="z-chip z-chip--success" style="height:22px;font-size:11.5px;margin-left:auto">Enabled</span>
+            </div>
+            <div class="hook__ev">
+                            <span class="ev"><svg class="zi"><use href="#zi-check"/></svg>order.created</span>
+              <span class="ev"><svg class="zi"><use href="#zi-check"/></svg>workflow.run.completed</span>
+              <span class="ev"><svg class="zi"><use href="#zi-check"/></svg>assistant.action.approved</span>
+            </div>
+            <div class="hook__meta"><span>Secret <b class="mono" style="font-size:11.5px">whsec_••••••4f1c</b></span><span>Last delivery <b>09:14:23 · 200</b></span><span>Version <b>2026-09-01</b></span></div>
+          </div>
+          <div class="hook__r">
+            <div class="lbl"><span>Deliveries · 24 h</span></div>
+            <div class="big">4,812<small>99.98% ok</small></div>
+            <svg viewBox="0 0 178 34" aria-hidden="true" style="width:100%;height:auto;margin-top:4px">
+              <g fill="#9671FF">
+                <rect x="0" y="22" width="5" height="12" rx="1"/><rect x="7.5" y="24" width="5" height="10" rx="1"/><rect x="15" y="26" width="5" height="8" rx="1"/><rect x="22.5" y="27" width="5" height="7" rx="1"/><rect x="30" y="25" width="5" height="9" rx="1"/><rect x="37.5" y="20" width="5" height="14" rx="1"/>
+                <rect x="45" y="14" width="5" height="20" rx="1"/><rect x="52.5" y="9" width="5" height="25" rx="1"/><rect x="60" y="6" width="5" height="28" rx="1"/><rect x="67.5" y="4" width="5" height="30" rx="1"/><rect x="75" y="7" width="5" height="27" rx="1"/><rect x="82.5" y="5" width="5" height="29" rx="1"/>
+                <rect x="90" y="3" width="5" height="31" rx="1"/><rect x="97.5" y="6" width="5" height="28" rx="1"/><rect x="105" y="8" width="5" height="26" rx="1"/><rect x="112.5" y="10" width="5" height="24" rx="1"/><rect x="120" y="13" width="5" height="21" rx="1"/><rect x="127.5" y="17" width="5" height="17" rx="1"/>
+                <rect x="135" y="19" width="5" height="15" rx="1"/><rect x="142.5" y="21" width="5" height="13" rx="1"/><rect x="150" y="23" width="5" height="11" rx="1"/><rect x="157.5" y="22" width="5" height="12" rx="1"/><rect x="165" y="20" width="5" height="14" rx="1"/>
+              </g>
+              <rect x="172.5" y="16" width="5" height="18" rx="1" fill="#3DD8E8"/>
+            </svg>
+            <div class="lbl" style="margin-top:2px"><span>p95 210 ms</span><span>1 retry</span></div>
+          </div>
+          <div class="dlv">
+            <div class="dlv__row"><span class="z-tag" style="height:20px;font-size:11px">evt_5Lr8Tc2</span><span class="dlv__ev">assistant.action.approved</span><span class="dlv__s">200</span><span class="dlv__l">182 ms</span><span class="dlv__t">09:14:23</span></div>
+            <div class="dlv__row"><span class="z-tag" style="height:20px;font-size:11px">evt_5Lr7Wq4</span><span class="dlv__ev">workflow.run.completed</span><span class="dlv__s dlv__s--r">503 → 200</span><span class="dlv__l">2 attempts</span><span class="dlv__t">09:11:07</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================== REQUEST INSPECTOR ===================== -->
+    <aside class="insp" aria-label="Request inspector">
+      <div class="insp__head">
+        <h2>Request inspector</h2>
+        <span class="live">Live tail</span>
+        <span class="grow"></span>
+        <svg class="zi zi--sm" style="color:var(--t-text-3)"><use href="#zi-filter"/></svg>
+      </div>
+      <div class="reqs">
+        <div class="req" aria-current="true"><span class="m">POST</span><span class="p">/v1/orders</span><span class="s">201</span><span class="l">142ms</span></div>
+        <div class="req"><span class="m">GET</span><span class="p">/v1/customers?limit=50</span><span class="s">200</span><span class="l">38ms</span></div>
+        <div class="req"><span class="m">POST</span><span class="p">/v1/assistant/actions/act_9Qm/approve</span><span class="s">200</span><span class="l">96ms</span></div>
+        <div class="req"><span class="m">GET</span><span class="p">/v1/inventory/HF-2210</span><span class="s e">404</span><span class="l">21ms</span></div>
+      </div>
+      <div class="detail">
+        <div class="detail__line"><span class="verb">POST</span>/v1/orders<span class="grow"></span><span class="z-caption" style="font-family:var(--z-font-sans)">09:14:22</span></div>
+        <div class="chips">
+          <span class="z-chip z-chip--success">201 Created</span>
+          <span class="z-chip">142 ms</span>
+          <span class="z-chip mono">req_8Kx2Qm4Lw9</span>
+                  </div>
+      </div>
+      <div class="codebar"><a href="#" aria-current="page">cURL</a><a href="#">Node</a><a href="#">Python</a><a href="#">Headers</a><span class="copy"><svg class="zi zi--xs"><use href="#zi-copy"/></svg>Copy</span></div>
+<pre class="z-code"><span class="tk-f">curl</span> -X POST https://api.zirven.com/v1/orders \
+  -H <span class="tk-s">"Authorization: Bearer $ZIRVEN_KEY"</span> \
+  -H <span class="tk-s">"Zirven-Product: vevo"</span> \
+  -H <span class="tk-s">"Idempotency-Key: 5f0c2e8a"</span> \
+  --json <span class="tk-s">'{"customer": "cus_NL0042",</span>
+<span class="tk-s">    "lines": [{"sku": "HF-2210", "qty": 240}]}'</span>
+
+<span class="tk-c"># 201 Created · 142 ms</span>
+<span class="tk-p">{</span>
+  <span class="tk-k">"id"</span><span class="tk-p">:</span> <span class="tk-s">"ord_8Kx2Qm4Lw9"</span><span class="tk-p">,</span>
+  <span class="tk-k">"object"</span><span class="tk-p">:</span> <span class="tk-s">"order"</span><span class="tk-p">,</span>
+  <span class="tk-k">"status"</span><span class="tk-p">:</span> <span class="tk-s">"received"</span><span class="tk-p">,</span>
+  <span class="tk-k">"customer"</span><span class="tk-p">:</span> <span class="tk-s">"cus_NL0042"</span><span class="tk-p">,</span>
+  <span class="tk-k">"total"</span><span class="tk-p">:</span> <span class="tk-n">18432.00</span><span class="tk-p">,</span>
+  <span class="tk-k">"currency"</span><span class="tk-p">:</span> <span class="tk-s">"EUR"</span><span class="tk-p">,</span>
+  <span class="tk-k">"workflow_run"</span><span class="tk-p">:</span> <span class="tk-s">"run_7Hq2kV9"</span><span class="tk-p">,</span>
+  <span class="tk-k">"livemode"</span><span class="tk-p">:</span> <span class="tk-k">true</span>
+<span class="tk-p">}</span></pre>
+      <div class="usage">
+        <div class="usage__top"><b>1.82M<small>requests · 24 h</small></b><span>Errors 0.04%</span></div>
+        <svg viewBox="0 0 340 52" aria-label="Requests per hour over the last 24 hours, peaking mid-morning">
+          <g stroke="rgba(211,200,255,0.08)"><path d="M0 0.5H340M0 26H340M0 51.5H340"/></g>
+          <g fill="#9671FF">
+            <rect x="0" y="38" width="11" height="14" rx="2"/><rect x="14" y="40" width="11" height="12" rx="2"/><rect x="28" y="42" width="11" height="10" rx="2"/><rect x="42" y="43" width="11" height="9" rx="2"/><rect x="56" y="41" width="11" height="11" rx="2"/><rect x="70" y="35" width="11" height="17" rx="2"/>
+            <rect x="84" y="24" width="11" height="28" rx="2"/><rect x="98" y="14" width="11" height="38" rx="2"/><rect x="112" y="8" width="11" height="44" rx="2"/><rect x="126" y="5" width="11" height="47" rx="2"/><rect x="140" y="9" width="11" height="43" rx="2"/><rect x="154" y="7" width="11" height="45" rx="2"/>
+            <rect x="168" y="4" width="11" height="48" rx="2"/><rect x="182" y="8" width="11" height="44" rx="2"/><rect x="196" y="11" width="11" height="41" rx="2"/><rect x="210" y="15" width="11" height="37" rx="2"/><rect x="224" y="20" width="11" height="32" rx="2"/><rect x="238" y="26" width="11" height="26" rx="2"/>
+            <rect x="252" y="30" width="11" height="22" rx="2"/><rect x="266" y="33" width="11" height="19" rx="2"/><rect x="280" y="35" width="11" height="17" rx="2"/><rect x="294" y="34" width="11" height="18" rx="2"/><rect x="308" y="31" width="11" height="21" rx="2"/>
+          </g>
+          <rect x="322" y="27" width="11" height="25" rx="2" fill="#3DD8E8"/>
+        </svg>
+        <div class="meter"><span>Rate limit</span><span class="meter__bar"><i></i></span><b>1,240 / 3,000 rpm</b></div>
+      </div>
+    </aside>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logo review · Zirven V2.1</title>
+<meta name="description" content="Critical review of the Summit Z for an international software company: three candidates compared at 16, 24, 32 and 64 px, as app icons, in a website header and in monochrome.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<style>
+  body { background: #fff; }
+  header.top { border-bottom: 1px solid var(--t-line); }
+  header.top .z-container { height: 68px; display: flex; align-items: center; justify-content: space-between; }
+  header.top img { height: 24px; }
+  .intro { padding: 72px 0 40px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; }
+  .criteria { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .criteria li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; font-size: 15px; color: var(--t-text-2); }
+  .criteria b { color: var(--t-text); font-weight: 600; }
+  .criteria span.n { font: 600 12px/22px var(--z-font-mono); color: var(--z-violet); }
+  h2.sec { margin: 72px 0 8px; }
+  .cands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+  .cand { border: 1px solid var(--t-line); border-radius: 18px; overflow: hidden; background: #fff; }
+  .cand--win { border-color: var(--z-violet); box-shadow: 0 0 0 3px rgba(91, 52, 224, 0.12); }
+  .cand__art { display: grid; grid-template-columns: 1fr 1fr; height: 240px; }
+  .cand__art div { display: grid; place-items: center; }
+  .cand__art div:last-child { background: var(--z-night); }
+  .cand__art img { height: 128px; width: auto; }
+  .cand__body { padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .cand__body p { font-size: 14.5px; color: var(--t-text-2); }
+  .tag-win { background: var(--z-violet); color: #fff; border: 0; }
+  table.ladder { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 28px; border: 1px solid var(--t-line); border-radius: 18px; overflow: hidden; }
+  .ladder th { font: 500 12px/1.3 var(--z-font-sans); color: var(--t-text-3); text-align: center; padding: 14px 10px; background: var(--z-ink-50); border-bottom: 1px solid var(--t-line); }
+  .ladder th:first-child { text-align: left; padding-left: 20px; }
+  .ladder td { padding: 18px 10px; border-bottom: 1px solid var(--t-line); text-align: center; vertical-align: middle; }
+  .ladder tr:last-child td { border-bottom: 0; }
+  .ladder td:first-child { text-align: left; padding-left: 20px; font: 600 14px/1.3 var(--z-font-sans); width: 150px; }
+  .ladder td img { display: inline-block; vertical-align: middle; }
+  .px { image-rendering: pixelated; image-rendering: crisp-edges; }
+  .zoom { width: 96px; height: 96px; border: 1px solid var(--t-line); border-radius: 8px; background: #fff; display: inline-grid; place-items: center; overflow: hidden; }
+  .onv { background: var(--z-night); border-radius: 8px; padding: 8px; display: inline-block; }
+  .mono-w { background: #000; padding: 10px; border-radius: 8px; display: inline-block; }
+  .mono-b { background: #fff; border: 1px solid var(--t-line); padding: 10px; border-radius: 8px; display: inline-block; }
+  .tab { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px 0 10px; border-radius: 9px 9px 0 0; background: #DFDCEB; font: 12px/1 var(--z-font-sans); color: #3A3456; }
+  .nav-mock { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 16px; border-radius: 10px; background: var(--z-night); }
+  .nav-mock span { font: 500 11px/1 var(--z-font-sans); color: var(--z-ink-400); margin-left: 14px; }
+  .score { width: 100%; border-collapse: collapse; margin-top: 28px; font-size: 14.5px; }
+  .score th, .score td { padding: 14px 16px; border-bottom: 1px solid var(--t-line); text-align: left; vertical-align: top; }
+  .score th { font: 500 12px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .score td.s { font: 600 15px/1 var(--z-font-sans); text-align: center; width: 90px; }
+  .score tr.total td { font-weight: 600; border-top: 2px solid var(--z-night); }
+  .bar { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 8px; }
+  .bar i { width: 10px; height: 6px; border-radius: 2px; background: var(--z-ink-200); }
+  .bar i.on { background: var(--z-violet); }
+  .decision { margin-top: 72px; border-radius: 24px; padding: 56px; display: grid; grid-template-columns: 300px 1fr; gap: 56px; align-items: center; color: var(--z-snow); position: relative; overflow: hidden; }
+  .decision h2 { color: var(--z-snow); }
+  .decision p, .decision li { color: var(--z-ink-300); font-size: 15.5px; }
+  .decision ul { margin: 16px 0 0; padding-left: 18px; display: grid; gap: 8px; }
+  .decision li b { color: var(--z-snow); font-weight: 500; }
+  .assemble { position: relative; width: 300px; height: 300px; display: grid; place-items: center; }
+  .assemble svg { width: 240px; height: auto; overflow: visible; }
+  @media (prefers-reduced-motion: no-preference) {
+    .m1 { animation: in1 2.8s var(--z-ease-summit) 4 both; } .m2 { animation: in2 2.8s var(--z-ease-summit) 4 both; } .m3 { animation: in3 2.8s var(--z-ease-summit) 4 both; }
+    @keyframes in1 { 0% { transform: translate(-14px, 5px); opacity: 0; } 35%, 100% { transform: none; opacity: 1; } }
+    @keyframes in2 { 0%, 12% { transform: translate(8px, -12px); opacity: 0; } 50%, 100% { transform: none; opacity: 1; } }
+    @keyframes in3 { 0%, 24% { transform: translateX(16px); opacity: 0; } 62%, 100% { transform: none; opacity: 1; } }
+    .mfill { animation: fill 2.8s var(--z-ease-summit) 4 both; }
+    @keyframes fill { 0%, 66% { opacity: 0; } 80%, 100% { opacity: 1; } }
+  }
+  .refine { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
+  .refine .z-card { display: flex; flex-direction: column; gap: 8px; }
+  .refine b { font: 600 12px/1 var(--z-font-mono); color: var(--z-violet); }
+  .refine p { font-size: 14px; color: var(--t-text-2); }
+  .resemble { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+  .resemble .z-card p { font-size: 14.5px; color: var(--t-text-2); margin-top: 6px; }
+  .construction { display: grid; grid-template-columns: 420px 1fr; gap: 48px; align-items: center; margin-top: 28px; }
+  .construction img { border-radius: 16px; border: 1px solid var(--t-line); }
+  .construction dl { display: grid; grid-template-columns: 140px 1fr; gap: 12px 20px; margin: 0; font-size: 15px; }
+  .construction dt { font: 600 13px/1.6 var(--z-font-mono); color: var(--z-violet); }
+  .construction dd { margin: 0; color: var(--t-text-2); }
+  footer.end { margin: 80px 0 0; padding: 32px 0 48px; border-top: 1px solid var(--t-line); }
+</style>
+</head>
+<body>
+<header class="top"><div class="z-container"><img src="../svg/zirven-logo-horizontal-light.svg" alt="Zirven"><span class="z-caption">Zirven V2.1 · Logo review</span></div></header>
+
+<main class="z-container">
+  <section class="intro">
+    <div class="z-stack gap-4">
+      <span class="z-overline">Logo review · V2.1</span>
+      <h1 class="z-display">Is the Summit Z right for a software company?</h1>
+      <p class="z-lead">V2 drew the Summit Z for a consumer product. V2.1 makes Zirven a technology and software company that will own many products. Before keeping the mark, we tested it again against two alternatives that add product-system and layered meaning.</p>
+    </div>
+    <div class="z-card" style="align-self:end">
+      <div class="z-h4">Criteria</div>
+      <ul class="criteria mt-4">
+        <li><span class="n">01</span><span><b>Distinctive.</b> Recognisable among other Z marks in technology. No look-alikes.</span></li>
+        <li><span class="n">02</span><span><b>Meaningful.</b> Progress, hard problems, the next level, product evolution.</span></li>
+        <li><span class="n">03</span><span><b>Small sizes.</b> Holds at 16, 24 and 32 px, in a tab, a dock and a header.</span></li>
+        <li><span class="n">04</span><span><b>Monochrome.</b> Works in one colour, embossed, etched or stitched.</span></li>
+        <li><span class="n">05</span><span><b>Scales to a portfolio.</b> Can sit above VEVO and future products without competing with them.</span></li>
+        <li><span class="n">06</span><span><b>Simple.</b> Can be drawn from memory.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <h2 class="z-h2 sec">The candidates</h2>
+  <p class="z-lead maxw-lg">All three share the V2 geometry: a 20° ramp that climbs to a 35° summit, a 55° descent and a base bar of one module (m).</p>
+  <div class="cands">
+    <article class="cand cand--win">
+      <div class="cand__art"><div><img src="A-summit-z-refined-light.svg" alt="Candidate A"></div><div><img src="A-summit-z-refined-dark.svg" alt=""></div></div>
+      <div class="cand__body"><div class="z-row z-between"><span class="z-h4">A · Summit Z, refined</span><span class="z-chip tag-win">Selected</span></div>
+      <p>The V2 mark, redrawn. One solid form: the climb, the summit and the base. The angles now relate to each other (20° + 35° = 55°), the stroke weights are balanced, and a separate micro master handles 16–24 px.</p></div>
+    </article>
+    <article class="cand">
+      <div class="cand__art"><div><img src="B-summit-modular-light.svg" alt="Candidate B"></div><div><img src="B-summit-modular-dark.svg" alt=""></div></div>
+      <div class="cand__body"><div class="z-row z-between"><span class="z-h4">B · Summit, modular</span><span class="z-chip">Product system</span></div>
+      <p>The same silhouette cut into three modules: the ramp, the descent and the base. Reads as a system of parts that make one product. The cuts follow the ramp and the base.</p></div>
+    </article>
+    <article class="cand">
+      <div class="cand__art"><div><img src="C-summit-layered-light.svg" alt="Candidate C"></div><div><img src="C-summit-layered-dark.svg" alt=""></div></div>
+      <div class="cand__body"><div class="z-row z-between"><span class="z-h4">C · Summit, layered</span><span class="z-chip">Connected layers</span></div>
+      <p>Two layers: the summit (ramp) resting on a platform (descent and base), separated by one gap. Reads as a product layer on a shared platform.</p></div>
+    </article>
+  </div>
+
+  <h2 class="z-h2 sec">Size ladder</h2>
+  <p class="z-lead maxw-lg">Rendered by the browser at true size, plus 16 px rasters enlarged 6× without smoothing so the real pixels are visible. Each candidate uses its own micro master below 32 px.</p>
+  <table class="ladder">
+    <thead><tr><th>Candidate</th><th>16 px</th><th>24 px</th><th>32 px</th><th>64 px</th><th>16 px · 6× zoom</th><th>Favicon tile 16 · 32</th><th>App icon</th><th>Website header</th><th>Monochrome</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>A · Refined<br><span class="z-caption">Selected</span></td>
+        <td><img class="px" src="png/A-summit-z-refined-16.png" width="13" height="16" alt=""></td>
+        <td><img class="px" src="png/A-summit-z-refined-24.png" width="20" height="24" alt=""></td>
+        <td><img class="px" src="png/A-summit-z-refined-32.png" width="27" height="32" alt=""></td>
+        <td><img src="A-summit-z-refined-black.svg" style="height:64px;width:auto" alt=""></td>
+        <td><span class="zoom"><img class="px" src="png/A-summit-z-refined-16.png" style="width:78px;height:96px" alt=""></span></td>
+        <td><div class="tab"><img class="px" src="png/A-summit-z-refined-tile-16.png" width="16" height="16" alt="">zirven.com</div> <img class="px" src="png/A-summit-z-refined-tile-32.png" width="32" height="32" style="margin-left:8px" alt=""></td>
+        <td><img src="A-summit-z-refined-tile-1024.svg" style="width:72px;height:72px" alt=""></td>
+        <td><div class="nav-mock"><img src="A-summit-z-refined-dark.svg" style="height:20px;width:auto" alt=""><img src="../svg/zirven-wordmark-dark.svg" style="height:17px;width:auto" alt=""><span>Products</span></div></td>
+        <td><span class="mono-b"><img src="A-summit-z-refined-black.svg" style="height:30px;width:auto" alt=""></span> <span class="mono-w"><img src="../svg/zirven-symbol-white.svg" style="height:30px;width:auto" alt=""></span></td>
+      </tr>
+      <tr>
+        <td>B · Modular</td>
+        <td><img class="px" src="png/B-summit-modular-16.png" width="13" height="16" alt=""></td>
+        <td><img class="px" src="png/B-summit-modular-24.png" width="20" height="24" alt=""></td>
+        <td><img class="px" src="png/B-summit-modular-32.png" width="27" height="32" alt=""></td>
+        <td><img src="B-summit-modular-black.svg" style="height:64px;width:auto" alt=""></td>
+        <td><span class="zoom"><img class="px" src="png/B-summit-modular-16.png" style="width:78px;height:96px" alt=""></span></td>
+        <td><div class="tab"><img class="px" src="png/B-summit-modular-tile-16.png" width="16" height="16" alt="">zirven.com</div> <img class="px" src="png/B-summit-modular-tile-32.png" width="32" height="32" style="margin-left:8px" alt=""></td>
+        <td><img src="B-summit-modular-tile-1024.svg" style="width:72px;height:72px" alt=""></td>
+        <td><div class="nav-mock"><img src="B-summit-modular-dark.svg" style="height:20px;width:auto" alt=""><img src="../svg/zirven-wordmark-dark.svg" style="height:17px;width:auto" alt=""><span>Products</span></div></td>
+        <td><span class="mono-b"><img src="B-summit-modular-black.svg" style="height:30px;width:auto" alt=""></span></td>
+      </tr>
+      <tr>
+        <td>C · Layered</td>
+        <td><img class="px" src="png/C-summit-layered-16.png" width="13" height="16" alt=""></td>
+        <td><img class="px" src="png/C-summit-layered-24.png" width="20" height="24" alt=""></td>
+        <td><img class="px" src="png/C-summit-layered-32.png" width="27" height="32" alt=""></td>
+        <td><img src="C-summit-layered-black.svg" style="height:64px;width:auto" alt=""></td>
+        <td><span class="zoom"><img class="px" src="png/C-summit-layered-16.png" style="width:78px;height:96px" alt=""></span></td>
+        <td><div class="tab"><img class="px" src="png/C-summit-layered-tile-16.png" width="16" height="16" alt="">zirven.com</div> <img class="px" src="png/C-summit-layered-tile-32.png" width="32" height="32" style="margin-left:8px" alt=""></td>
+        <td><img src="C-summit-layered-tile-1024.svg" style="width:72px;height:72px" alt=""></td>
+        <td><div class="nav-mock"><img src="C-summit-layered-dark.svg" style="height:20px;width:auto" alt=""><img src="../svg/zirven-wordmark-dark.svg" style="height:17px;width:auto" alt=""><span>Products</span></div></td>
+        <td><span class="mono-b"><img src="C-summit-layered-black.svg" style="height:30px;width:auto" alt=""></span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="z-h2 sec">Scorecard</h2>
+  <table class="score">
+    <thead><tr><th>Criterion</th><th style="text-align:center">A</th><th style="text-align:center">B</th><th style="text-align:center">C</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Distinctive</td><td class="s">4</td><td class="s">3</td><td class="s">3</td><td>A's acute summit and 20° ramp give it an unusual silhouette. B's three slanted bars come close to the stacked-bar Z marks common in crypto. C's split reads as a flag above a line at a glance.</td></tr>
+      <tr><td>Meaningful</td><td class="s">4</td><td class="s">5</td><td class="s">4</td><td>B states "systems built from modules" most clearly. A carries progress and the summit. Modular meaning moves into the wider system instead (pattern, product tiles, motion).</td></tr>
+      <tr><td>Small sizes (16–32 px)</td><td class="s">5</td><td class="s">2</td><td class="s">3</td><td>At 16 px, B's gaps fall below one pixel and the mark smears into three bars. C's single gap survives at 32 px but blurs at 16. A stays a clean Z.</td></tr>
+      <tr><td>Monochrome / production</td><td class="s">5</td><td class="s">3</td><td class="s">4</td><td>Narrow gaps fill in when engraved, embroidered or debossed. A has no gaps.</td></tr>
+      <tr><td>Portfolio fit</td><td class="s">5</td><td class="s">4</td><td class="s">4</td><td>A calm parent mark lets product marks (VEVO, future) carry their own glyphs. B and C compete with product tiles for attention.</td></tr>
+      <tr><td>Simplicity / memorability</td><td class="s">5</td><td class="s">3</td><td class="s">4</td><td>A can be drawn from memory: climb, summit, descend, base.</td></tr>
+      <tr class="total"><td>Total (30)</td><td class="s">28</td><td class="s">20</td><td class="s">22</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <section class="decision z-bg-terrain-plain">
+    <div class="assemble" aria-label="The modules of candidate B assemble into the solid Summit Z">
+      <svg viewBox="8 4 48 56" aria-hidden="true">
+        <g fill="#9671FF">
+          <path class="m1" d="M11 22.287 L53 7 L43.603 20.42 L11 32.287 Z"/>
+          <path class="m2" d="M20.597 33.294 L39.374 26.459 L28.143 42.5 L14.151 42.5 Z"/>
+          <path class="m3" d="M11 47 L53 47 L53 57 L11 57 Z"/>
+          <path class="mfill" d="M11 22.287 L53 7 L24.992 47 L53 47 L53 57 L11 57 L11 47 L24.826 27.255 L11 32.287 Z"/>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <span class="z-overline" style="color:var(--z-electric)">Decision</span>
+      <h2 class="z-h1 mt-4">Keep the Summit Z: candidate A, refined.</h2>
+      <p class="mt-4">The original idea is the strongest and the most usable mark. The alternatives were not wasted. Their ideas go into the system, where they help more than they would inside the symbol:</p>
+      <ul>
+        <li><b>B's modules become motion.</b> In animated intros the three modules travel along the 20° ramp and lock into the solid Z (shown on the left).</li>
+        <li><b>C's layers become architecture.</b> Product diagrams show products sitting on a shared Zirven platform layer.</li>
+        <li><b>A gets a micro master.</b> A thinner ramp and a 57° descent keep the counters open at 16 px, with the base snapped to whole pixels.</li>
+        <li><b>The wordmark becomes lowercase.</b> In capitals, Turkish readers see ZIRVEN as "Zırven", because Turkish capitalises <i>i</i> as <i>İ</i>. Lowercase <i>zirven</i> reads correctly in every language and sits calmly beside the capital-Z symbol.</li>
+      </ul>
+    </div>
+  </section>
+
+  <h2 class="z-h2 sec">What changed in A</h2>
+  <div class="refine">
+    <div class="z-card"><b>Angles</b><p>Ramp 20°, summit 35°, descent 55°. Two of the angles add up to the third, so the construction can be checked.</p></div>
+    <div class="z-card"><b>Weights</b><p>Ramp and base are one module each (10 units). The descent is 11.5 units measured perpendicular. That is optically even, so the diagonal no longer looks thin.</p></div>
+    <div class="z-card"><b>Micro master</b><p>Below 24 px a separate drawing is used, with a ramp of 8.4 and a descent of 57°. At 16 px the base is exactly 2 px.</p></div>
+    <div class="z-card"><b>Lockup</b><p>Symbol height is 1.62 × the wordmark's x-height, the gap is 0.30 × symbol height, and the symbol sits on the baseline.</p></div>
+  </div>
+
+  <h2 class="z-h2 sec">Construction</h2>
+  <div class="construction">
+    <img src="construction.svg" alt="Summit Z construction on a 64-unit grid">
+    <dl>
+      <dt>Grid</dt><dd>64-unit artboard. Symbol bounding box 42 × 50 units.</dd>
+      <dt>Module (m)</dt><dd>10 units, the height of the base bar. Clear space is 2m on every side.</dd>
+      <dt>Ramp</dt><dd>Climbs at 20° from the left edge to the summit at the top right.</dd>
+      <dt>Summit</dt><dd>35° interior angle: sharp enough to read as a peak, wide enough to survive printing.</dd>
+      <dt>Descent</dt><dd>55° from the summit to the base. 20 + 35 = 55.</dd>
+      <dt>Source</dt><dd><span class="z-mono">scripts/build_brand.py</span>, class <span class="z-mono">Summit</span>. Every symbol file is generated from these numbers.</dd>
+    </dl>
+  </div>
+
+  <h2 class="z-h2 sec">Resemblance check</h2>
+  <div class="resemble">
+    <div class="z-card"><div class="z-h4">Other Z marks in technology</div><p>We compared the mark visually with split-geometry Z marks, stacked-bar Z marks common in crypto, lightning-bolt Zs and Z-in-a-circle app icons. A's asymmetric ramp, acute summit and flat base do not match any of these silhouettes. B came closest to the stacked-bar group, which is one reason it was rejected.</p></div>
+    <div class="z-card"><div class="z-h4">Before registration</div><p>This is a visual review, not legal clearance. Before filing, commission a trademark search for classes 9, 35 and 42 in the TÜRKPATENT, EUIPO, WIPO (Madrid) and USPTO registers, and check app-store icon similarity.</p></div>
+  </div>
+
+  <footer class="end z-row z-between"><span class="z-caption">Zirven V2.1 · Logo review</span><span class="z-caption">Files: logo/exploration/*.svg · png/ · construction.svg</span></footer>
+</main>
+</body>
+</html>

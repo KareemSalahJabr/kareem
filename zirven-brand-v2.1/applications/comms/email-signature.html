@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email signature · Zirven V2.1 application 14</title>
+<meta name="description" content="Zirven V2.1 email signature in a light mail client, a dark-mode client and as plain text.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  /* ---------- Neutral third-party mail client (not a Zirven surface) ---------- */
+  .mc { --c-bg: #FFFFFF; --c-side: #F6F6F8; --c-line: #E6E5EB; --c-text: #1C1B22; --c-text-2: #6B6975; --c-text-3: #9A98A3; --c-sel: #EDECF2; --c-hover: #F2F1F5;
+    font-family: -apple-system, "Segoe UI", "Liberation Sans", Arial, sans-serif; color: var(--c-text);
+    background: var(--c-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(14, 11, 31, 0.1);
+    box-shadow: 0 1px 2px rgba(14, 11, 31, 0.06), 0 30px 70px -30px rgba(14, 11, 31, 0.38); }
+  .mc--dark { --c-bg: #1E1D23; --c-side: #18171C; --c-line: #2E2C35; --c-text: #ECEBF0; --c-text-2: #A3A1AD; --c-text-3: #74727E; --c-sel: #2A2931; --c-hover: #25242B;
+    border-color: rgba(0, 0, 0, 0.5); }
+  .mc__bar { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: var(--c-side); border-bottom: 1px solid var(--c-line); }
+  .mc__bar i { width: 11px; height: 11px; border-radius: 50%; background: #D4D2DA; }
+  .mc--dark .mc__bar i { background: #3A3842; }
+  .mc__bar span { margin: 0 auto; transform: translateX(-24px); font-size: 12.5px; color: var(--c-text-2); }
+  .mc__body { display: grid; grid-template-columns: 212px 340px minmax(0, 1fr); height: 872px; }
+  .mc__side { background: var(--c-side); border-right: 1px solid var(--c-line); padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
+  .mc__acct { display: flex; align-items: center; gap: 10px; padding: 4px 8px 16px; }
+  .mc__acct b { display: block; font-size: 13px; font-weight: 600; }
+  .mc__acct small { display: block; font-size: 11.5px; color: var(--c-text-3); margin-top: 2px; }
+  .mc__compose { margin: 0 4px 12px; height: 34px; border-radius: 8px; border: 1px solid var(--c-line); background: var(--c-bg); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--c-text); }
+  .mc__folder { display: flex; align-items: center; gap: 10px; height: 32px; padding: 0 10px; border-radius: 7px; color: var(--c-text-2); }
+  .mc__folder .zi { width: 16px; height: 16px; color: var(--c-text-3); stroke-width: 1.7; }
+  .mc__folder[aria-current] { background: var(--c-sel); color: var(--c-text); font-weight: 600; }
+  .mc__folder[aria-current] .zi { color: var(--c-text); }
+  .mc__folder em { margin-left: auto; font-style: normal; font-size: 12px; color: var(--c-text-3); }
+  .mc__group { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--c-text-3); padding: 18px 10px 6px; }
+  .mc__dot { width: 8px; height: 8px; border-radius: 50%; margin: 0 4px; }
+
+  .mc__list { border-right: 1px solid var(--c-line); display: flex; flex-direction: column; min-width: 0; }
+  .mc__search { margin: 12px; height: 32px; border-radius: 8px; background: var(--c-side); border: 1px solid var(--c-line); display: flex; align-items: center; gap: 8px; padding: 0 10px; font-size: 13px; color: var(--c-text-3); }
+  .mc__search .zi { width: 15px; height: 15px; }
+  .mc__lhead { display: flex; justify-content: space-between; padding: 2px 16px 10px; font-size: 12px; color: var(--c-text-3); border-bottom: 1px solid var(--c-line); }
+  .mc__lhead b { color: var(--c-text); font-size: 15px; font-weight: 700; }
+  .mc__item { position: relative; padding: 12px 16px 13px 26px; border-bottom: 1px solid var(--c-line); font-size: 13px; }
+  .mc__item[aria-current] { background: var(--c-sel); }
+  .mc__item .top { display: flex; justify-content: space-between; gap: 8px; }
+  .mc__item .who { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mc__item time { font-size: 12px; color: var(--c-text-3); white-space: nowrap; }
+  .mc__item .subj { margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mc__item .prev { margin-top: 3px; color: var(--c-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mc__item.unread::before { content: ""; position: absolute; left: 10px; top: 18px; width: 7px; height: 7px; border-radius: 50%; background: #4A6CF7; }
+  .mc__item .att { width: 13px; height: 13px; color: var(--c-text-3); display: inline-block; vertical-align: -2px; margin-right: 4px; }
+
+  .mc__read { display: flex; flex-direction: column; min-width: 0; }
+  .mc__tools { height: 52px; display: flex; align-items: center; gap: 6px; padding: 0 20px; border-bottom: 1px solid var(--c-line); }
+  .mc__btn { height: 30px; padding: 0 12px; border-radius: 7px; border: 1px solid var(--c-line); display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--c-text); background: var(--c-bg); }
+  .mc__btn .zi { width: 14px; height: 14px; color: var(--c-text-2); }
+  .mc__icon { width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center; color: var(--c-text-2); }
+  .mc__icon .zi { width: 16px; height: 16px; }
+  .mc__msg { padding: 24px 32px 32px; overflow: hidden; }
+  .mc__subject { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .mc__from { margin-top: 16px; display: flex; align-items: center; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid var(--c-line); }
+  .mc__av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; background: #E3E1EA; color: #3D3A48; flex: none; }
+  .mc--dark .mc__av { background: #34323C; color: #D9D7E0; }
+  .mc__from .meta { font-size: 13px; line-height: 1.45; min-width: 0; }
+  .mc__from .meta b { font-weight: 600; }
+  .mc__from .meta span { color: var(--c-text-2); }
+  .mc__from time { margin-left: auto; align-self: flex-start; font-size: 12px; color: var(--c-text-3); white-space: nowrap; }
+  .mc__text { margin-top: 20px; font-size: 14px; line-height: 1.6; max-width: 640px; }
+  .mc__text p + p, .mc__text ol + p, .mc__text p + ol { margin-top: 12px; }
+  .mc__text ol { margin: 0; padding-left: 22px; }
+  .mc__text ol li + li { margin-top: 4px; }
+  .mc__attach { margin-top: 18px; display: inline-flex; align-items: center; gap: 10px; padding: 9px 14px 9px 10px; border: 1px solid var(--c-line); border-radius: 9px; font-size: 12.5px; }
+  .mc__attach .ic { width: 30px; height: 34px; border-radius: 5px; background: #F0EFF4; display: grid; place-items: center; color: #6B6975; }
+  .mc__attach small { display: block; color: var(--c-text-3); font-size: 11.5px; margin-top: 2px; }
+
+  /* ---------- The Zirven signature (what the HTML table renders to) ---------- */
+  .sig { --s-text: #0E0B1F; --s-text-2: #57516F; --s-text-3: #77718F; --s-line: #E0DEEA; --s-link: #5B34E0;
+    margin-top: 28px; max-width: 600px; font-family: "Readex Pro", "Segoe UI", Helvetica, Arial, sans-serif; color: var(--s-text); }
+  .sig--dark { --s-text: #F7F6FC; --s-text-2: #C4C0D3; --s-text-3: #9C97B1; --s-line: rgba(211, 200, 255, 0.14); --s-link: #9671FF; }
+  .sig__delim { font-size: 13px; color: var(--c-text-3); margin-bottom: 14px; font-family: inherit; }
+  .sig__name { font-weight: 600; font-size: 15px; line-height: 20px; }
+  .sig__role { font-weight: 400; font-size: 13px; line-height: 19px; color: var(--s-text-2); }
+  .sig__logo { height: 22px; width: auto; margin: 14px 0 12px; }
+  .sig__contact { font-weight: 400; font-size: 13px; line-height: 19px; color: var(--s-text); display: flex; gap: 8px; align-items: center; }
+  .sig__contact i { font-style: normal; color: var(--s-text-3); }
+  .sig__contact a { color: var(--s-text); }
+  .sig__vevo { margin-top: 4px; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; font-size: 13px; line-height: 19px; color: var(--s-link); }
+  .sig__vevo .zi { width: 14px; height: 14px; stroke-width: 2; }
+  .sig__legal { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--s-line); font-weight: 400; font-size: 11px; line-height: 16px; color: var(--s-text-3); }
+
+  /* ---------- Board layout ---------- */
+  .row2 { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+  .lbl { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; font: 400 13px/1.45 var(--z-font-sans); color: var(--z-ink-600); }
+  .lbl b { font: 600 12px/1 var(--z-font-mono); color: var(--z-violet); }
+  .lbl strong { color: var(--z-night); font-weight: 500; }
+  .mc--pane .mc__msg { padding: 24px 32px 30px; }
+  .plain { background: #FFFFFF; border: 1px solid rgba(14, 11, 31, 0.1); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(14, 11, 31, 0.05); }
+  .plain__head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--z-ink-200); font: 500 12px/1 var(--z-font-mono); color: var(--z-ink-500); }
+  .plain pre { margin: 0; padding: 18px 20px 20px; font: 400 13px/1.65 var(--z-font-mono); color: var(--z-night); white-space: pre-wrap; }
+  .plain pre .c { color: var(--z-ink-400); }
+
+  .rules { list-style: none; margin: 16px 0 0; padding: 4px 18px; background: rgba(255, 255, 255, 0.55); border: 1px solid rgba(14, 11, 31, 0.08); border-radius: 12px; }
+  .rules li { display: flex; gap: 10px; align-items: flex-start; padding: 11px 0; font: 400 13.5px/1.45 var(--z-font-sans); color: var(--z-ink-600); }
+  .rules li + li { border-top: 1px solid rgba(14, 11, 31, 0.07); }
+  .rules .zi { color: var(--z-violet); margin-top: 2px; }
+  /* anatomy */
+  .anat { background: #FFFFFF; border: 1px solid rgba(14, 11, 31, 0.1); border-radius: 16px; padding: 40px 44px; display: grid; grid-template-columns: 600px minmax(0, 1fr); column-gap: 0; }
+  .anat .sig { margin-top: 0; }
+  .anat__row { display: contents; }
+  .anat__cell { display: flex; align-items: center; min-height: 0; }
+  .anat__lead { flex: 1; height: 0; margin: 0 14px 0 18px; border-top: 1px dashed rgba(91, 52, 224, 0.4); position: relative; min-width: 40px; }
+  .anat__lead::after { content: ""; position: absolute; right: -4px; top: -3.5px; width: 6px; height: 6px; border-radius: 50%; background: var(--z-violet); }
+  .anat__spec { align-self: center; font: 400 13px/1.4 var(--z-font-sans); color: var(--z-ink-600); padding: 2px 0; }
+  .anat__spec b { margin-right: 10px; }
+  .anat__spec b { color: var(--z-night); font-weight: 500; }
+  .anat__spec code { font: 500 11.5px/1 var(--z-font-mono); color: var(--z-ink-500); background: var(--z-ink-100); padding: 3px 6px; border-radius: 5px; white-space: nowrap; margin-left: 6px; }
+  .anat .gap { grid-column: 1 / -1; height: 10px; }
+  .w600 { grid-column: 1 / -1; margin-top: 26px; position: relative; height: 9px; width: 600px; border-inline: 1px solid var(--z-ink-400); color: var(--z-ink-500); }
+  .w600::before { content: ""; position: absolute; left: 0; right: 0; top: 4px; border-top: 1px solid var(--z-ink-400); }
+  .w600 span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; padding: 0 8px; font: 500 11px/1 var(--z-font-mono); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="z-board">
+  <header class="z-board__head">
+    <img src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+    <span>Zirven V2.1 · Applications</span>
+    <div class="z-board__title"><b>14</b> Email signature</div>
+  </header>
+
+  <!-- ===================== A · Light client ===================== -->
+  <section>
+    <div class="lbl"><b>A</b><span><strong>In a light mail client</strong> · as the recipient at Meridian Logistics sees it</span></div>
+    <div class="mc">
+      <div class="mc__bar"><i></i><i></i><i></i><span>Inbox · kenji.mori@meridianlogistics.com</span></div>
+      <div class="mc__body">
+        <!-- folders -->
+        <nav class="mc__side" aria-label="Folders">
+          <div class="mc__acct"><div class="mc__av" style="width:32px;height:32px;font-size:12px">KM</div><div><b>Kenji Mori</b><small>Meridian Logistics</small></div></div>
+          <div class="mc__compose"><svg class="zi zi--sm"><use href="#zi-plus"/></svg>New message</div>
+          <a class="mc__folder" aria-current="page"><svg class="zi"><use href="#zi-inbox"/></svg>Inbox<em>12</em></a>
+          <a class="mc__folder"><svg class="zi"><use href="#zi-bell"/></svg>Flagged<em>3</em></a>
+          <a class="mc__folder"><svg class="zi"><use href="#zi-send"/></svg>Sent</a>
+          <a class="mc__folder"><svg class="zi"><use href="#zi-file"/></svg>Drafts<em>2</em></a>
+          <a class="mc__folder"><svg class="zi"><use href="#zi-layers"/></svg>Archive</a>
+          <div class="mc__group">Labels</div>
+          <a class="mc__folder"><i class="mc__dot" style="background:#7C8BA1"></i>Carriers</a>
+          <a class="mc__folder"><i class="mc__dot" style="background:#A38C6E"></i>Projects</a>
+          <a class="mc__folder"><i class="mc__dot" style="background:#7FA08B"></i>Finance</a>
+        </nav>
+
+        <!-- message list -->
+        <div class="mc__list">
+          <div class="mc__search"><svg class="zi"><use href="#zi-search"/></svg>Search mail</div>
+          <div class="mc__lhead"><b>Inbox</b><span>12 unread</span></div>
+          <div class="mc__item unread" aria-current="true">
+            <div class="top"><span class="who">Elif Kaya</span><time>16:42</time></div>
+            <div class="subj"><svg class="zi att"><use href="#zi-file"/></svg>Integration plan: WMS to VEVO</div>
+            <div class="prev">Thanks for the call this morning. As agreed, here is the plan for…</div>
+          </div>
+          <div class="mc__item unread">
+            <div class="top"><span class="who">Brightwater Freight</span><time>14:05</time></div>
+            <div class="subj">Q4 capacity: lanes and cut-off times</div>
+            <div class="prev">Please find the updated lane capacity for October to December…</div>
+          </div>
+          <div class="mc__item">
+            <div class="top"><span class="who">Amina Yusuf</span><time>11:30</time></div>
+            <div class="subj">Carrier invoices for September</div>
+            <div class="prev">Three invoices still need a matching delivery note before we…</div>
+          </div>
+          <div class="mc__item">
+            <div class="top"><span class="who">IT Service Desk</span><time>09:12</time></div>
+            <div class="subj">Planned maintenance, Saturday 02:00–04:00</div>
+            <div class="prev">The VPN and the shared drives will be unavailable during the…</div>
+          </div>
+          <div class="mc__item">
+            <div class="top"><span class="who">Daniel Weber</span><time>Wed</time></div>
+            <div class="subj">Re: Sandbox access for the pilot</div>
+            <div class="prev">Your sandbox tenant is ready. You will receive a one-time link…</div>
+          </div>
+          <div class="mc__item">
+            <div class="top"><span class="who">Northline Components</span><time>Wed</time></div>
+            <div class="subj">Delivery schedule, week 41</div>
+            <div class="prev">Attached is the confirmed schedule for inbound pallets to Venlo…</div>
+          </div>
+          <div class="mc__item">
+            <div class="top"><span class="who">Sara Lindqvist</span><time>Tue</time></div>
+            <div class="subj">Board pack: operations section</div>
+            <div class="prev">Could you send the on-time delivery figures by Friday? I will…</div>
+          </div>
+          <div class="mc__item">
+            <div class="top"><span class="who">Corvane Industrial</span><time>Mon</time></div>
+            <div class="subj">Pallet labelling change from November</div>
+            <div class="prev">From 2 November all inbound pallets will carry the new SSCC…</div>
+          </div>
+        </div>
+
+        <!-- reading pane -->
+        <article class="mc__read">
+          <div class="mc__tools">
+            <span class="mc__btn"><svg class="zi" style="transform:scaleX(-1)"><use href="#zi-arrow-right"/></svg>Reply</span>
+            <span class="mc__btn">Reply all</span>
+            <span class="mc__btn"><svg class="zi"><use href="#zi-arrow-right"/></svg>Forward</span>
+            <span style="flex:1"></span>
+            <span class="mc__icon"><svg class="zi"><use href="#zi-layers"/></svg></span>
+            <span class="mc__icon"><svg class="zi"><use href="#zi-bell"/></svg></span>
+            <span class="mc__icon"><svg class="zi"><use href="#zi-more"/></svg></span>
+          </div>
+          <div class="mc__msg">
+            <h1 class="mc__subject">Integration plan: WMS to VEVO</h1>
+            <div class="mc__from">
+              <div class="mc__av">EK</div>
+              <div class="meta"><b>Elif Kaya</b> <span>&lt;elif.kaya@zirven.com&gt;</span><br><span>To: Kenji Mori · Cc: Daniel Weber</span></div>
+              <time>Thu 1 Oct 2026, 16:42</time>
+            </div>
+            <div class="mc__attach"><span class="ic"><svg class="zi zi--sm"><use href="#zi-file"/></svg></span><span>meridian-integration-plan.pdf<small>PDF · 248 KB</small></span></div>
+            <div class="mc__text">
+              <p>Hi Kenji,</p>
+              <p>Thanks for the call this morning. As agreed, here is the plan for connecting your warehouse management system to VEVO:</p>
+              <ol>
+                <li>Week 1: read-only access to the shipments and inventory endpoints, in the sandbox.</li>
+                <li>Week 2: webhooks for status changes, checked against two weeks of history.</li>
+                <li>Week 3: production cut-over, with your on-call team in the loop.</li>
+              </ol>
+              <p>Please don’t send API credentials by email. Daniel will share a one-time link so you can add them to your secrets manager.</p>
+              <p>Does Thursday 8 October at 10:00 CET work for a 30-minute review?</p>
+              <p>Best,<br>Elif</p>
+            </div>
+
+            <!-- signature -->
+            <div class="sig">
+              <div class="sig__name">Elif Kaya</div>
+              <div class="sig__role">Engineering Manager<br>Zirven Technology</div>
+              <img class="sig__logo" src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+              <div class="sig__contact"><a>+90 212 000 00 00</a><i>·</i><a>zirven.com</a></div>
+              <a class="sig__vevo">VEVO — the AI-powered business platform <svg class="zi"><use href="#zi-arrow-up-right"/></svg></a>
+              <div class="sig__legal">Zirven Technology · Registered in İstanbul, Türkiye · Trade registry no. 000000. This email and its attachments are confidential and meant for the named recipient only.</div>
+            </div>
+
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== B · Dark client + C · plain text ===================== -->
+  <section class="row2">
+    <div>
+      <div class="lbl"><b>B</b><span><strong>In a dark-mode client</strong> · the dark logo is swapped in with prefers-color-scheme</span></div>
+      <div class="mc mc--dark mc--pane">
+        <div class="mc__bar"><i></i><i></i><i></i><span>Integration plan: WMS to VEVO</span></div>
+        <div class="mc__msg">
+          <div class="mc__from" style="margin-top:0">
+            <div class="mc__av">EK</div>
+            <div class="meta"><b>Elif Kaya</b> <span>&lt;elif.kaya@zirven.com&gt;</span><br><span>To: Kenji Mori · Cc: Daniel Weber</span></div>
+            <time>Thu 1 Oct 2026, 16:42</time>
+          </div>
+          <div class="mc__text">
+            <p>Does Thursday 8 October at 10:00 CET work for a 30-minute review?</p>
+            <p>Best,<br>Elif</p>
+          </div>
+          <div class="sig sig--dark">
+            <div class="sig__name">Elif Kaya</div>
+            <div class="sig__role">Engineering Manager<br>Zirven Technology</div>
+            <img class="sig__logo" src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven">
+            <div class="sig__contact"><a>+90 212 000 00 00</a><i>·</i><a>zirven.com</a></div>
+            <a class="sig__vevo">VEVO — the AI-powered business platform <svg class="zi"><use href="#zi-arrow-up-right"/></svg></a>
+            <div class="sig__legal">Zirven Technology · Registered in İstanbul, Türkiye · Trade registry no. 000000. This email and its attachments are confidential and meant for the named recipient only.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="lbl"><b>C</b><span><strong>Plain-text fallback</strong> · for clients that strip HTML</span></div>
+      <div class="plain">
+        <div class="plain__head"><span>text/plain</span><span>UTF-8 · 72 columns</span></div>
+<pre><span class="c">-- </span>
+Elif Kaya
+Engineering Manager
+Zirven Technology
+
+T  +90 212 000 00 00
+W  https://zirven.com
+
+VEVO — the AI-powered business platform
+   https://vevo.zirven.com
+
+<span class="c">Zirven Technology · Registered in İstanbul, Türkiye
+Trade registry no. 000000. This email and its
+attachments are confidential and meant for the
+named recipient only.</span></pre>
+      </div>
+      <ul class="rules">
+        <li><svg class="zi zi--sm"><use href="#zi-check"/></svg>One image only: the logo. No social icons, banners or photos.</li>
+        <li><svg class="zi zi--sm"><use href="#zi-check"/></svg>One product line at most, linked to the product site.</li>
+        <li><svg class="zi zi--sm"><use href="#zi-check"/></svg>Replies and forwards use the short form: name, role, phone.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== D · Anatomy ===================== -->
+  <section>
+    <div class="lbl"><b>D</b><span><strong>Anatomy</strong> · 1 : 1, built as an HTML table with inline styles</span></div>
+    <div class="anat">
+      <div class="anat__cell sig" style="margin:0"><span class="sig__name">Elif Kaya</span><i class="anat__lead"></i></div>
+      <div class="anat__spec"><b>Name</b> Readex Pro Semibold 15 / 20 <code>#0E0B1F</code></div>
+      <div class="gap"></div>
+      <div class="anat__cell sig" style="margin:0"><span class="sig__role">Engineering Manager<br>Zirven Technology</span><i class="anat__lead"></i></div>
+      <div class="anat__spec"><b>Role and company</b> Regular 13 / 19 <code>#57516F</code></div>
+      <div class="gap"></div>
+      <div class="anat__cell sig" style="margin:0"><img class="sig__logo" style="margin:0" src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven"><i class="anat__lead"></i></div>
+      <div class="anat__spec"><b>Logo</b> hosted PNG @2x, 210 × 44, shown 105 × 22 <code>alt="Zirven"</code></div>
+      <div class="gap"></div>
+      <div class="anat__cell sig" style="margin:0"><span class="sig__contact"><a>+90 212 000 00 00</a><i>·</i><a>zirven.com</a></span><i class="anat__lead"></i></div>
+      <div class="anat__spec"><b>Contact</b> 13 / 19, linked as <code>tel:</code> <code>https:</code></div>
+      <div class="gap"></div>
+      <div class="anat__cell sig" style="margin:0"><a class="sig__vevo" style="margin:0">VEVO — the AI-powered business platform <svg class="zi"><use href="#zi-arrow-up-right"/></svg></a><i class="anat__lead"></i></div>
+      <div class="anat__spec"><b>Product line</b> Medium 13, Zirven Violet <code>vevo.zirven.com</code></div>
+      <div class="gap"></div>
+      <div class="anat__cell sig" style="margin:0"><span class="sig__legal" style="margin:0;padding:0;border:0;max-width:430px">Zirven Technology · Registered in İstanbul, Türkiye · Trade registry no. 000000. This email and its attachments are confidential.</span><i class="anat__lead"></i></div>
+      <div class="anat__spec"><b>Legal line</b> 11 / 16 <code>#77718F</code>, above a 1 px rule</div>
+      <div class="w600"><span>max 600 px</span></div>
+    </div>
+  </section>
+
+  <p class="z-board__note">An HTML table with inline styles, never wider than 600 px; the logo is a hosted PNG at 2× (shown 22 px tall, with alt text) and type falls back from Readex Pro to Segoe UI, Helvetica and Arial. Dark-mode clients get the dark logo through prefers-color-scheme, and clients that strip HTML get the plain-text version.</p>
+</div>
+</body>
+</html>

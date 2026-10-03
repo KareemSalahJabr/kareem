@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VEVO — Operations overview · Zirven V2.1 application 06</title>
+<meta name="description" content="VEVO home: an operations overview with KPIs, weekly order throughput, an assistant briefing, active workflows and items that need attention. VEVO is a product by Zirven.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  /* ================= VEVO app shell (shared, identical on every VEVO screen) ================= */
+  html, body { height: 100%; overflow: hidden; }
+  .z-app { height: 100vh; min-height: 0; }
+  .zi--xs { width: 14px; height: 14px; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* sidebar */
+  .z-sidebar { min-height: 0; overflow: hidden; gap: 2px; padding: 18px 14px 16px; }
+  .z-sidebar__brand { padding: 0 8px 18px; letter-spacing: 0.04em; }
+  .ws { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 7px 10px 7px 8px; border: 1px solid var(--t-line); border-radius: 10px; background: var(--t-surface); }
+  .ws__mono { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: #2A2150; color: var(--z-lavender); font: 600 10.5px/1 var(--z-font-sans); letter-spacing: 0.02em; flex: none; }
+  .ws__name { font: 500 13.5px/1.2 var(--z-font-sans); color: var(--t-text); white-space: nowrap; }
+  .ws__meta { font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; white-space: nowrap; }
+  .ws .zi { color: var(--t-text-3); }
+  .z-sidebar__item { height: 34px; font-size: 13.5px; }
+  .z-sidebar__item .zi { color: var(--t-text-3); }
+  .z-sidebar__count--alert { color: var(--z-warning); }
+  .pin { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin: 0 6px; flex: none; }
+  .sb-foot { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-top: 12px; border-top: 1px solid var(--t-line); }
+  .sb-user { display: flex; align-items: center; gap: 10px; padding: 4px 6px; }
+  .sb-user__name { font: 500 13.5px/1.2 var(--z-font-sans); }
+  .sb-user__role { font: 400 12px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 3px; }
+  .sb-user .zi { color: var(--t-text-3); }
+  .sb-endorse { display: flex; align-items: center; gap: 5px; padding: 0 8px 2px; font: 400 11px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .sb-endorse img { height: 12px; width: auto; }
+  .sb-endorse img.wm { height: 10px; margin-left: 1px; }
+
+  /* top bar */
+  .shell { display: grid; grid-template-rows: 64px minmax(0, 1fr); height: 100vh; min-height: 0; min-width: 0; }
+  .z-topbar { padding: 0 20px 0 24px; gap: 12px; }
+  .crumbs { display: flex; align-items: center; gap: 8px; font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .crumbs .zi { color: var(--z-ink-600); }
+  .crumbs b { color: var(--t-text); font-weight: 500; }
+  .z-search { width: 340px; height: 36px; font-size: 13.5px; }
+  .z-search .z-kbd { margin-left: auto; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--t-text-2); border: 1px solid transparent; position: relative; flex: none; }
+  .icon-btn--line { border-color: var(--t-line); }
+  .icon-btn .dot { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--z-electric); box-shadow: 0 0 0 2px var(--z-night); }
+
+  /* UI kit: cards, headers, small controls */
+  .card { background: var(--t-surface); border: 1px solid var(--t-line); border-radius: 12px; min-width: 0; min-height: 0; }
+  .card__head { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 16px; flex: none; }
+  .card__head--line { border-bottom: 1px solid var(--t-line); }
+  .card__title { font: 500 14px/1 var(--z-font-sans); color: var(--t-text); white-space: nowrap; }
+  .card__sub { font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .count { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--t-surface-2); border: 1px solid var(--t-line); font: 500 11px/1 var(--z-font-mono); color: var(--t-text-2); }
+  .link { display: inline-flex; align-items: center; gap: 4px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); white-space: nowrap; }
+  .link .zi { color: var(--t-text-3); }
+  .btn-xs { height: 30px; padding: 0 10px; font-size: 12.5px; gap: 6px; border-radius: 8px; }
+  .sev { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 6px; font: 500 11.5px/1 var(--z-font-sans); white-space: nowrap; }
+  .sev--high { color: #FF8A8E; background: rgba(229, 72, 77, 0.14); }
+  .sev--med { color: #F6BE6B; background: rgba(240, 167, 58, 0.13); }
+  .sev--low { color: var(--t-text-2); background: var(--t-surface-2); }
+  .sev--ok { color: #5FD3A2; background: rgba(46, 182, 125, 0.13); }
+  .sev--run { color: var(--z-lavender); background: rgba(150, 113, 255, 0.14); }
+  .sev::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .sev--plain::before { display: none; }
+  .z-chip { height: 24px; font-size: 12px; }
+  .z-tag { height: 20px; font-size: 11px; padding: 0 7px; border-radius: 5px; }
+  .z-avatar--xs { width: 22px; height: 22px; font-size: 9.5px; }
+  .av-a { background: #2E2366; } .av-b { background: #1F2A4A; color: #C7D6FF; } .av-c { background: #33204A; color: #EBC8FF; } .av-d { background: #1E3340; color: #BDEAF0; } .av-e { background: #3A2A1E; color: #F5D9B8; }
+
+  /* ================= Page ================= */
+  .dash { padding: 24px; display: flex; flex-direction: column; gap: 16px; min-height: 0; overflow: hidden; }
+  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; height: 52px; flex: none; margin-bottom: 4px; }
+  .head h1 { font: 600 24px/1.1 var(--z-font-sans); letter-spacing: -0.012em; }
+  .head__meta { display: flex; align-items: center; gap: 12px; margin-top: 10px; font: 400 13px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .head__meta .sep { width: 3px; height: 3px; border-radius: 50%; background: var(--z-ink-600); }
+  .head__actions { display: flex; gap: 8px; }
+  .head__actions .z-btn { height: 36px; font-size: 13.5px; padding: 0 14px; }
+  .head__actions .z-btn .zi { color: var(--t-text-3); }
+  .head__actions .z-btn--primary .zi { color: inherit; }
+
+  /* KPI row */
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; flex: none; }
+  .kpi { padding: 16px; height: 112px; display: flex; flex-direction: column; justify-content: space-between; }
+  .kpi__top { display: flex; align-items: center; justify-content: space-between; color: var(--t-text-3); }
+  .kpi__label { font: 500 13px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .kpi__mid { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .kpi__value { font: 600 26px/1 var(--z-font-sans); letter-spacing: -0.015em; }
+  .kpi__meta { display: flex; align-items: center; gap: 8px; margin-top: 10px; font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .kpi__meta .z-delta { font-size: 12px; }
+  .kpi__spark { flex: none; margin-bottom: 2px; }
+
+  /* Main grid */
+  .grid { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 368px; grid-template-rows: 300px minmax(0, 1fr); gap: 16px; }
+
+  /* Throughput */
+  .tp { position: relative; display: flex; flex-direction: column; }
+  .tp__total { display: flex; align-items: baseline; gap: 8px; margin-left: 8px; padding-left: 12px; border-left: 1px solid var(--t-line); font: 600 14px/1 var(--z-font-sans); }
+  .tp__total .z-delta { font-size: 12px; }
+  .legend { margin-left: auto; display: flex; align-items: center; gap: 16px; font: 500 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .legend i { width: 12px; height: 2px; border-radius: 2px; }
+  .legend i.ly { background: repeating-linear-gradient(90deg, #77718F 0 4px, transparent 4px 7px); }
+  .tp__body { position: relative; padding: 0 16px 14px; flex: 1; display: flex; align-items: flex-end; }
+  .tp__axis text { font: 400 11px/1 var(--z-font-sans); fill: var(--z-ink-500); font-variant-numeric: tabular-nums; }
+  .tp__axis text.on { fill: var(--t-text); }
+  .tp__tip { position: absolute; padding: 12px; border-radius: 10px; background: #1C1735; border: 1px solid rgba(211, 200, 255, 0.16); box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; gap: 8px; font: 400 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .tp__tip-h { display: flex; justify-content: space-between; font: 500 12px/1 var(--z-font-sans); color: var(--t-text); padding-bottom: 2px; }
+  .tp__tip-h span { font: 400 11px/1 var(--z-font-mono); color: var(--t-text-3); }
+  .tp__tip-r { display: flex; align-items: center; gap: 8px; }
+  .tp__tip-r i { width: 8px; height: 8px; border-radius: 2px; }
+  .tp__tip-r i.ly { background: transparent; border: 1.5px dashed #77718F; }
+  .tp__tip-r b { margin-left: auto; font-weight: 500; color: var(--t-text); }
+  .tp__tip-f { border-top: 1px solid var(--t-line); padding-top: 8px; font-size: 11.5px; color: var(--t-text-3); }
+  .tp__tip-f .z-delta { font-size: 11.5px; }
+
+  /* Assistant briefing */
+  .brief { display: flex; flex-direction: column; overflow: hidden; background: linear-gradient(180deg, rgba(36, 22, 84, 0.45), rgba(21, 17, 43, 1) 70%); }
+  .brief .card__head { border-bottom: 1px solid var(--t-line); }
+  .brief .z-ai { font-size: 13px; }
+  .brief ol { list-style: none; margin: 0; padding: 0; flex: 1; min-height: 0; display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); }
+  .ins { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 8px; padding: 10px 16px; align-content: center; }
+  .ins + .ins { border-top: 1px solid var(--t-line); }
+  .ins__n { font: 500 11px/18px var(--z-font-mono); color: var(--z-ink-500); }
+  .ins p { font: 400 12.5px/1.45 var(--z-font-sans); color: var(--t-text-2); }
+  .ins p b { color: var(--t-text); font-weight: 500; }
+  .ins__src { grid-column: 2; display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+  .ins__src .z-tag { gap: 5px; }
+  .ins__src .z-tag .zi { width: 11px; height: 11px; color: var(--t-text-3); }
+  .ins__src .act { margin-left: auto; font: 500 12px/1 var(--z-font-sans); color: var(--z-electric); display: inline-flex; align-items: center; gap: 4px; }
+
+  /* Workflows table */
+  .wf { display: flex; flex-direction: column; overflow: hidden; }
+  .wf table { width: 100%; table-layout: fixed; border-collapse: collapse; font: 400 13px/1 var(--z-font-sans); }
+  .wf th { text-align: left; font: 500 11.5px/1 var(--z-font-sans); color: var(--t-text-3); height: 32px; padding: 0 12px; border-top: 1px solid var(--t-line); border-bottom: 1px solid var(--t-line); background: rgba(14, 11, 31, 0.35); white-space: nowrap; }
+  .wf td { height: 38px; padding: 0 12px; border-bottom: 1px solid var(--t-line); color: var(--t-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wf tr:last-child td { border-bottom: 0; }
+  .wf th:first-child, .wf td:first-child { padding-left: 16px; }
+  .wf th:last-child, .wf td:last-child { padding-right: 16px; }
+  .wf .r { text-align: right; }
+  .wf__name { display: flex; align-items: center; gap: 10px; color: var(--t-text); font-weight: 500; }
+  .wf__ico { width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; background: var(--t-surface-2); border: 1px solid var(--t-line); color: var(--z-lavender); flex: none; }
+  .wf__trig { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .wf__trig .zi { color: var(--t-text-3); }
+  .wf__rate { display: flex; align-items: center; gap: 10px; }
+  .wf__rate .bar { width: 64px; height: 4px; border-radius: 2px; background: rgba(150, 113, 255, 0.16); overflow: hidden; flex: none; }
+  .wf__rate .bar i { display: block; height: 100%; background: #9671FF; border-radius: 2px; }
+  .wf__rate .num { color: var(--t-text); font-size: 12.5px; }
+  .wf__owner { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+
+  /* Needs attention */
+  .attn { display: flex; flex-direction: column; overflow: hidden; }
+  .attn .card__head { border-bottom: 1px solid var(--t-line); }
+  .attn ul { list-style: none; margin: 0; padding: 0; flex: 1; min-height: 0; display: grid; grid-template-rows: repeat(4, minmax(0, 1fr)); }
+  .at { display: grid; grid-template-columns: 52px minmax(0, 1fr) 22px; align-items: center; gap: 12px; padding: 0 16px; }
+  .at + .at { border-top: 1px solid var(--t-line); }
+  .at .sev { justify-self: start; }
+  .at__t { font: 500 13px/1.2 var(--z-font-sans); color: var(--t-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .at__m { font: 400 12px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+</style>
+</head>
+<body>
+<div class="z-app">
+
+  <!-- ===================== SIDEBAR (shared VEVO shell) ===================== -->
+  <aside class="z-sidebar" aria-label="VEVO navigation">
+    <div class="z-sidebar__brand"><img src="../../favicon/vevo-app-icon.svg" alt="">VEVO</div>
+    <div class="ws" role="button" aria-label="Switch workspace">
+      <span class="ws__mono">CI</span>
+      <div class="grow"><div class="ws__name">Corvane Industrial</div><div class="ws__meta">Operations · 48 members</div></div>
+      <svg class="zi zi--sm"><use href="#zi-chevron-down"/></svg>
+    </div>
+    <a class="z-sidebar__item" href="dashboard.html" aria-current="page"><svg class="zi"><use href="#zi-home"/></svg>Home</a>
+    <a class="z-sidebar__item" href="ai-assistant.html"><svg class="zi"><use href="#zi-ai-assistant"/></svg>Assistant</a>
+    <a class="z-sidebar__item" href="analytics.html"><svg class="zi"><use href="#zi-analytics"/></svg>Analytics</a>
+    <a class="z-sidebar__item" href="automation.html"><svg class="zi"><use href="#zi-workflow"/></svg>Workflows<span class="z-sidebar__count z-sidebar__count--alert">3</span></a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-users"/></svg>Customers</a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-inbox"/></svg>Orders<span class="z-sidebar__count">1,284</span></a>
+    <a class="z-sidebar__item" href="api-integrations.html"><svg class="zi"><use href="#zi-integrations"/></svg>Integrations</a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-settings"/></svg>Settings</a>
+
+    <div class="z-sidebar__section">Pinned</div>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#9671FF"></i>Q3 supplier review</a>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#D3C8FF"></i>Board pack · October</a>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#77718F"></i>Izmir plant capacity</a>
+
+    <div class="sb-foot">
+      <div class="sb-user">
+        <span class="z-avatar">LD</span>
+        <div class="grow"><div class="sb-user__name">Leyla Demir</div><div class="sb-user__role">Operations lead</div></div>
+        <svg class="zi zi--sm"><use href="#zi-more"/></svg>
+      </div>
+      <div class="sb-endorse">a product by <img src="../../logo/svg/zirven-symbol-micro-dark.svg" alt=""><img class="wm" src="../../logo/svg/zirven-wordmark-dark.svg" alt="Zirven"></div>
+    </div>
+  </aside>
+
+  <div class="shell">
+    <!-- ===================== TOP BAR ===================== -->
+    <header class="z-topbar">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <span>Corvane Industrial</span><svg class="zi zi--xs"><use href="#zi-chevron-right"/></svg>
+        <span>Home</span><svg class="zi zi--xs"><use href="#zi-chevron-right"/></svg>
+        <b>Operations overview</b>
+      </nav>
+      <div class="grow"></div>
+      <div class="z-search"><svg class="zi zi--sm"><use href="#zi-search"/></svg>Search or ask VEVO…<span class="z-kbd">⌘K</span></div>
+      <span class="icon-btn icon-btn--line" aria-label="Notifications"><svg class="zi zi--sm"><use href="#zi-bell"/></svg><i class="dot"></i></span>
+      <span class="z-avatar">LD</span>
+    </header>
+
+    <!-- ===================== HOME · OPERATIONS OVERVIEW ===================== -->
+    <main class="dash" aria-label="Operations overview">
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="sparkfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9671FF" stop-opacity="0.24"/><stop offset="1" stop-color="#9671FF" stop-opacity="0"/></linearGradient></defs></svg>
+
+      <section class="head">
+        <div>
+          <h1>Good morning, Leyla</h1>
+          <div class="head__meta"><span>Saturday, 3 October 2026</span><i class="sep"></i><span>4 sites · 6 active workflows</span><span class="z-chip z-chip--live">Last synced 2 min ago</span></div>
+        </div>
+        <div class="head__actions">
+          <a class="z-btn z-btn--secondary" href="#"><svg class="zi zi--sm"><use href="#zi-calendar"/></svg>Last 7 days<svg class="zi zi--sm"><use href="#zi-chevron-down"/></svg></a>
+          <a class="z-btn z-btn--secondary" href="#"><svg class="zi zi--sm"><use href="#zi-layers"/></svg>Customize</a>
+          <a class="z-btn z-btn--primary" href="automation.html"><svg class="zi zi--sm"><use href="#zi-plus"/></svg>New workflow</a>
+        </div>
+      </section>
+
+      <section class="kpis" aria-label="Key metrics">
+      <article class="card kpi">
+        <div class="kpi__top"><span class="kpi__label">Open orders</span><svg class="zi zi--sm"><use href="#zi-inbox"/></svg></div>
+        <div class="kpi__mid">
+          <div><div class="kpi__value">1,284</div><div class="kpi__meta"><span class="z-delta num">↑ 6.2%</span><span>vs last week</span></div></div>
+          <svg class="kpi__spark" width="96" height="36" viewBox="0 0 96 36" aria-hidden="true">
+            <path d="M2 32 C4.7 30.3 7.5 26.9 10.2 26.9 C12.9 26.9 15.6 29.4 18.4 29.4 C21.1 29.4 23.8 23.9 26.5 21.8 C29.3 19.6 32 16.6 34.7 16.6 C37.5 16.6 40.2 20 42.9 20 C45.6 20 48.4 15.5 51.1 14.1 C53.8 12.7 56.5 11.5 59.3 11.5 C62 11.5 64.7 16.8 67.5 16.8 C70.2 16.8 72.9 11.5 75.6 9.8 C78.4 8.1 81.1 7.7 83.8 6.7 C86.5 5.8 89.3 4.9 92 4 L92 36 L2 36 Z" fill="url(#sparkfill)"/>
+            <path d="M2 32 C4.7 30.3 7.5 26.9 10.2 26.9 C12.9 26.9 15.6 29.4 18.4 29.4 C21.1 29.4 23.8 23.9 26.5 21.8 C29.3 19.6 32 16.6 34.7 16.6 C37.5 16.6 40.2 20 42.9 20 C45.6 20 48.4 15.5 51.1 14.1 C53.8 12.7 56.5 11.5 59.3 11.5 C62 11.5 64.7 16.8 67.5 16.8 C70.2 16.8 72.9 11.5 75.6 9.8 C78.4 8.1 81.1 7.7 83.8 6.7 C86.5 5.8 89.3 4.9 92 4" fill="none" stroke="#9671FF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="92" cy="4" r="3" fill="#9671FF" stroke="#15112B" stroke-width="2"/>
+          </svg>
+        </div>
+      </article>
+      <article class="card kpi">
+        <div class="kpi__top"><span class="kpi__label">On-time delivery</span><svg class="zi zi--sm"><use href="#zi-check"/></svg></div>
+        <div class="kpi__mid">
+          <div><div class="kpi__value">94.6%</div><div class="kpi__meta"><span class="z-delta num">↑ 1.8 pts</span><span>target 95%</span></div></div>
+          <svg class="kpi__spark" width="96" height="36" viewBox="0 0 96 36" aria-hidden="true">
+            <path d="M2 32 C4.7 29.4 7.5 24.2 10.2 24.2 C12.9 24.2 15.6 28.6 18.4 28.6 C21.1 28.6 23.8 21.9 26.5 21.9 C29.3 21.9 32 26.4 34.7 26.4 C37.5 26.4 40.2 17.4 42.9 17.4 C45.6 17.4 48.4 19.7 51.1 20.8 C53.8 21.9 56.5 24.2 59.3 24.2 C62 24.2 64.7 17.4 67.5 15.2 C70.2 13 72.9 11.8 75.6 10.7 C78.4 9.6 81.1 9.6 83.8 8.5 C86.5 7.4 89.3 5.5 92 4 L92 36 L2 36 Z" fill="url(#sparkfill)"/>
+            <path d="M2 32 C4.7 29.4 7.5 24.2 10.2 24.2 C12.9 24.2 15.6 28.6 18.4 28.6 C21.1 28.6 23.8 21.9 26.5 21.9 C29.3 21.9 32 26.4 34.7 26.4 C37.5 26.4 40.2 17.4 42.9 17.4 C45.6 17.4 48.4 19.7 51.1 20.8 C53.8 21.9 56.5 24.2 59.3 24.2 C62 24.2 64.7 17.4 67.5 15.2 C70.2 13 72.9 11.8 75.6 10.7 C78.4 9.6 81.1 9.6 83.8 8.5 C86.5 7.4 89.3 5.5 92 4" fill="none" stroke="#9671FF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="92" cy="4" r="3" fill="#9671FF" stroke="#15112B" stroke-width="2"/>
+          </svg>
+        </div>
+      </article>
+      <article class="card kpi">
+        <div class="kpi__top"><span class="kpi__label">Automation rate</span><svg class="zi zi--sm"><use href="#zi-automation"/></svg></div>
+        <div class="kpi__mid">
+          <div><div class="kpi__value">73.4%</div><div class="kpi__meta"><span class="z-delta num">↑ 4.0 pts</span><span>vs August</span></div></div>
+          <svg class="kpi__spark" width="96" height="36" viewBox="0 0 96 36" aria-hidden="true">
+            <path d="M2 32 C4.7 31 7.5 30.3 10.2 29 C12.9 27.8 15.6 24.6 18.4 24.6 C21.1 24.6 23.8 26 26.5 26 C29.3 26 32 21.6 34.7 20.1 C37.5 18.6 40.2 17.9 42.9 17.1 C45.6 16.4 48.4 16.1 51.1 15.6 C53.8 15.1 56.5 14.9 59.3 14.1 C62 13.4 64.7 12 67.5 11.1 C70.2 10.3 72.9 9.6 75.6 8.8 C78.4 8 81.1 7.2 83.8 6.4 C86.5 5.6 89.3 4.8 92 4 L92 36 L2 36 Z" fill="url(#sparkfill)"/>
+            <path d="M2 32 C4.7 31 7.5 30.3 10.2 29 C12.9 27.8 15.6 24.6 18.4 24.6 C21.1 24.6 23.8 26 26.5 26 C29.3 26 32 21.6 34.7 20.1 C37.5 18.6 40.2 17.9 42.9 17.1 C45.6 16.4 48.4 16.1 51.1 15.6 C53.8 15.1 56.5 14.9 59.3 14.1 C62 13.4 64.7 12 67.5 11.1 C70.2 10.3 72.9 9.6 75.6 8.8 C78.4 8 81.1 7.2 83.8 6.4 C86.5 5.6 89.3 4.8 92 4" fill="none" stroke="#9671FF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="92" cy="4" r="3" fill="#9671FF" stroke="#15112B" stroke-width="2"/>
+          </svg>
+        </div>
+      </article>
+      <article class="card kpi">
+        <div class="kpi__top"><span class="kpi__label">Avg. cycle time</span><svg class="zi zi--sm"><use href="#zi-activity"/></svg></div>
+        <div class="kpi__mid">
+          <div><div class="kpi__value">2.4 d</div><div class="kpi__meta"><span class="z-delta num">↓ 0.3 d</span><span>vs last week</span></div></div>
+          <svg class="kpi__spark" width="96" height="36" viewBox="0 0 96 36" aria-hidden="true">
+            <path d="M2 4 C4.7 5.3 7.5 8 10.2 8 C12.9 8 15.6 6 18.4 6 C21.1 6 23.8 10.3 26.5 12 C29.3 13.7 32 16 34.7 16 C37.5 16 40.2 12 42.9 12 C45.6 12 48.4 20 51.1 20 C53.8 20 56.5 18 59.3 18 C62 18 64.7 24 67.5 24 C70.2 24 72.9 24 75.6 24 C78.4 24 81.1 26.7 83.8 28 C86.5 29.3 89.3 30.7 92 32 L92 36 L2 36 Z" fill="url(#sparkfill)"/>
+            <path d="M2 4 C4.7 5.3 7.5 8 10.2 8 C12.9 8 15.6 6 18.4 6 C21.1 6 23.8 10.3 26.5 12 C29.3 13.7 32 16 34.7 16 C37.5 16 40.2 12 42.9 12 C45.6 12 48.4 20 51.1 20 C53.8 20 56.5 18 59.3 18 C62 18 64.7 24 67.5 24 C70.2 24 72.9 24 75.6 24 C78.4 24 81.1 26.7 83.8 28 C86.5 29.3 89.3 30.7 92 32" fill="none" stroke="#9671FF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="92" cy="32" r="3" fill="#9671FF" stroke="#15112B" stroke-width="2"/>
+          </svg>
+        </div>
+      </article>
+      </section>
+
+      <section class="grid">
+        <!-- Throughput chart -->
+        <article class="card tp">
+          <div class="card__head">
+            <span class="card__title">Order throughput · 12 weeks</span>
+            <span class="tp__total"><span class="num">52,352</span><span class="card__sub">shipped</span><span class="z-delta">↑ 14.5% vs 2025</span></span>
+            <div class="legend">
+              <span><i style="background:#9671FF"></i>Shipped</span>
+              <span><i style="background:#D3C8FF"></i>Received</span>
+              <span><i class="ly"></i>2025</span>
+            </div>
+            <span class="icon-btn" style="width:28px;height:28px;border-radius:8px;margin-right:-6px"><svg class="zi zi--sm"><use href="#zi-more"/></svg></span>
+          </div>
+          <div class="tp__body">
+          <svg class="tp__svg" width="726" height="234" viewBox="0 0 726 234" role="img" aria-label="Weekly orders shipped, received and the same weeks of 2025, 6 July to 21 September 2026">
+            <defs>
+              <linearGradient id="tpfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9671FF" stop-opacity="0.22"/><stop offset="1" stop-color="#9671FF" stop-opacity="0"/></linearGradient>
+            </defs>
+            <g stroke="rgba(211,200,255,0.08)" stroke-width="1"><path d="M44 208H704"/><path d="M44 168.4H704"/><path d="M44 128.8H704"/><path d="M44 89.2H704"/><path d="M44 49.6H704"/><path d="M44 10H704"/></g>
+            <g class="tp__axis"><text x="34" y="211.5" text-anchor="end">3,000</text><text x="34" y="171.9" text-anchor="end">3,500</text><text x="34" y="132.3" text-anchor="end">4,000</text><text x="34" y="92.7" text-anchor="end">4,500</text><text x="34" y="53.1" text-anchor="end">5,000</text><text x="34" y="13.5" text-anchor="end">5,500</text><text x="52" y="228" text-anchor="middle">6 Jul</text><text x="110.5" y="228" text-anchor="middle">13 Jul</text><text x="169.1" y="228" text-anchor="middle">20 Jul</text><text x="227.6" y="228" text-anchor="middle">27 Jul</text><text x="286.2" y="228" text-anchor="middle">3 Aug</text><text x="344.7" y="228" text-anchor="middle">10 Aug</text><text x="403.3" y="228" text-anchor="middle">17 Aug</text><text x="461.8" y="228" text-anchor="middle">24 Aug</text><text x="520.4" y="228" text-anchor="middle">31 Aug</text><text x="578.9" y="228" text-anchor="middle" class="on">7 Sep</text><text x="637.5" y="228" text-anchor="middle">14 Sep</text><text x="696" y="228" text-anchor="middle">21 Sep</text></g>
+            <path d="M52 135.1 C71.5 132.8 91 128 110.5 128 C130.1 128 149.6 138.3 169.1 138.3 C188.6 138.3 208.1 121.5 227.6 116.9 C247.2 112.3 266.7 110.6 286.2 110.6 C305.7 110.6 325.2 113.8 344.7 113.8 C364.2 113.8 383.8 95.5 403.3 95.5 C422.8 95.5 442.3 98.7 461.8 98.7 C481.3 98.7 500.8 86.2 520.4 80.5 C539.9 74.8 559.4 64.5 578.9 64.5 C598.4 64.5 617.9 68.6 637.5 68.6 C657 68.6 676.5 56.5 696 50.4 L696 208 L52 208 Z" fill="url(#tpfill)"/>
+            <path d="M52 167.6 C71.5 165.2 91 160.5 110.5 160.5 C130.1 160.5 149.6 164.4 169.1 164.4 C188.6 164.4 208.1 155.3 227.6 153.4 C247.2 151.4 266.7 152.3 286.2 151 C305.7 149.7 325.2 144.6 344.7 144.6 C364.2 144.6 383.8 147.8 403.3 147.8 C422.8 147.8 442.3 140.8 461.8 138.3 C481.3 135.8 500.8 135.7 520.4 132.8 C539.9 129.8 559.4 120.5 578.9 120.5 C598.4 120.5 617.9 127.2 637.5 127.2 C657 127.2 676.5 120.4 696 116.9" fill="none" stroke="#77718F" stroke-width="1.5" stroke-dasharray="4 4" stroke-linecap="round"/>
+            <path d="M52 124.8 C71.5 123 91 119.3 110.5 119.3 C130.1 119.3 149.6 127.2 169.1 127.2 C188.6 127.2 208.1 108.9 227.6 106.6 C247.2 104.3 266.7 104.9 286.2 104.2 C305.7 103.6 325.2 102.5 344.7 100.3 C364.2 98 383.8 93.6 403.3 90.8 C422.8 88 442.3 86.6 461.8 83.7 C481.3 80.8 500.8 78.5 520.4 73.4 C539.9 68.2 559.4 52.8 578.9 52.8 C598.4 52.8 617.9 58.3 637.5 58.3 C657 58.3 676.5 48.3 696 43.3" fill="none" stroke="#D3C8FF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M52 135.1 C71.5 132.8 91 128 110.5 128 C130.1 128 149.6 138.3 169.1 138.3 C188.6 138.3 208.1 121.5 227.6 116.9 C247.2 112.3 266.7 110.6 286.2 110.6 C305.7 110.6 325.2 113.8 344.7 113.8 C364.2 113.8 383.8 95.5 403.3 95.5 C422.8 95.5 442.3 98.7 461.8 98.7 C481.3 98.7 500.8 86.2 520.4 80.5 C539.9 74.8 559.4 64.5 578.9 64.5 C598.4 64.5 617.9 68.6 637.5 68.6 C657 68.6 676.5 56.5 696 50.4" fill="none" stroke="#9671FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M578.9 10V208" stroke="rgba(211,200,255,0.35)" stroke-width="1"/>
+            <circle cx="578.9" cy="120.5" r="4" fill="#77718F" stroke="#15112B" stroke-width="2"/>
+            <circle cx="578.9" cy="52.8" r="4" fill="#D3C8FF" stroke="#15112B" stroke-width="2"/>
+            <circle cx="578.9" cy="64.5" r="4.5" fill="#9671FF" stroke="#15112B" stroke-width="2"/>
+          </svg>
+          <div class="tp__tip" style="left:393px;top:12px;width:188px">
+            <div class="tp__tip-h">Week of 7 Sep <span>W37</span></div>
+            <div class="tp__tip-r"><i style="background:#9671FF"></i>Shipped<b class="num">4,812</b></div>
+            <div class="tp__tip-r"><i style="background:#D3C8FF"></i>Received<b class="num">4,960</b></div>
+            <div class="tp__tip-r"><i class="ly"></i>Same week 2025<b class="num">4,105</b></div>
+            <div class="tp__tip-f"><span class="z-delta">↑ 17.2%</span> shipped vs 2025</div>
+          </div>
+          </div>
+        </article>
+
+        <!-- Assistant briefing -->
+        <article class="card brief" aria-label="Assistant briefing">
+          <div class="card__head">
+            <span class="z-ai">Assistant briefing</span>
+            <span class="card__sub" style="margin-left:4px">07:58 · from 6 sources</span>
+            <a class="link" href="ai-assistant.html" style="margin-left:auto">Open<svg class="zi zi--xs"><use href="#zi-arrow-up-right"/></svg></a>
+          </div>
+          <ol>
+            <li class="ins"><span class="ins__n">01</span><p><b>On-time delivery recovered to 94.6%.</b> Leipzig hub is still 3.1 pts below the 95% target.</p>
+              <div class="ins__src"><span class="z-tag"><svg class="zi"><use href="#zi-database"/></svg>ontime_by_site.sql</span><span class="z-tag">shipments</span></div></li>
+            <li class="ins"><span class="ins__n">02</span><p><b>3 invoice exceptions (€42,180)</b> all trace back to one Arcadia Packaging purchase order.</p>
+              <div class="ins__src"><span class="z-tag"><svg class="zi"><use href="#zi-workflow"/></svg>invoice_matching</span><span class="z-tag">ap_invoices</span><a class="act" href="#">Review<svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a></div></li>
+            <li class="ins"><span class="ins__n">03</span><p><b>Onboarding approvals take 2.1 days.</b> Auto-routing them to Finance would save about 1.7 days.</p>
+              <div class="ins__src"><span class="z-tag"><svg class="zi"><use href="#zi-workflow"/></svg>supplier_onboarding</span><a class="act" href="#">Draft change<svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a></div></li>
+          </ol>
+        </article>
+
+        <!-- Active workflows -->
+        <article class="card wf">
+          <div class="card__head">
+            <span class="card__title">Active workflows</span><span class="count">6</span>
+            <span class="card__sub" style="margin-left:4px">826 runs today · 98.1% success</span>
+            <a class="link" href="automation.html" style="margin-left:auto">All workflows<svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a>
+          </div>
+          <table>
+            <colgroup><col style="width:24%"><col style="width:19%"><col style="width:11%"><col style="width:18%"><col style="width:14%"><col style="width:14%"></colgroup>
+            <thead><tr><th>Workflow</th><th>Trigger</th><th class="r">Runs today</th><th>Success rate</th><th>Status</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="wf__name"><span class="wf__ico"><svg class="zi zi--xs"><use href="#zi-workflow"/></svg></span>Order intake</div></td>
+                <td><div class="wf__trig"><svg class="zi zi--xs"><use href="#zi-zap"/></svg>EDI 850 received</div></td>
+                <td class="r num">412</td>
+                <td><div class="wf__rate"><span class="bar"><i style="width:99.3%"></i></span><span class="num">99.3%</span></div></td>
+                <td><span class="sev sev--ok">Healthy</span></td>
+                <td><div class="wf__owner"><span class="z-avatar z-avatar--xs av-a">EK</span>Elif K.</div></td>
+              </tr>
+              <tr>
+                <td><div class="wf__name"><span class="wf__ico"><svg class="zi zi--xs"><use href="#zi-file"/></svg></span>Invoice matching</div></td>
+                <td><div class="wf__trig"><svg class="zi zi--xs"><use href="#zi-mail"/></svg>Email · EDI 810</div></td>
+                <td class="r num">96</td>
+                <td><div class="wf__rate"><span class="bar"><i style="width:96.9%"></i></span><span class="num">96.9%</span></div></td>
+                <td><span class="sev sev--med">3 exceptions</span></td>
+                <td><div class="wf__owner"><span class="z-avatar z-avatar--xs av-b">OH</span>Omar H.</div></td>
+              </tr>
+              <tr>
+                <td><div class="wf__name"><span class="wf__ico"><svg class="zi zi--xs"><use href="#zi-globe"/></svg></span>Shipment tracking</div></td>
+                <td><div class="wf__trig"><svg class="zi zi--xs"><use href="#zi-calendar"/></svg>Every 15 min</div></td>
+                <td class="r num">288</td>
+                <td><div class="wf__rate"><span class="bar"><i style="width:100%"></i></span><span class="num">100%</span></div></td>
+                <td><span class="sev sev--ok">Healthy</span></td>
+                <td><div class="wf__owner"><span class="z-avatar z-avatar--xs av-c">DW</span>Daniel W.</div></td>
+              </tr>
+              <tr>
+                <td><div class="wf__name"><span class="wf__ico"><svg class="zi zi--xs"><use href="#zi-users"/></svg></span>Supplier onboarding</div></td>
+                <td><div class="wf__trig"><svg class="zi zi--xs"><use href="#zi-file"/></svg>Form submitted</div></td>
+                <td class="r num">7</td>
+                <td><div class="wf__rate"><span class="bar"><i style="width:85.7%;background:#F0A73A"></i></span><span class="num">85.7%</span></div></td>
+                <td><span class="sev sev--low">Waiting</span></td>
+                <td><div class="wf__owner"><span class="z-avatar z-avatar--xs av-d">SL</span>Sara L.</div></td>
+              </tr>
+              <tr>
+                <td><div class="wf__name"><span class="wf__ico"><svg class="zi zi--xs"><use href="#zi-security"/></svg></span>Credit hold review</div></td>
+                <td><div class="wf__trig"><svg class="zi zi--xs"><use href="#zi-webhook"/></svg>CRM webhook</div></td>
+                <td class="r num">23</td>
+                <td><div class="wf__rate"><span class="bar"><i style="width:91.3%"></i></span><span class="num">91.3%</span></div></td>
+                <td><span class="sev sev--run">Running</span></td>
+                <td><div class="wf__owner"><span class="z-avatar z-avatar--xs av-e">KM</span>Kenji M.</div></td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+
+        <!-- Needs attention -->
+        <article class="card attn">
+          <div class="card__head">
+            <span class="card__title">Needs attention</span><span class="count">7</span>
+            <a class="link" href="#" style="margin-left:auto">View all<svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a>
+          </div>
+          <ul>
+          <li class="at">
+            <span class="sev sev--high">High</span>
+            <div class="at__body"><div class="at__t">INV-20931 is 4.8% above its PO</div><div class="at__m">Arcadia Packaging · Invoices · 12 min ago</div></div>
+            <span class="z-avatar z-avatar--xs av-b">OH</span>
+          </li>
+          <li class="at">
+            <span class="sev sev--high">High</span>
+            <div class="at__body"><div class="at__t">SAP sync failed after 3 retries</div><div class="at__m">ERP connector · Integrations · 26 min ago</div></div>
+            <span class="z-avatar z-avatar--xs av-c">DW</span>
+          </li>
+          <li class="at">
+            <span class="sev sev--med">Med</span>
+            <div class="at__body"><div class="at__t">Northline: 3 shipments overdue</div><div class="at__m">Leipzig hub · Orders · 1 h ago</div></div>
+            <span class="z-avatar z-avatar--xs av-a">EK</span>
+          </li>
+          <li class="at">
+            <span class="sev sev--low">Low</span>
+            <div class="at__body"><div class="at__t">Helix Medical awaits approval</div><div class="at__m">Supplier onboarding · Finance · 3 h ago</div></div>
+            <span class="z-avatar z-avatar--xs av-d">SL</span>
+          </li>
+          </ul>
+        </article>
+      </section>
+    </main>
+  </div>
+</div>
+</body>
+</html>

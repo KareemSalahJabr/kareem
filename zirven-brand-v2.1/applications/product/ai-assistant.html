@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VEVO — AI assistant · Zirven V2.1 application 07</title>
+<meta name="description" content="VEVO assistant: grounded answers with sources, visible reasoning steps and human-approved actions. VEVO is a product by Zirven.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  /* ---------- Frame: one fixed 1440×900 product screen ---------- */
+  html, body { height: 100%; overflow: hidden; }
+  .z-app { height: 100vh; min-height: 0; }
+  .zi--xs { width: 14px; height: 14px; }
+
+  /* ---------- VEVO sidebar (shared shell) ---------- */
+  .z-sidebar { min-height: 0; overflow: hidden; gap: 2px; }
+  .z-sidebar__brand { padding: 6px 8px 14px; letter-spacing: 0.04em; }
+  .ws { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 7px 10px 7px 8px; border: 1px solid var(--t-line); border-radius: 10px; background: var(--t-surface); }
+  .ws__mono { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: #2A2150; color: var(--z-lavender); font: 600 10.5px/1 var(--z-font-sans); letter-spacing: 0.02em; flex: none; }
+  .ws__name { font: 500 13.5px/1.2 var(--z-font-sans); color: var(--t-text); }
+  .ws__meta { font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; }
+  .ws .zi { color: var(--t-text-3); }
+  .z-sidebar__item { height: 34px; font-size: 13.5px; }
+  .z-sidebar__item .zi { color: var(--t-text-3); }
+  .z-sidebar__count--alert { color: var(--z-warning); }
+  .pin { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin: 0 6px 0 6px; flex: none; }
+  .sb-foot { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-top: 12px; border-top: 1px solid var(--t-line); }
+  .sb-user { display: flex; align-items: center; gap: 10px; padding: 4px 6px; }
+  .sb-user__name { font: 500 13.5px/1.2 var(--z-font-sans); }
+  .sb-user__role { font: 400 12px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 3px; }
+  .sb-user .zi { color: var(--t-text-3); }
+  .sb-endorse { display: flex; align-items: center; gap: 5px; padding: 0 8px 2px; font: 400 11px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .sb-endorse img { height: 12px; width: auto; }
+  .sb-endorse img.wm { height: 10px; margin-left: 1px; }
+
+  /* ---------- Top bar ---------- */
+  .shell { display: grid; grid-template-rows: 64px minmax(0, 1fr); min-height: 0; height: 100vh; }
+  .z-topbar { padding: 0 20px 0 24px; gap: 12px; }
+  .crumbs { display: flex; align-items: center; gap: 8px; font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .crumbs .zi { color: var(--z-ink-600); }
+  .crumbs b { color: var(--t-text); font-weight: 500; }
+  .z-search { width: 340px; height: 36px; font-size: 13.5px; }
+  .z-search .z-kbd { margin-left: auto; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--t-text-2); border: 1px solid transparent; position: relative; }
+  .icon-btn--line { border-color: var(--t-line); }
+  .icon-btn .dot { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--z-electric); box-shadow: 0 0 0 2px var(--z-night); }
+
+  /* ---------- Assistant workspace: threads | conversation | sources ---------- */
+  .work { display: grid; grid-template-columns: 236px minmax(0, 1fr) 300px; min-height: 0; }
+
+  /* threads */
+  .threads { border-right: 1px solid var(--t-line); display: flex; flex-direction: column; min-height: 0; }
+  .threads__head { display: flex; align-items: center; justify-content: space-between; padding: 18px 14px 12px 18px; }
+  .threads__head h2 { font: 600 15px/1 var(--z-font-sans); }
+  .threads__search { margin: 0 14px 6px; height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 10px; border-radius: 9px; border: 1px solid var(--t-line); color: var(--t-text-3); font: 400 13px/1 var(--z-font-sans); }
+  .threads__list { flex: 1; overflow: hidden; padding: 0 8px 12px; }
+  .tgroup { font: 500 11px/1 var(--z-font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--z-ink-500); padding: 16px 10px 8px; }
+  .thread { display: block; padding: 9px 10px 10px; border-radius: 9px; }
+  .thread__t { display: flex; align-items: center; gap: 6px; font: 500 13.5px/1.3 var(--z-font-sans); color: var(--t-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .thread__m { display: flex; align-items: center; font: 400 12px/1.3 var(--z-font-sans); color: var(--z-ink-500); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .thread[aria-current] { background: var(--t-surface-2); box-shadow: inset 0 0 0 1px var(--t-line); }
+  .thread[aria-current] .thread__t { color: var(--t-text); }
+  .thread__badge { margin-left: auto; flex: none; font: 500 10.5px/1 var(--z-font-sans); color: var(--z-warning); background: rgba(240, 167, 58, 0.12); border-radius: 999px; padding: 3px 7px; margin-top: -2px; }
+  .thread .zi { color: var(--z-ink-500); }
+
+  /* conversation */
+  .convo { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; min-width: 0; background: linear-gradient(180deg, rgba(36, 22, 84, 0.14), rgba(14, 11, 31, 0) 240px); }
+  .stream { overflow: hidden; padding: 16px 24px 4px; display: flex; flex-direction: column; gap: 12px; }
+  .stream > * { width: 100%; max-width: 640px; margin: 0 auto; }
+  .q { display: flex; justify-content: flex-end; }
+  .q__bubble { max-width: 86%; background: var(--z-ink-800); border: 1px solid rgba(211, 200, 255, 0.08); border-radius: 14px 14px 4px 14px; padding: 9px 14px; font: 400 14px/1.55 var(--z-font-sans); color: var(--t-text); }
+  .q__meta { font: 400 11.5px/1 var(--z-font-sans); color: var(--z-ink-500); text-align: right; margin-top: 6px; }
+
+  .a { display: flex; flex-direction: column; gap: 11px; }
+  .a__head { display: flex; align-items: center; gap: 10px; }
+  .spark { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; flex: none; background: #15112B; border: 1px solid rgba(61, 216, 232, 0.26); }
+  .spark::before { content: ""; width: 12px; height: 12px; background: var(--z-cyan); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
+  .a__who { font: 500 13.5px/1 var(--z-font-sans); }
+  .a__time { margin-left: auto; font: 400 11.5px/1 var(--z-font-sans); color: var(--z-ink-500); }
+
+  .steps { border: 1px solid var(--t-line); border-radius: 10px; background: rgba(21, 17, 43, 0.6); }
+  .steps__head { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); border-bottom: 1px solid var(--t-line); }
+  .steps__head .zi { color: var(--t-text-3); }
+  .steps__head span.z-faint { font-weight: 400; }
+  .steps__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .step { display: flex; align-items: center; gap: 8px; padding: 9px 12px; font: 500 12.5px/1.3 var(--z-font-sans); color: var(--t-text); white-space: nowrap; }
+  .step + .step { border-left: 1px solid var(--t-line); }
+  .step__n { width: 16px; height: 16px; border-radius: 50%; flex: none; display: grid; place-items: center; background: rgba(46, 182, 125, 0.16); color: var(--z-success); }
+  .step__n svg { width: 10px; height: 10px; stroke-width: 3; }
+  .step small { display: block; font: 400 11px/1.35 var(--z-font-mono); color: var(--t-text-3); margin-top: 3px; white-space: nowrap; }
+
+  .a__text { font: 400 14px/1.62 var(--z-font-sans); color: var(--z-ink-300); }
+  .a__text b { color: var(--t-text); font-weight: 500; }
+  .nw { white-space: nowrap; }
+  .cite { display: inline-grid; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; margin: 0 1px; border-radius: 5px; vertical-align: 1px; font: 500 10.5px/1 var(--z-font-mono); color: var(--z-lavender); background: rgba(150, 113, 255, 0.16); border: 1px solid rgba(150, 113, 255, 0.28); }
+  .cite--on { background: var(--z-electric); color: var(--z-night); border-color: var(--z-electric); }
+
+  .result { border: 1px solid var(--t-line); border-radius: 12px; overflow: hidden; background: var(--t-surface); }
+  .result__head { display: flex; align-items: center; gap: 8px; padding: 9px 12px 9px 14px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); background: var(--z-ink-850); border-bottom: 1px solid var(--t-line); }
+  .result__head .zi { color: var(--t-text-3); }
+  .result__head a { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--t-text-3); font-weight: 500; }
+  .result__body { display: grid; grid-template-columns: minmax(0, 1fr) 204px; }
+  .result .z-table th { padding: 10px 10px; font-size: 11.5px; white-space: nowrap; }
+  .result .z-table td { padding: 7px 10px; font-size: 13px; white-space: nowrap; }
+  .result .z-table td:first-child, .result .z-table th:first-child { padding-left: 14px; }
+  .result .z-table .r { text-align: right; }
+  .result .z-table tr.total td { color: var(--t-text); font-weight: 500; background: rgba(150, 113, 255, 0.05); border-top: 1px solid var(--t-line); }
+  .result__chart { border-left: 1px solid var(--t-line); padding: 10px 12px 8px; display: flex; flex-direction: column; }
+  .result__chart .lbl { display: flex; justify-content: space-between; font: 500 11.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .result__chart svg { margin-top: 8px; width: 100%; height: auto; }
+  .sla { display: inline-flex; align-items: center; gap: 5px; color: var(--z-lavender); font-weight: 400; }
+  .sla i { width: 12px; border-top: 1.5px dashed var(--z-lavender); }
+  .neg { color: #FF8589; }
+
+  .act { border: 1px solid rgba(150, 113, 255, 0.34); border-radius: 12px; background: linear-gradient(180deg, rgba(150, 113, 255, 0.09), rgba(150, 113, 255, 0.03)); overflow: hidden; }
+  .act__strip { display: flex; align-items: center; gap: 10px; padding: 6px 8px 6px 14px; border-bottom: 1px solid rgba(150, 113, 255, 0.2); font: 500 12px/1 var(--z-font-sans); color: var(--z-lavender); }
+  .act__strip .z-ai { font-size: 12px; }
+  .need { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 9px; border-radius: 999px; font: 500 11.5px/1 var(--z-font-sans); color: var(--z-warning); background: rgba(240, 167, 58, 0.12); border: 1px solid rgba(240, 167, 58, 0.3); }
+  .need .zi { width: 12px; height: 12px; stroke-width: 2; }
+  .act__body { display: flex; align-items: center; gap: 12px; padding: 11px 12px 11px 14px; }
+  .act__tile { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; flex: none; background: var(--t-accent-soft); color: var(--z-electric); border: 1px solid rgba(150, 113, 255, 0.25); }
+  .act__title { font: 500 14px/1.3 var(--z-font-sans); color: var(--t-text); }
+  .act__meta { font: 400 12px/1.4 var(--z-font-sans); color: var(--t-text-3); margin-top: 3px; }
+  .act__meta b { color: var(--t-text-2); font-weight: 500; }
+  .act__btns { display: flex; gap: 6px; flex: none; }
+  .act .z-btn--sm { height: 32px; padding: 0 12px; font-size: 13px; }
+
+  .a__tools { display: flex; align-items: center; gap: 2px; color: var(--t-text-3); font: 400 12px/1 var(--z-font-sans); }
+  .a__tools .icon-btn { width: 28px; height: 28px; border-radius: 7px; color: var(--t-text-3); }
+  .a__tools .zi { width: 15px; height: 15px; }
+
+  /* composer */
+  .composer-wrap { padding: 4px 24px 16px; }
+  .composer-wrap > * { max-width: 640px; margin: 0 auto; }
+  .composer { border: 1px solid rgba(211, 200, 255, 0.18); border-radius: 14px; background: var(--t-surface); box-shadow: 0 0 0 4px rgba(150, 113, 255, 0.05); padding: 10px 10px 10px 12px; display: flex; flex-direction: column; gap: 10px; }
+  .attach { display: flex; gap: 6px; }
+  .file { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 8px 0 6px; border-radius: 8px; background: var(--t-surface-2); border: 1px solid var(--t-line); font: 500 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .file__ic { width: 20px; height: 20px; border-radius: 5px; display: grid; place-items: center; background: rgba(211, 200, 255, 0.1); color: var(--z-lavender); }
+  .file__ic .zi { width: 12px; height: 12px; }
+  .file small { color: var(--t-text-3); font: 400 11px/1 var(--z-font-sans); }
+  .file .x { color: var(--t-text-3); }
+  .composer__input { padding: 0 4px; font: 400 14.5px/22px var(--z-font-sans); color: var(--t-text-3); }
+  .composer__input .caret { display: inline-block; width: 1.5px; height: 17px; background: var(--z-electric); vertical-align: -3px; margin-right: 2px; }
+  .composer__bar { display: flex; align-items: center; gap: 6px; }
+  .composer__bar .icon-btn { width: 32px; height: 32px; border-radius: 8px; color: var(--t-text-3); }
+  .scope { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 10px 0 9px; border-radius: 8px; border: 1px solid var(--t-line); background: var(--t-surface-2); font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .scope .zi { color: var(--t-text-3); }
+  .scope b { color: var(--t-text); font-weight: 500; }
+  .send { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: var(--z-electric); color: var(--z-night); }
+  .send .zi { width: 17px; height: 17px; stroke-width: 2; }
+  .privacy { display: inline-flex; align-items: center; gap: 6px; padding-right: 6px; font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .privacy .zi { width: 12px; height: 12px; }
+
+  /* sources & actions */
+  .side { border-left: 1px solid var(--t-line); display: flex; flex-direction: column; min-height: 0; background: rgba(21, 17, 43, 0.35); }
+  .side__head { display: flex; align-items: center; gap: 8px; padding: 18px 16px 0 20px; }
+  .side__head h2 { font: 600 15px/1 var(--z-font-sans); }
+  .side__head .icon-btn { margin-left: auto; width: 30px; height: 30px; }
+  .side .z-tabs { margin: 12px 0 0; padding: 0 12px; }
+  .side .z-tabs a { font-size: 13px; padding: 10px 8px; display: inline-flex; gap: 6px; align-items: center; }
+  .side .z-tabs a small { font: 500 11px/1 var(--z-font-mono); color: var(--t-text-3); }
+  .side__body { flex: 1; overflow: hidden; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .src { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 11px 12px; border: 1px solid var(--t-line); border-radius: 10px; background: var(--t-surface); }
+  .src__n { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font: 500 11px/1 var(--z-font-mono); color: var(--z-lavender); background: rgba(150, 113, 255, 0.14); }
+  .src__t { display: flex; align-items: center; gap: 6px; font: 500 13px/1.3 var(--z-font-sans); color: var(--t-text); white-space: nowrap; overflow: hidden; }
+  .src__t .zi { color: var(--t-text-3); width: 14px; height: 14px; }
+  .src__t span { overflow: hidden; text-overflow: ellipsis; }
+  .src__m { font: 400 11.5px/1.4 var(--z-font-sans); color: var(--t-text-3); margin-top: 3px; }
+  .src__q { margin-top: 8px; padding: 7px 9px; border-radius: 7px; background: #0B0918; border: 1px solid rgba(211, 200, 255, 0.08); font: 400 10.5px/1.6 var(--z-font-mono); color: var(--z-ink-300); white-space: normal; }
+  .src__x { margin-top: 8px; padding: 7px 9px; border-left: 2px solid var(--z-electric); background: rgba(150, 113, 255, 0.08); border-radius: 0 7px 7px 0; font: 400 11.5px/1.5 var(--z-font-sans); color: var(--z-ink-300); }
+  .src__x mark { background: rgba(150, 113, 255, 0.28); color: var(--t-text); border-radius: 3px; padding: 0 2px; }
+  .src--on { border-color: rgba(150, 113, 255, 0.55); box-shadow: 0 0 0 3px rgba(150, 113, 255, 0.1); }
+  .src--on .src__n { background: var(--z-electric); color: var(--z-night); }
+  .side__label { display: flex; align-items: center; justify-content: space-between; font: 500 11px/1 var(--z-font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--z-ink-500); padding: 10px 2px 2px; }
+  .side__label span:last-child { letter-spacing: 0; text-transform: none; font: 400 11.5px/1 var(--z-font-sans); }
+  .pend { padding: 12px; border-radius: 10px; border: 1px dashed rgba(240, 167, 58, 0.4); background: rgba(240, 167, 58, 0.05); }
+  .pend__t { display: flex; align-items: center; gap: 8px; font: 500 13px/1.3 var(--z-font-sans); }
+  .pend__t .zi { color: var(--z-warning); width: 15px; height: 15px; }
+  .pend__m { font: 400 11.5px/1.45 var(--z-font-sans); color: var(--t-text-3); margin-top: 5px; padding-left: 23px; }
+  .log { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--t-line); border-radius: 10px; overflow: hidden; }
+  .log div { display: flex; align-items: center; gap: 8px; padding: 9px 12px; font: 400 12px/1.2 var(--z-font-sans); color: var(--t-text-2); white-space: nowrap; }
+  .log div + div { border-top: 1px solid var(--t-line); }
+  .log .zi { width: 13px; height: 13px; color: var(--z-success); stroke-width: 2.4; }
+  .log code { font: 400 11px/1 var(--z-font-mono); color: var(--t-text-3); margin-left: auto; }
+  .scopebox { margin-top: auto; padding: 12px; border-radius: 10px; border: 1px solid var(--t-line); display: flex; gap: 10px; font: 400 12px/1.45 var(--z-font-sans); color: var(--t-text-3); }
+  .scopebox .zi { color: var(--z-lavender); width: 16px; height: 16px; margin-top: 1px; }
+  .scopebox b { display: block; color: var(--t-text); font-weight: 500; font-size: 12.5px; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+<div class="z-app">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="z-sidebar" aria-label="VEVO navigation">
+    <div class="z-sidebar__brand"><img src="../../favicon/vevo-app-icon.svg" alt="">VEVO</div>
+    <div class="ws" role="button" aria-label="Switch workspace">
+      <span class="ws__mono">CI</span>
+      <div class="grow"><div class="ws__name">Corvane Industrial</div><div class="ws__meta">Enterprise · 48 seats</div></div>
+      <svg class="zi zi--sm"><use href="#zi-chevron-down"/></svg>
+    </div>
+    <a class="z-sidebar__item" href="dashboard.html"><svg class="zi"><use href="#zi-home"/></svg>Home</a>
+    <a class="z-sidebar__item" href="ai-assistant.html" aria-current="page"><svg class="zi"><use href="#zi-ai-assistant"/></svg>Assistant</a>
+    <a class="z-sidebar__item" href="analytics.html"><svg class="zi"><use href="#zi-analytics"/></svg>Analytics</a>
+    <a class="z-sidebar__item" href="automation.html"><svg class="zi"><use href="#zi-workflow"/></svg>Workflows<span class="z-sidebar__count z-sidebar__count--alert">3</span></a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-users"/></svg>Customers</a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-inbox"/></svg>Orders<span class="z-sidebar__count">1,284</span></a>
+    <a class="z-sidebar__item" href="api-integrations.html"><svg class="zi"><use href="#zi-integrations"/></svg>Integrations</a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-settings"/></svg>Settings</a>
+
+    <div class="z-sidebar__section">Pinned</div>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#9671FF"></i>Q3 supplier review</a>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#D3C8FF"></i>Board pack · October</a>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#77718F"></i>Izmir plant capacity</a>
+
+    <div class="sb-foot">
+      <div class="sb-user">
+        <span class="z-avatar">LD</span>
+        <div class="grow"><div class="sb-user__name">Leyla Demir</div><div class="sb-user__role">Operations lead</div></div>
+        <svg class="zi zi--sm"><use href="#zi-more"/></svg>
+      </div>
+      <div class="sb-endorse">a product by <img src="../../logo/svg/zirven-symbol-micro-dark.svg" alt=""><img class="wm" src="../../logo/svg/zirven-wordmark-dark.svg" alt="Zirven"></div>
+    </div>
+  </aside>
+
+  <div class="shell">
+    <!-- ===================== TOP BAR ===================== -->
+    <header class="z-topbar">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <span>Corvane Industrial</span><svg class="zi zi--xs"><use href="#zi-chevron-right"/></svg>
+        <span>Assistant</span><svg class="zi zi--xs"><use href="#zi-chevron-right"/></svg>
+        <b>Supplier delays — Northline</b>
+      </nav>
+      <div class="grow"></div>
+      <div class="z-search"><svg class="zi zi--sm"><use href="#zi-search"/></svg>Search or ask VEVO…<span class="z-kbd">⌘K</span></div>
+      <a class="z-btn z-btn--secondary z-btn--sm" href="#" style="height:36px"><svg class="zi zi--sm"><use href="#zi-users"/></svg>Share</a>
+      <span class="icon-btn icon-btn--line" aria-label="Notifications"><svg class="zi zi--sm"><use href="#zi-bell"/></svg><i class="dot"></i></span>
+      <span class="z-avatar">LD</span>
+    </header>
+
+    <div class="work">
+      <!-- ===================== THREADS ===================== -->
+      <section class="threads" aria-label="Threads">
+        <div class="threads__head">
+          <h2>Assistant</h2>
+          <a class="z-btn z-btn--secondary z-btn--sm" href="#" style="height:30px;padding:0 10px;font-size:12.5px"><svg class="zi zi--xs"><use href="#zi-plus"/></svg>New thread</a>
+        </div>
+        <div class="threads__search"><svg class="zi zi--xs"><use href="#zi-search"/></svg>Search threads<span class="z-kbd" style="margin-left:auto;font-size:10.5px">/</span></div>
+        <div class="threads__list">
+          <div class="tgroup">Pinned</div>
+          <a class="thread" href="#"><div class="thread__t"><svg class="zi zi--xs"><use href="#zi-calendar"/></svg>Weekly operations brief</div><div class="thread__m">Scheduled · Mondays 08:00</div></a>
+          <div class="tgroup">Today</div>
+          <a class="thread" href="#" aria-current="true"><div class="thread__t">Supplier delays — Northline</div><div class="thread__m">4 sources · 09:14<span class="thread__badge">1 pending</span></div></a>
+          <a class="thread" href="#"><div class="thread__t">Helix invoice exceptions</div><div class="thread__m">3 exceptions resolved · 08:41</div></a>
+          <div class="tgroup">Yesterday</div>
+          <a class="thread" href="#"><div class="thread__t">Q3 board summary draft</div><div class="thread__m">Shared with Daniel Weber</div></a>
+          <a class="thread" href="#"><div class="thread__t">Carrier cost by lane</div><div class="thread__m">September · chart · 2 sources</div></a>
+          <div class="tgroup">Previous 7 days</div>
+          <a class="thread" href="#"><div class="thread__t">Arcadia onboarding plan</div><div class="thread__m">Checklist · 6 of 9 complete</div></a>
+          <a class="thread" href="#"><div class="thread__t">Meridian SLA report</div><div class="thread__m">Exported to PDF</div></a>
+          <a class="thread" href="#"><div class="thread__t">Q4 warehouse capacity</div><div class="thread__m">Forecast · 3 sources</div></a>
+          <a class="thread" href="#"><div class="thread__t">Tessera renewal risk</div><div class="thread__m">5 accounts flagged</div></a>
+          <a class="thread" href="#"><div class="thread__t">Brightwater freight audit</div><div class="thread__m">Invoices vs. rate card · 2 sources</div></a>
+        </div>
+      </section>
+
+      <!-- ===================== CONVERSATION ===================== -->
+      <main class="convo" aria-label="Conversation">
+        <div class="stream">
+          <div>
+            <div class="q"><div class="q__bubble">Is Northline Components breaching its delivery SLA this quarter? If so, what is driving the delays?</div></div>
+          </div>
+
+          <article class="a" aria-label="Assistant answer">
+            <div class="a__head">
+              <span class="spark" aria-hidden="true"></span>
+              <span class="a__who">VEVO Assistant</span>
+              <span class="z-ai">Answer · 4 sources · 1.2 s</span>
+              <span class="a__time">09:14</span>
+            </div>
+
+            <div class="steps" aria-label="Reasoning steps">
+              <div class="steps__head"><svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg>Reasoning<span class="z-faint">· 3 steps · all read-only</span><span class="z-faint" style="margin-left:auto;font-weight:400;font-size:11.5px">Expand</span></div>
+              <div class="steps__list">
+                <div class="step"><span class="step__n"><svg class="zi"><use href="#zi-check"/></svg></span>Queried orders table</div>
+                <div class="step"><span class="step__n"><svg class="zi"><use href="#zi-check"/></svg></span>Read contract PDF p.4</div>
+                <div class="step"><span class="step__n"><svg class="zi"><use href="#zi-check"/></svg></span>Compared against SLA</div>
+              </div>
+            </div>
+
+            <p class="a__text"><b>Yes.</b> Northline missed the five-day delivery window on <b>23 of 214 orders</b> in <span class="nw">Q3&nbsp;<span class="cite">1</span>,</span> an <span class="nw">on-time</span> rate of <b>89.3%</b> against the <b>97%</b> required by the <span class="nw">contract&nbsp;<span class="cite cite--on">2</span>.</span> Two consecutive months below target is a formal SLA <span class="nw">breach&nbsp;<span class="cite">3</span>.</span> The decline starts in August and is concentrated in hydraulic fittings from the Izmir plant, where average transit rose from 3.8 to 6.4 <span class="nw">days&nbsp;<span class="cite">4</span>.</span></p>
+
+            <div class="result">
+              <div class="result__head"><svg class="zi zi--xs"><use href="#zi-data"/></svg>Northline Components · on-time delivery · Q3 2026<a href="analytics.html">Open in Analytics <svg class="zi zi--xs"><use href="#zi-arrow-up-right"/></svg></a></div>
+              <div class="result__body">
+                <table class="z-table">
+                  <thead><tr><th>Month</th><th class="r">Orders</th><th class="r">Late</th><th class="r">On time</th><th class="r">vs 97%</th></tr></thead>
+                  <tbody>
+                    <tr><td>July</td><td class="r">78</td><td class="r">3</td><td class="r">96.2%</td><td class="r neg">−0.8</td></tr>
+                    <tr><td>August</td><td class="r">71</td><td class="r">8</td><td class="r">88.7%</td><td class="r neg">−8.3</td></tr>
+                    <tr><td>September</td><td class="r">65</td><td class="r">12</td><td class="r">81.5%</td><td class="r neg">−15.5</td></tr>
+                    <tr class="total"><td>Q3 total</td><td class="r">214</td><td class="r">23</td><td class="r">89.3%</td><td class="r neg">−7.7</td></tr>
+                  </tbody>
+                </table>
+                <div class="result__chart">
+                  <div class="lbl"><span>On time, by week</span><span class="sla"><i></i>SLA 97%</span></div>
+                  <svg viewBox="0 0 192 120" aria-label="Weekly on-time rate falling from 98% to 79% across Q3, below the 97% SLA from week 2">
+                    <g stroke="rgba(211,200,255,0.08)"><path d="M20 8H192M20 40H192M20 72H192M20 104H192"/></g>
+                    <g font-family="JetBrains Mono, monospace" font-size="9.5" fill="#77718F"><text x="0" y="11">100</text><text x="6" y="43">90</text><text x="6" y="75">80</text><text x="6" y="107">70</text></g>
+                    <rect x="22" y="14.1" width="9" height="89.9" rx="2" fill="#9671FF"/><rect x="35" y="18.6" width="9" height="85.4" rx="2" fill="#9671FF"/><rect x="48" y="24.0" width="9" height="80.0" rx="2" fill="#9671FF"/><rect x="61" y="22.4" width="9" height="81.6" rx="2" fill="#9671FF"/><rect x="74" y="30.7" width="9" height="73.3" rx="2" fill="#9671FF"/><rect x="87" y="41.6" width="9" height="62.4" rx="2" fill="#9671FF"/><rect x="100" y="49.0" width="9" height="55.0" rx="2" fill="#9671FF"/><rect x="113" y="54.1" width="9" height="49.9" rx="2" fill="#9671FF"/><rect x="126" y="58.6" width="9" height="45.4" rx="2" fill="#9671FF"/><rect x="139" y="65.6" width="9" height="38.4" rx="2" fill="#9671FF"/><rect x="152" y="70.1" width="9" height="33.9" rx="2" fill="#9671FF"/><rect x="165" y="73.9" width="9" height="30.1" rx="2" fill="#9671FF"/><rect x="178" y="66.2" width="9" height="37.8" rx="2" fill="#D3C8FF"/>
+                    <path d="M20 17.6H192" stroke="#D3C8FF" stroke-width="1.2" stroke-dasharray="3 3"/>
+                    <g font-family="Readex Pro, sans-serif" font-size="10" fill="#9C97B1" text-anchor="middle"><text x="48" y="118">Jul</text><text x="100" y="118">Aug</text><text x="158" y="118">Sep</text></g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="act" aria-label="Proposed action">
+              <div class="act__strip"><span class="z-ai">Proposed action</span><span class="need"><svg class="zi"><use href="#zi-lock"/></svg>Requires approval</span></div>
+              <div class="act__body">
+                <span class="act__tile"><svg class="zi"><use href="#zi-check"/></svg></span>
+                <div class="grow">
+                  <div class="act__title">Create follow-up task for Procurement</div>
+                  <div class="act__meta">Assign to <b>Omar Haddad</b> · due Fri 9 Oct</div>
+                </div>
+                <div class="act__btns">
+                  <a class="z-btn z-btn--primary z-btn--sm" href="#"><svg class="zi zi--xs" style="stroke-width:2.2"><use href="#zi-check"/></svg>Approve</a>
+                  <a class="z-btn z-btn--secondary z-btn--sm" href="#">Edit</a>
+                  <a class="z-btn z-btn--ghost z-btn--sm" href="#">Dismiss</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="a__tools">
+              <span class="icon-btn" aria-label="Copy"><svg class="zi"><use href="#zi-copy"/></svg></span>
+              <span class="icon-btn" aria-label="Retry"><svg class="zi"><use href="#zi-automation"/></svg></span>
+              <span class="icon-btn" aria-label="Export"><svg class="zi"><use href="#zi-file"/></svg></span>
+              <span style="margin-left:8px">Was this helpful?</span>
+              <span style="margin-left:auto" class="z-mono">trace_8f2c41</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- composer -->
+        <div class="composer-wrap">
+          <div class="composer">
+            <div class="attach">
+              <span class="file"><span class="file__ic"><svg class="zi"><use href="#zi-file"/></svg></span>Northline_MSA_2025.pdf<small>1.4 MB</small><svg class="zi zi--xs x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+              <span class="file"><span class="file__ic"><svg class="zi"><use href="#zi-data"/></svg></span>carrier_lanes_sep.xlsx<small>86 KB</small><svg class="zi zi--xs x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            </div>
+            <div class="composer__input"><span class="caret"></span>Ask a follow-up, or type @ to reference a record…</div>
+            <div class="composer__bar">
+              <span class="icon-btn" aria-label="Attach file"><svg class="zi zi--sm" viewBox="0 0 24 24"><path d="m20.5 11.5-8.1 8.1a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"/></svg></span>
+              <span class="scope"><svg class="zi zi--xs"><use href="#zi-layers"/></svg><span>Workspace: <b>Operations</b></span><svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg></span>
+              <span class="grow"></span>
+              <span class="privacy"><svg class="zi"><use href="#zi-lock"/></svg>Answers use your workspace data only</span>
+              <span class="send" aria-label="Send"><svg class="zi"><use href="#zi-send"/></svg></span>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ===================== SOURCES & ACTIONS ===================== -->
+      <aside class="side" aria-label="Sources and actions">
+        <div class="side__head">
+          <h2>Sources &amp; actions</h2>
+          <span class="icon-btn" aria-label="Close panel"><svg class="zi zi--sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+        </div>
+        <nav class="z-tabs" aria-label="Panel">
+          <a href="#" aria-current="page">Sources <small>4</small></a>
+          <a href="#">Actions <small>1</small></a>
+          <a href="#">Activity</a>
+        </nav>
+        <div class="side__body">
+          <div class="src">
+            <span class="src__n">1</span>
+            <div style="min-width:0">
+              <div class="src__t"><svg class="zi"><use href="#zi-database"/></svg><span>orders</span><span class="z-faint" style="font-weight:400">· table</span></div>
+              <div class="src__m">214 rows · queried 09:14</div>
+              <div class="src__q"><span class="tk-k">WHERE</span> supplier = <span class="tk-s">'NL-0042'</span><br><span class="tk-k">AND</span> quarter = <span class="tk-s">'2026-Q3'</span></div>
+            </div>
+          </div>
+          <div class="src src--on">
+            <span class="src__n">2</span>
+            <div style="min-width:0">
+              <div class="src__t"><svg class="zi"><use href="#zi-file"/></svg><span>Northline_MSA_2025.pdf</span></div>
+              <div class="src__m">Supply agreement · page 4 of 22</div>
+              <div class="src__x">§7.2 Supplier shall deliver <mark>no less than 97% of Purchase Orders within five (5) Business Days</mark>.</div>
+            </div>
+          </div>
+          <div class="src">
+            <span class="src__n">3</span>
+            <div style="min-width:0">
+              <div class="src__t"><svg class="zi"><use href="#zi-layers"/></svg><span>Supplier SLA policy v3</span></div>
+              <div class="src__m">Procurement handbook · 12 Aug</div>
+            </div>
+          </div>
+          <div class="src">
+            <span class="src__n">4</span>
+            <div style="min-width:0">
+              <div class="src__t"><svg class="zi"><use href="#zi-integrations"/></svg><span>shipment_events</span><span class="z-faint" style="font-weight:400">· ERP sync</span></div>
+              <div class="src__m">1,906 events · synced 6 min ago</div>
+            </div>
+          </div>
+
+          <div class="side__label"><span>Pending approval</span><span>1</span></div>
+          <div class="pend">
+            <div class="pend__t"><svg class="zi"><use href="#zi-lock"/></svg>Create follow-up task for Procurement</div>
+            <div class="pend__m">Proposed 09:14 · writes to Tasks · waiting on Leyla Demir</div>
+          </div>
+
+          <div class="log">
+            <div><svg class="zi"><use href="#zi-check"/></svg>Shared Q3 summary with Daniel<code>08:52</code></div>
+          </div>
+
+          <div class="scopebox"><svg class="zi"><use href="#zi-security"/></svg><div><b>Workspace data only</b>VEVO reads Orders, Contracts and Suppliers in Operations. Nothing is used to train models.</div></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</body>
+</html>
