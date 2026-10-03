@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VEVO — Mobile app concept · Zirven V2.1 application 10</title>
+<meta name="description" content="VEVO mobile app concept: home, assistant and approval screens. VEVO is a product by Zirven.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  html, body { height: 100%; }
+  body { background: #07060F; }
+  .z-board { height: 100vh; min-height: 0; padding: 30px 48px 30px; gap: 22px; overflow: hidden; position: relative; }
+  .z-board__note { max-width: 1120px; }
+  .z-board__note b { color: var(--z-snow); font-weight: 500; }
+  .zi--xs { width: 14px; height: 14px; }
+
+  /* ---------- Stage: three phones, scaled to 0.88 ---------- */
+  .stage { flex: 1; display: flex; justify-content: center; align-items: flex-start; gap: 48px; position: relative; }
+  .stage .z-glow { width: 760px; height: 420px; left: 50%; top: 200px; transform: translateX(-50%); opacity: 0.35; }
+  .dev { display: flex; flex-direction: column; gap: 14px; position: relative; }
+  .dev__frame { width: 358.8px; height: 776.48px; }
+  .dev__frame .z-phone { transform: scale(0.92); transform-origin: top left; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.9), inset 0 0 0 2px #2E2850; }
+  .dev__cap { display: flex; align-items: baseline; gap: 10px; padding-left: 6px; font: 500 13px/1 var(--z-font-sans); color: var(--z-ink-300); }
+  .dev__cap b { font: 600 12px/1 var(--z-font-mono); color: var(--z-electric); }
+  .dev__cap span { color: var(--z-ink-500); font-weight: 400; }
+
+  /* ---------- iOS chrome ---------- */
+  .scr { display: flex; flex-direction: column; height: 100%; color: var(--z-snow); font-family: var(--z-font-sans); }
+  .sbar { height: 54px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 30px 0 40px; font: 600 16px/1 var(--z-font-sans); letter-spacing: -0.01em; }
+  .sbar__r { display: flex; align-items: center; gap: 6px; }
+  .home-ind { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 3px; background: #F7F6FC; z-index: 6; }
+
+  /* ---------- Shared mobile UI ---------- */
+  .pad { padding-left: 18px; padding-right: 18px; }
+  .navbar { height: 48px; flex: none; display: flex; align-items: center; gap: 10px; padding: 0 14px 0 10px; }
+  .navbar__back { display: inline-flex; align-items: center; gap: 2px; color: var(--z-electric); font: 400 16px/1 var(--z-font-sans); height: 44px; }
+  .navbar__back svg { width: 24px; height: 24px; transform: scaleX(-1); stroke-width: 2.2; }
+  .navbar__title { flex: 1; text-align: center; font: 600 16px/1.15 var(--z-font-sans); }
+  .navbar__title small { display: block; font: 400 12px/1.2 var(--z-font-sans); color: var(--z-ink-400); margin-top: 2px; }
+  .tap { width: 44px; height: 44px; display: grid; place-items: center; color: var(--z-ink-300); flex: none; }
+  .tap .zi { width: 22px; height: 22px; }
+  .spark { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; flex: none; background: #15112B; border: 1px solid rgba(61, 216, 232, 0.28); }
+  .spark::before { content: ""; width: 11px; height: 11px; background: var(--z-cyan); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
+  .card { background: var(--z-ink-900); border: 1px solid rgba(211, 200, 255, 0.1); border-radius: 16px; }
+  .btn { height: 50px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: 500 16px/1 var(--z-font-sans); flex: 1; }
+  .btn--primary { background: var(--z-electric); color: var(--z-night); }
+  .btn--secondary { background: var(--z-ink-850); color: var(--z-snow); border: 1px solid rgba(211, 200, 255, 0.14); }
+  .btn--sm { height: 44px; border-radius: 12px; font-size: 15px; }
+  .need { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 999px; font: 500 11.5px/1 var(--z-font-sans); color: var(--z-warning); background: rgba(240, 167, 58, 0.12); border: 1px solid rgba(240, 167, 58, 0.3); white-space: nowrap; }
+  .need .zi { width: 12px; height: 12px; stroke-width: 2; }
+
+  /* ---------- (a) Home ---------- */
+  .home-head { display: flex; align-items: center; gap: 10px; height: 50px; }
+  .home-head img { width: 30px; height: 30px; border-radius: 8px; }
+  .ws { display: inline-flex; align-items: center; gap: 4px; font: 500 15px/1 var(--z-font-sans); }
+  .ws .zi { width: 16px; height: 16px; color: var(--z-ink-400); }
+  .home-head .z-avatar { width: 34px; height: 34px; font-size: 12px; }
+  .greet { margin-top: 10px; }
+  .greet small { font: 400 13px/1 var(--z-font-sans); color: var(--z-ink-400); }
+  .greet h2 { font: 600 26px/1.15 var(--z-font-sans); letter-spacing: -0.015em; margin-top: 8px; }
+  .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .kpi { padding: 13px 14px 12px; }
+  .kpi__l { font: 400 12.5px/1.2 var(--z-font-sans); color: var(--z-ink-400); }
+  .kpi__v { font: 600 24px/1 var(--z-font-sans); letter-spacing: -0.015em; margin-top: 9px; font-variant-numeric: tabular-nums; }
+  .kpi__d { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; font: 500 12px/1 var(--z-font-sans); color: var(--z-success); }
+  .kpi__d.dn { color: #FF8589; }
+  .kpi__d svg { width: 54px; height: 16px; }
+  .brief { margin-top: 12px; padding: 14px 14px 14px; display: flex; flex-direction: column; gap: 8px; background: linear-gradient(160deg, #1A1338, #15112B); }
+  .brief .z-ai { font-size: 12px; }
+  .brief p { font: 400 14px/1.5 var(--z-font-sans); color: var(--z-ink-300); }
+  .brief p b { color: var(--z-snow); font-weight: 500; }
+  .sec { display: flex; align-items: center; gap: 8px; margin-top: 18px; margin-bottom: 2px; }
+  .sec h3 { font: 600 17px/1 var(--z-font-sans); }
+  .count { min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; display: grid; place-items: center; background: rgba(240, 167, 58, 0.16); color: var(--z-warning); font: 600 11.5px/1 var(--z-font-sans); }
+  .sec a { margin-left: auto; color: var(--z-electric); font: 400 14px/1 var(--z-font-sans); }
+  .row { display: flex; align-items: center; gap: 12px; min-height: 60px; border-bottom: 1px solid rgba(211, 200, 255, 0.08); }
+  .row:last-child { border-bottom: 0; }
+  .row__ic { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; flex: none; }
+  .row__ic .zi { width: 19px; height: 19px; }
+  .ic-warn { background: rgba(240, 167, 58, 0.13); color: var(--z-warning); }
+  .ic-acc { background: rgba(150, 113, 255, 0.15); color: var(--z-electric); }
+  .ic-neu { background: rgba(211, 200, 255, 0.08); color: var(--z-lavender); }
+  .row__t { font: 500 14.5px/1.25 var(--z-font-sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row__s { font: 400 12.5px/1.25 var(--z-font-sans); color: var(--z-ink-400); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row .chev { width: 18px; height: 18px; color: var(--z-ink-600); }
+  .tabbar { margin-top: auto; flex: none; height: 84px; padding: 8px 10px 0; display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid rgba(211, 200, 255, 0.08); background: rgba(21, 17, 43, 0.92); position: relative; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 5px; font: 500 10.5px/1 var(--z-font-sans); color: var(--z-ink-500); position: relative; }
+  .tab .zi { width: 25px; height: 25px; }
+  .tab[aria-current] { color: var(--z-electric); }
+  .tab .badge { position: absolute; top: -3px; left: calc(50% + 6px); min-width: 17px; height: 17px; padding: 0 5px; border-radius: 9px; background: var(--z-danger); color: #fff; font: 600 10.5px/17px var(--z-font-sans); text-align: center; box-shadow: 0 0 0 2px #15112B; }
+
+  /* ---------- (b) Assistant ---------- */
+  .chat { flex: 1; display: flex; flex-direction: column; gap: 14px; padding-top: 6px; overflow: hidden; }
+  .day { text-align: center; font: 500 11.5px/1 var(--z-font-sans); color: var(--z-ink-500); }
+  .ubub { align-self: flex-end; max-width: 82%; background: var(--z-ink-800); border-radius: 18px 18px 5px 18px; padding: 10px 14px; font: 400 15px/1.45 var(--z-font-sans); }
+  .ans { display: flex; flex-direction: column; gap: 10px; }
+  .ans__h { display: flex; align-items: center; gap: 8px; }
+  .ans__h b { font: 500 14px/1 var(--z-font-sans); }
+  .ans__h .z-ai { font-size: 12px; }
+  .ans p { font: 400 15px/1.5 var(--z-font-sans); color: var(--z-ink-300); }
+  .ans p b { color: var(--z-snow); font-weight: 500; }
+  .cite { display: inline-grid; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 5px; vertical-align: 1px; font: 500 10.5px/1 var(--z-font-mono); color: var(--z-lavender); background: rgba(150, 113, 255, 0.16); border: 1px solid rgba(150, 113, 255, 0.28); }
+  .inv { overflow: hidden; }
+  .inv__r { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 2px 10px; padding: 8px 12px; border-bottom: 1px solid rgba(211, 200, 255, 0.08); }
+  .inv__r:last-child { border-bottom: 0; }
+  .inv__t { font: 500 13.5px/1.2 var(--z-font-sans); }
+  .inv__s { font: 400 12px/1.2 var(--z-font-sans); color: var(--z-ink-400); grid-column: 1; }
+  .inv__a { grid-row: 1 / span 2; grid-column: 2; font: 500 13px/1 var(--z-font-sans); text-align: right; font-variant-numeric: tabular-nums; }
+  .inv__a.w { color: var(--z-warning); }
+  .inv__a small { display: block; margin-top: 4px; font: 400 11.5px/1 var(--z-font-sans); color: var(--z-ink-400); }
+  .srcs { display: flex; gap: 6px; overflow: hidden; }
+  .srcchip { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 9px 0 6px; border-radius: 9px; background: var(--z-ink-900); border: 1px solid rgba(211, 200, 255, 0.12); font: 500 11.5px/1 var(--z-font-sans); color: var(--z-ink-300); white-space: nowrap; flex: none; }
+  .srcchip i { font: 500 10.5px/18px var(--z-font-mono); font-style: normal; width: 18px; height: 18px; text-align: center; border-radius: 5px; background: rgba(150, 113, 255, 0.16); color: var(--z-lavender); }
+  .pa { border-color: rgba(150, 113, 255, 0.34); background: linear-gradient(180deg, rgba(150, 113, 255, 0.1), rgba(150, 113, 255, 0.03)); padding: 12px 12px 12px; display: flex; flex-direction: column; gap: 10px; }
+  .pa__top { display: flex; align-items: center; justify-content: space-between; }
+  .pa__top .z-ai { font-size: 12px; }
+  .pa__t { font: 500 15px/1.3 var(--z-font-sans); }
+  .pa__s { font: 400 12.5px/1.3 var(--z-font-sans); color: var(--z-ink-400); margin-top: 3px; }
+  .pa__btns { display: flex; gap: 8px; }
+  .composer { flex: none; padding: 10px 14px 34px; border-top: 1px solid rgba(211, 200, 255, 0.08); background: rgba(14, 11, 31, 0.96); position: relative; }
+  .composer__in { display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 5px 0 8px; border-radius: 23px; border: 1px solid rgba(211, 200, 255, 0.16); background: var(--z-ink-900); color: var(--z-ink-500); font: 400 15px/1 var(--z-font-sans); }
+  .composer__in .plus { width: 34px; height: 34px; border-radius: 17px; display: grid; place-items: center; background: rgba(211, 200, 255, 0.08); color: var(--z-ink-300); }
+  .composer__in .send { width: 36px; height: 36px; border-radius: 18px; display: grid; place-items: center; background: var(--z-ink-700); color: var(--z-ink-300); margin-left: auto; }
+  .composer__in .send .zi, .composer__in .plus .zi { width: 18px; height: 18px; }
+  .composer__scope { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; font: 400 11.5px/1 var(--z-font-sans); color: var(--z-ink-500); }
+  .composer__scope .zi { width: 12px; height: 12px; }
+
+  /* ---------- (c) Approval ---------- */
+  .push { position: absolute; top: 52px; left: 9px; right: 9px; z-index: 8; display: flex; gap: 11px; padding: 12px 14px 13px 12px; border-radius: 22px; background: rgba(44, 38, 72, 0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(211, 200, 255, 0.12); box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.8); }
+  .push img { width: 38px; height: 38px; border-radius: 9px; flex: none; }
+  .push__h { display: flex; justify-content: space-between; font: 600 14px/1.2 var(--z-font-sans); }
+  .push__h span { font: 400 12.5px/1.2 var(--z-font-sans); color: var(--z-ink-300); }
+  .push__b { font: 400 14px/1.35 var(--z-font-sans); color: var(--z-ink-200); margin-top: 2px; }
+  .push__b b { font-weight: 500; color: var(--z-snow); }
+  .ex-head { margin-top: 42px; }
+  .ex-head h2 { font: 600 24px/1.15 var(--z-font-sans); letter-spacing: -0.012em; margin-top: 10px; }
+  .ex-head p { font: 400 13.5px/1.3 var(--z-font-sans); color: var(--z-ink-400); margin-top: 6px; }
+  .amt { margin-top: 14px; padding: 2px 14px; }
+  .amt__r { display: flex; align-items: center; justify-content: space-between; height: 42px; border-bottom: 1px solid rgba(211, 200, 255, 0.08); font: 400 14px/1 var(--z-font-sans); color: var(--z-ink-300); }
+  .amt__r:last-child { border-bottom: 0; }
+  .amt__r b { font: 500 15px/1 var(--z-font-sans); color: var(--z-snow); font-variant-numeric: tabular-nums; }
+  .amt__r small { font: 400 12px/1 var(--z-font-sans); color: var(--z-ink-500); margin-left: 6px; }
+  .amt__r.diff b { color: var(--z-warning); }
+  .sugg { margin-top: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 7px; border-color: rgba(61, 216, 232, 0.2); }
+  .sugg .z-ai { font-size: 12px; }
+  .sugg p { font: 400 13.5px/1.45 var(--z-font-sans); color: var(--z-ink-300); }
+  .sugg p b { color: var(--z-snow); font-weight: 500; }
+  .tl { margin-top: 16px; }
+  .tl h3 { font: 600 15px/1 var(--z-font-sans); margin-bottom: 12px; }
+  .tl__i { position: relative; display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 10px; padding-bottom: 11px; }
+  .tl__i::before { content: ""; position: absolute; left: 5px; top: 14px; bottom: 0; width: 1.5px; background: rgba(211, 200, 255, 0.12); }
+  .tl__i:last-child::before { display: none; }
+  .tl__i:last-child { padding-bottom: 0; }
+  .tl__dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 2px; background: var(--z-ink-850); border: 2px solid var(--z-ink-600); }
+  .tl__dot.ok { border-color: var(--z-success); }
+  .tl__dot.warn { border-color: var(--z-warning); background: rgba(240, 167, 58, 0.25); }
+  .tl__dot.now { border-color: var(--z-electric); background: var(--z-electric); box-shadow: 0 0 0 4px rgba(150, 113, 255, 0.2); }
+  .tl__t { font: 500 13.5px/1.25 var(--z-font-sans); }
+  .tl__s { font: 400 12px/1.25 var(--z-font-sans); color: var(--z-ink-400); margin-top: 3px; }
+  .tl__time { font: 400 12px/1.2 var(--z-font-mono); color: var(--z-ink-500); }
+  .actbar { margin-top: auto; flex: none; display: flex; gap: 10px; padding: 12px 18px 38px; border-top: 1px solid rgba(211, 200, 255, 0.08); background: rgba(21, 17, 43, 0.92); }
+  .actbar .btn--secondary { flex: 0 0 116px; }
+</style>
+</head>
+<body>
+<div class="z-board" data-theme="dark">
+  <div class="z-board__head">
+    <img src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven">
+    <span>Zirven V2.1 · Applications</span>
+    <div class="z-board__title"><b>10</b> Mobile app concept</div>
+  </div>
+
+  <div class="stage">
+    <div class="z-glow" aria-hidden="true"></div>
+
+    <!-- ===================== (a) HOME ===================== -->
+    <figure class="dev" style="margin:0">
+      <div class="dev__frame">
+        <div class="z-phone"><div class="z-phone__screen"><div class="z-phone__island"></div>
+          <div class="scr">
+            <div class="sbar"><span>9:41</span><span class="sbar__r">
+              <svg width="18" height="12" viewBox="0 0 18 12" aria-hidden="true"><g fill="#F7F6FC"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></g></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true"><g fill="#F7F6FC"><path d="M8 2.3c2.3 0 4.4.9 6 2.4l1.2-1.3A10.4 10.4 0 0 0 8 .5 10.4 10.4 0 0 0 .8 3.4L2 4.7a8.6 8.6 0 0 1 6-2.4Z"/><path d="M8 5.8c1.4 0 2.6.5 3.6 1.4l1.2-1.3A7 7 0 0 0 8 4a7 7 0 0 0-4.8 1.9l1.2 1.3c1-.9 2.2-1.4 3.6-1.4Z"/><path d="M8 9.3c.5 0 1 .2 1.3.5L8 11.3 6.7 9.8c.3-.3.8-.5 1.3-.5Z"/></g></svg>
+              <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#F7F6FC" stroke-opacity="0.4"/><rect x="2" y="2" width="16" height="9" rx="2" fill="#F7F6FC"/><path d="M25 4.5v4a2 2 0 0 0 0-4Z" fill="#F7F6FC" fill-opacity="0.4"/></svg>
+            </span></div>
+
+            <div class="pad">
+              <div class="home-head">
+                <img src="../../favicon/vevo-app-icon.svg" alt="VEVO">
+                <span class="ws">Corvane Industrial<svg class="zi"><use href="#zi-chevron-down"/></svg></span>
+                <span class="grow"></span>
+                <span class="tap" style="width:38px"><svg class="zi"><use href="#zi-search"/></svg></span>
+                <span class="z-avatar">LD</span>
+              </div>
+              <div class="greet"><small>Saturday, 3 October</small><h2>Good morning, Leyla</h2></div>
+
+              <div class="kpis">
+                <div class="card kpi"><div class="kpi__l">Open orders</div><div class="kpi__v">1,284</div><div class="kpi__d">+6.2%<svg viewBox="0 0 54 16" aria-hidden="true"><path d="M1 13 L9 11 L17 12 L25 8 L33 9 L41 5 L53 2" fill="none" stroke="#9671FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+                <div class="card kpi"><div class="kpi__l">On-time delivery</div><div class="kpi__v">94.6%</div><div class="kpi__d">+1.8 pts<svg viewBox="0 0 54 16" aria-hidden="true"><path d="M1 12 L9 13 L17 10 L25 11 L33 7 L41 6 L53 3" fill="none" stroke="#9671FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+                <div class="card kpi"><div class="kpi__l">Automation rate</div><div class="kpi__v">73.4%</div><div class="kpi__d">+4.0 pts<svg viewBox="0 0 54 16" aria-hidden="true"><path d="M1 12 L9 12 L17 10 L25 10 L33 7 L41 6 L53 4" fill="none" stroke="#9671FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+                <div class="card kpi"><div class="kpi__l">Avg. cycle time</div><div class="kpi__v">2.4 d</div><div class="kpi__d">−0.3 d<svg viewBox="0 0 54 16" aria-hidden="true"><path d="M1 3 L9 5 L17 4 L25 7 L33 8 L41 10 L53 11" fill="none" stroke="#9671FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+              </div>
+
+              <div class="card brief">
+                <span class="z-ai">Morning brief · 07:30</span>
+                <p>Open orders are <b>up 6.2%</b> on last week. Three invoice exceptions trace to <b>one PO</b>.</p>
+              </div>
+
+              <div class="sec"><h3>Needs attention</h3><span class="count">3</span><a href="#">See all</a></div>
+              <div>
+                <div class="row"><span class="row__ic ic-warn"><svg class="zi"><use href="#zi-file"/></svg></span><div class="grow"><div class="row__t">Invoice mismatch · Arcadia</div><div class="row__s">INV-20931 · 4.8% above PO</div></div><svg class="zi chev"><use href="#zi-chevron-right"/></svg></div>
+                <div class="row"><span class="row__ic ic-acc"><svg class="zi"><use href="#zi-users"/></svg></span><div class="grow"><div class="row__t">Supplier onboarding · Helix</div><div class="row__s">Waiting on your approval</div></div><svg class="zi chev"><use href="#zi-chevron-right"/></svg></div>
+                <div class="row"><span class="row__ic ic-neu"><svg class="zi"><use href="#zi-activity"/></svg></span><div class="grow"><div class="row__t">Northline delivery SLA</div><div class="row__s">Below 97% for two months</div></div><svg class="zi chev"><use href="#zi-chevron-right"/></svg></div>
+              </div>
+            </div>
+
+            <nav class="tabbar" aria-label="Tabs">
+              <span class="tab" aria-current="page"><svg class="zi"><use href="#zi-home"/></svg>Home</span>
+              <span class="tab"><svg class="zi"><use href="#zi-ai-assistant"/></svg>Assistant</span>
+              <span class="tab"><svg class="zi"><use href="#zi-check"/></svg>Tasks</span>
+              <span class="tab"><svg class="zi"><use href="#zi-bell"/></svg>Alerts<span class="badge">3</span></span>
+              <span class="tab"><svg class="zi"><use href="#zi-users"/></svg>Profile</span>
+            </nav>
+          </div>
+          <div class="home-ind"></div>
+        </div></div>
+      </div>
+      <figcaption class="dev__cap"><b>01</b>Home<span>· today at a glance</span></figcaption>
+    </figure>
+
+    <!-- ===================== (b) ASSISTANT ===================== -->
+    <figure class="dev" style="margin:0">
+      <div class="dev__frame">
+        <div class="z-phone"><div class="z-phone__screen"><div class="z-phone__island"></div>
+          <div class="scr">
+            <div class="sbar"><span>9:41</span><span class="sbar__r">
+              <svg width="18" height="12" viewBox="0 0 18 12" aria-hidden="true"><g fill="#F7F6FC"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></g></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true"><g fill="#F7F6FC"><path d="M8 2.3c2.3 0 4.4.9 6 2.4l1.2-1.3A10.4 10.4 0 0 0 8 .5 10.4 10.4 0 0 0 .8 3.4L2 4.7a8.6 8.6 0 0 1 6-2.4Z"/><path d="M8 5.8c1.4 0 2.6.5 3.6 1.4l1.2-1.3A7 7 0 0 0 8 4a7 7 0 0 0-4.8 1.9l1.2 1.3c1-.9 2.2-1.4 3.6-1.4Z"/><path d="M8 9.3c.5 0 1 .2 1.3.5L8 11.3 6.7 9.8c.3-.3.8-.5 1.3-.5Z"/></g></svg>
+              <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#F7F6FC" stroke-opacity="0.4"/><rect x="2" y="2" width="16" height="9" rx="2" fill="#F7F6FC"/><path d="M25 4.5v4a2 2 0 0 0 0-4Z" fill="#F7F6FC" fill-opacity="0.4"/></svg>
+            </span></div>
+
+            <div class="navbar">
+              <span class="tap" style="color:var(--z-electric)"><svg class="zi" style="transform:scaleX(-1);stroke-width:2.2"><use href="#zi-chevron-right"/></svg></span>
+              <div class="navbar__title">Assistant<small>Workspace: Operations</small></div>
+              <span class="tap"><svg class="zi"><use href="#zi-plus"/></svg></span>
+            </div>
+
+            <div class="chat pad">
+              <div class="day">Today · 09:20</div>
+              <div class="ubub">Which invoices are blocked today, and why?</div>
+              <div class="ans">
+                <div class="ans__h"><span class="spark" aria-hidden="true"></span><b>VEVO</b><span class="z-ai">Answer · 3 sources</span></div>
+                <p><b>Three invoices are on hold,</b> all against Arcadia Packaging PO-7781&nbsp;<span class="cite">1</span>. One is above the PO price; two wait on goods receipts&nbsp;<span class="cite">2</span>.</p>
+                <div class="card inv">
+                  <div class="inv__r"><div class="inv__t">INV-20931</div><div class="inv__s">Price variance on line 3</div><div class="inv__a w">+€686<small>over PO</small></div></div>
+                  <div class="inv__r"><div class="inv__t">INV-20944</div><div class="inv__s">Goods receipt missing</div><div class="inv__a">€15,920<small>on hold</small></div></div>
+                  <div class="inv__r"><div class="inv__t">INV-20951</div><div class="inv__s">Goods receipt missing</div><div class="inv__a">€11,280<small>on hold</small></div></div>
+                </div>
+                <div class="srcs">
+                  <span class="srcchip"><i>1</i>PO-7781</span>
+                  <span class="srcchip"><i>2</i>Goods receipts</span>
+                  <span class="srcchip"><i>3</i>INV-20931</span>
+                </div>
+                <div class="card pa">
+                  <div class="pa__top"><span class="z-ai">Proposed action</span><span class="need"><svg class="zi"><use href="#zi-lock"/></svg>Requires approval</span></div>
+                  <div><div class="pa__t">Hold INV-20931 and notify Accounts Payable</div><div class="pa__s">Assign to Amina Yusuf · logged to audit trail</div></div>
+                  <div class="pa__btns"><span class="btn btn--primary btn--sm"><svg class="zi zi--sm" style="stroke-width:2.2"><use href="#zi-check"/></svg>Approve</span><span class="btn btn--secondary btn--sm" style="flex:0 0 96px">Edit</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="composer">
+              <div class="composer__in"><span class="plus"><svg class="zi"><use href="#zi-plus"/></svg></span>Ask a follow-up…<span class="send"><svg class="zi"><use href="#zi-send"/></svg></span></div>
+              <div class="composer__scope"><svg class="zi"><use href="#zi-lock"/></svg>Answers use your workspace data only</div>
+            </div>
+          </div>
+          <div class="home-ind"></div>
+        </div></div>
+      </div>
+      <figcaption class="dev__cap"><b>02</b>Assistant<span>· answers with sources</span></figcaption>
+    </figure>
+
+    <!-- ===================== (c) APPROVAL ===================== -->
+    <figure class="dev" style="margin:0">
+      <div class="dev__frame">
+        <div class="z-phone"><div class="z-phone__screen"><div class="z-phone__island"></div>
+          <div class="push" role="status">
+            <img src="../../favicon/vevo-app-icon.svg" alt="">
+            <div class="grow">
+              <div class="push__h">VEVO<span>now</span></div>
+              <div class="push__b"><b>3 workflow exceptions need review</b><br>Invoice matching · Arcadia Packaging</div>
+            </div>
+          </div>
+          <div class="scr">
+            <div class="sbar"><span>9:41</span><span class="sbar__r">
+              <svg width="18" height="12" viewBox="0 0 18 12" aria-hidden="true"><g fill="#F7F6FC"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></g></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true"><g fill="#F7F6FC"><path d="M8 2.3c2.3 0 4.4.9 6 2.4l1.2-1.3A10.4 10.4 0 0 0 8 .5 10.4 10.4 0 0 0 .8 3.4L2 4.7a8.6 8.6 0 0 1 6-2.4Z"/><path d="M8 5.8c1.4 0 2.6.5 3.6 1.4l1.2-1.3A7 7 0 0 0 8 4a7 7 0 0 0-4.8 1.9l1.2 1.3c1-.9 2.2-1.4 3.6-1.4Z"/><path d="M8 9.3c.5 0 1 .2 1.3.5L8 11.3 6.7 9.8c.3-.3.8-.5 1.3-.5Z"/></g></svg>
+              <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#F7F6FC" stroke-opacity="0.4"/><rect x="2" y="2" width="16" height="9" rx="2" fill="#F7F6FC"/><path d="M25 4.5v4a2 2 0 0 0 0-4Z" fill="#F7F6FC" fill-opacity="0.4"/></svg>
+            </span></div>
+
+            <div class="navbar">
+              <span class="navbar__back"><svg class="zi"><use href="#zi-chevron-right"/></svg>Tasks</span>
+              <span class="grow"></span>
+              <span class="tap"><svg class="zi"><use href="#zi-more"/></svg></span>
+            </div>
+
+            <div class="pad" style="flex:1;overflow:hidden">
+              <div class="ex-head">
+                <span class="need">Invoice mismatch</span>
+                <h2>INV-20931</h2>
+                <p>Arcadia Packaging · Invoice matching</p>
+              </div>
+
+              <div class="card amt">
+                <div class="amt__r"><span>Invoice total</span><b>€14,980.00</b></div>
+                <div class="amt__r"><span>Purchase order<small>PO-7781</small></span><b>€14,294.00</b></div>
+                <div class="amt__r diff"><span>Difference</span><b>+€686.00<small style="color:var(--z-warning)">4.8%</small></b></div>
+              </div>
+
+              <div class="card sugg">
+                <span class="z-ai">Suggested by VEVO</span>
+                <p>Line 3 (<b>PK-4410</b>, 240 cartons) is billed at €54.14 per unit against €51.28 on the PO. The contract allows ±2%.</p>
+              </div>
+
+              <div class="tl">
+                <h3>Activity</h3>
+                <div class="tl__i"><span class="tl__dot ok"></span><div><div class="tl__t">Invoice received</div><div class="tl__s">Email intake · EDI 810</div></div><span class="tl__time">08:02</span></div>
+                <div class="tl__i"><span class="tl__dot ok"></span><div><div class="tl__t">Matched to PO-7781</div><div class="tl__s">2 of 3 lines within tolerance</div></div><span class="tl__time">08:03</span></div>
+                <div class="tl__i"><span class="tl__dot warn"></span><div><div class="tl__t">Exception raised</div><div class="tl__s">Price variance above 2%</div></div><span class="tl__time">08:03</span></div>
+                <div class="tl__i"><span class="tl__dot now"></span><div><div class="tl__t">Assigned to you</div><div class="tl__s">Leyla Demir · due today</div></div><span class="tl__time">09:20</span></div>
+              </div>
+            </div>
+
+            <div class="actbar">
+              <span class="btn btn--secondary">Reject</span>
+              <span class="btn btn--primary"><svg class="zi" style="stroke-width:2.2"><use href="#zi-check"/></svg>Approve €14,980</span>
+            </div>
+          </div>
+          <div class="home-ind"></div>
+        </div></div>
+      </div>
+      <figcaption class="dev__cap"><b>03</b>Approval<span>· decide from the notification</span></figcaption>
+    </figure>
+  </div>
+
+  <p class="z-board__note"><b>VEVO for iOS and Android.</b> One primary action per screen, 44 px minimum touch targets and an offline-first queue: approvals made without signal are stored on the device and synced, in order, when the connection returns. Shown at 390 × 844 pt, dark theme; cyan marks AI-generated content only.</p>
+</div>
+</body>
+</html>

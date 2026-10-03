@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VEVO — Workflow builder · Zirven V2.1 application 09</title>
+<meta name="description" content="VEVO automation: the Invoice matching workflow on a canvas with an AI extraction step, a condition, approval and ERP branches, a step inspector and recent runs. VEVO is a product by Zirven.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  /* ================= VEVO app shell (shared, identical on every VEVO screen) ================= */
+  html, body { height: 100%; overflow: hidden; }
+  .z-app { height: 100vh; min-height: 0; }
+  .zi--xs { width: 14px; height: 14px; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* sidebar */
+  .z-sidebar { min-height: 0; overflow: hidden; gap: 2px; padding: 18px 14px 16px; }
+  .z-sidebar__brand { padding: 0 8px 18px; letter-spacing: 0.04em; }
+  .ws { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 7px 10px 7px 8px; border: 1px solid var(--t-line); border-radius: 10px; background: var(--t-surface); }
+  .ws__mono { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: #2A2150; color: var(--z-lavender); font: 600 10.5px/1 var(--z-font-sans); letter-spacing: 0.02em; flex: none; }
+  .ws__name { font: 500 13.5px/1.2 var(--z-font-sans); color: var(--t-text); white-space: nowrap; }
+  .ws__meta { font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; white-space: nowrap; }
+  .ws .zi { color: var(--t-text-3); }
+  .z-sidebar__item { height: 34px; font-size: 13.5px; }
+  .z-sidebar__item .zi { color: var(--t-text-3); }
+  .z-sidebar__count--alert { color: var(--z-warning); }
+  .pin { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin: 0 6px; flex: none; }
+  .sb-foot { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-top: 12px; border-top: 1px solid var(--t-line); }
+  .sb-user { display: flex; align-items: center; gap: 10px; padding: 4px 6px; }
+  .sb-user__name { font: 500 13.5px/1.2 var(--z-font-sans); }
+  .sb-user__role { font: 400 12px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 3px; }
+  .sb-user .zi { color: var(--t-text-3); }
+  .sb-endorse { display: flex; align-items: center; gap: 5px; padding: 0 8px 2px; font: 400 11px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .sb-endorse img { height: 12px; width: auto; }
+  .sb-endorse img.wm { height: 10px; margin-left: 1px; }
+
+  /* top bar */
+  .shell { display: grid; grid-template-rows: 64px minmax(0, 1fr); height: 100vh; min-height: 0; min-width: 0; }
+  .z-topbar { padding: 0 20px 0 24px; gap: 12px; }
+  .crumbs { display: flex; align-items: center; gap: 8px; font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .crumbs .zi { color: var(--z-ink-600); }
+  .crumbs b { color: var(--t-text); font-weight: 500; }
+  .z-search { width: 340px; height: 36px; font-size: 13.5px; }
+  .z-search .z-kbd { margin-left: auto; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--t-text-2); border: 1px solid transparent; position: relative; flex: none; }
+  .icon-btn--line { border-color: var(--t-line); }
+  .icon-btn .dot { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--z-electric); box-shadow: 0 0 0 2px var(--z-night); }
+
+  /* UI kit: cards, headers, small controls */
+  .card { background: var(--t-surface); border: 1px solid var(--t-line); border-radius: 12px; min-width: 0; min-height: 0; }
+  .card__head { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 16px; flex: none; }
+  .card__head--line { border-bottom: 1px solid var(--t-line); }
+  .card__title { font: 500 14px/1 var(--z-font-sans); color: var(--t-text); white-space: nowrap; }
+  .card__sub { font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .count { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--t-surface-2); border: 1px solid var(--t-line); font: 500 11px/1 var(--z-font-mono); color: var(--t-text-2); }
+  .link { display: inline-flex; align-items: center; gap: 4px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); white-space: nowrap; }
+  .link .zi { color: var(--t-text-3); }
+  .btn-xs { height: 30px; padding: 0 10px; font-size: 12.5px; gap: 6px; border-radius: 8px; }
+  .sev { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 6px; font: 500 11.5px/1 var(--z-font-sans); white-space: nowrap; }
+  .sev--high { color: #FF8A8E; background: rgba(229, 72, 77, 0.14); }
+  .sev--med { color: #F6BE6B; background: rgba(240, 167, 58, 0.13); }
+  .sev--low { color: var(--t-text-2); background: var(--t-surface-2); }
+  .sev--ok { color: #5FD3A2; background: rgba(46, 182, 125, 0.13); }
+  .sev--run { color: var(--z-lavender); background: rgba(150, 113, 255, 0.14); }
+  .sev::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .sev--plain::before { display: none; }
+  .z-chip { height: 24px; font-size: 12px; }
+  .z-tag { height: 20px; font-size: 11px; padding: 0 7px; border-radius: 5px; }
+  .z-avatar--xs { width: 22px; height: 22px; font-size: 9.5px; }
+  .av-a { background: #2E2366; } .av-b { background: #1F2A4A; color: #C7D6FF; } .av-c { background: #33204A; color: #EBC8FF; } .av-d { background: #1E3340; color: #BDEAF0; } .av-e { background: #3A2A1E; color: #F5D9B8; }
+
+  /* ================= Page ================= */
+  .wfw { display: grid; grid-template-rows: 56px minmax(0, 1fr); min-height: 0; min-width: 0; }
+
+  /* workflow toolbar */
+  .wbar { display: flex; align-items: center; gap: 12px; padding: 0 20px 0 24px; border-bottom: 1px solid var(--t-line); min-width: 0; }
+  .wbar__tile { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; background: var(--t-accent-soft); border: 1px solid rgba(150, 113, 255, 0.28); color: var(--z-electric); flex: none; }
+  .wbar__name { font: 600 15px/1 var(--z-font-sans); white-space: nowrap; }
+  .wbar__meta { font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .wbar .z-chip { height: 22px; font-size: 11.5px; padding: 0 8px; gap: 5px; }
+  .wbar__tabs { display: flex; gap: 2px; padding: 3px; border-radius: 9px; border: 1px solid var(--t-line); background: var(--t-surface); margin-left: auto; }
+  .wbar__tabs a { height: 26px; padding: 0 10px; display: inline-flex; align-items: center; gap: 6px; border-radius: 6px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-3); text-decoration: none; white-space: nowrap; }
+  .wbar__tabs a[aria-current] { background: var(--z-ink-800); color: var(--t-text); }
+  .wbar__tabs a .count { height: 16px; min-width: 16px; font-size: 10px; padding: 0 5px; }
+  .wbar .z-btn { height: 34px; font-size: 13px; padding: 0 12px; }
+  .wbar .z-btn--secondary .zi { color: var(--t-text-3); }
+  .wbar__div { width: 1px; height: 20px; background: var(--t-line); }
+
+  .wbody { display: grid; grid-template-columns: minmax(0, 1fr) 360px; min-height: 0; }
+  .wleft { display: grid; grid-template-rows: minmax(0, 1fr) 140px; min-height: 0; min-width: 0; }
+
+  /* canvas */
+  .canvas { position: relative; overflow: hidden; background-color: #0C0A1C; background-image: radial-gradient(rgba(211, 200, 255, 0.13) 1px, transparent 1.2px); background-size: 16px 16px; background-position: 8px 8px; }
+  .canvas__edges { position: absolute; left: 0; top: 0; width: 832px; height: 640px; overflow: visible; }
+  .edge { fill: none; stroke: rgba(211, 200, 255, 0.34); stroke-width: 1.5; }
+  .edge--yes { stroke: rgba(240, 167, 58, 0.55); }
+  .ports circle { fill: #0E0B1F; stroke: rgba(211, 200, 255, 0.5); stroke-width: 1.5; }
+  .elabel { position: absolute; transform: translate(-50%, -50%); height: 20px; padding: 0 7px; border-radius: 6px; display: inline-flex; align-items: center; background: #15112B; border: 1px solid rgba(211, 200, 255, 0.14); font: 500 10.5px/1 var(--z-font-mono); color: var(--t-text-2); white-space: nowrap; }
+  .elabel--yes { color: #F6BE6B; border-color: rgba(240, 167, 58, 0.35); }
+
+  .node { position: absolute; height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 12px 0 10px; border-radius: 12px; background: #15112B; border: 1px solid rgba(211, 200, 255, 0.16); box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.8); }
+  .node__tile { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; flex: none; background: var(--z-ink-850); border: 1px solid var(--t-line); color: var(--z-lavender); position: relative; }
+  .node__txt { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1; position: relative; }
+  .node__txt small { display: flex; align-items: center; justify-content: space-between; gap: 8px; font: 500 11px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .node__txt b { font: 500 13.5px/1.1 var(--z-font-sans); color: var(--t-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .node__stat { font: 400 10.5px/1 var(--z-font-mono); color: var(--z-ink-500); white-space: nowrap; }
+  .node--trigger .node__tile { background: rgba(150, 113, 255, 0.16); border-color: rgba(150, 113, 255, 0.35); color: var(--z-electric); }
+  .node--ai { border-color: rgba(61, 216, 232, 0.6); background: linear-gradient(180deg, rgba(61, 216, 232, 0.06), rgba(61, 216, 232, 0) 70%), #15112B; }
+  .node--ai .node__tile { background: rgba(61, 216, 232, 0.10); border-color: rgba(61, 216, 232, 0.35); color: var(--z-cyan); }
+  .node--ai .node__txt small { color: var(--z-cyan); }
+  .node--ai .node__stat { color: var(--z-ink-500); }
+  .node--sel { box-shadow: 0 0 0 3px #0C0A1C, 0 0 0 4.5px var(--z-electric), 0 18px 36px -16px rgba(0, 0, 0, 0.9); }
+  .node--cond { background: transparent; border: 0; box-shadow: none; padding: 0 24px 0 22px; }
+  .node__shape { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .node__shape path { fill: #15112B; stroke: rgba(240, 167, 58, 0.5); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .node--cond .node__tile { background: rgba(240, 167, 58, 0.12); border-color: rgba(240, 167, 58, 0.3); color: #F6BE6B; }
+  .seltools { position: absolute; display: flex; gap: 2px; padding: 3px; border-radius: 9px; background: #1C1735; border: 1px solid rgba(211, 200, 255, 0.16); box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.8); }
+  .seltools span { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 6px; color: var(--t-text-2); }
+  .seltools span:first-child { color: var(--t-text); background: var(--z-ink-800); }
+
+  .float { position: absolute; display: flex; align-items: center; gap: 6px; }
+  .fbtn { height: 32px; padding: 0 10px; display: inline-flex; align-items: center; gap: 6px; border-radius: 8px; background: #15112B; border: 1px solid rgba(211, 200, 255, 0.16); font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); white-space: nowrap; }
+  .fbtn .zi { color: var(--t-text-3); }
+  .fbtn--icon { width: 32px; padding: 0; justify-content: center; }
+  .zoom { display: inline-flex; align-items: center; height: 32px; border-radius: 8px; background: #15112B; border: 1px solid rgba(211, 200, 255, 0.16); }
+  .zoom span { height: 30px; min-width: 30px; display: grid; place-items: center; color: var(--t-text-2); font: 500 12px/1 var(--z-font-sans); padding: 0 6px; }
+  .zoom span + span { border-left: 1px solid var(--t-line); }
+  .valid { height: 32px; padding: 0 12px; display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; background: #15112B; border: 1px solid rgba(46, 182, 125, 0.35); font: 500 12.5px/1 var(--z-font-sans); color: #5FD3A2; white-space: nowrap; }
+  .valid em { font-style: normal; color: var(--t-text-3); font-weight: 400; }
+  .mini { width: 152px; height: 96px; border-radius: 10px; background: rgba(21, 17, 43, 0.92); border: 1px solid rgba(211, 200, 255, 0.16); position: relative; overflow: hidden; }
+  .mini i { position: absolute; height: 6px; border-radius: 2px; background: rgba(211, 200, 255, 0.35); }
+  .mini i.ai { background: rgba(61, 216, 232, 0.7); }
+  .mini b { position: absolute; left: 30px; top: 8px; width: 92px; height: 74px; border: 1px solid rgba(150, 113, 255, 0.7); border-radius: 4px; background: rgba(150, 113, 255, 0.06); }
+
+  /* recent runs strip */
+  .runs { border-top: 1px solid var(--t-line); padding: 0 20px 16px 24px; display: flex; flex-direction: column; background: var(--t-bg); min-width: 0; }
+  .runs__head { height: 44px; display: flex; align-items: center; gap: 8px; flex: none; }
+  .runs__list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; flex: 1; min-height: 0; }
+  .run { border: 1px solid var(--t-line); border-radius: 10px; background: var(--t-surface); padding: 12px; display: flex; flex-direction: column; justify-content: space-between; min-width: 0; }
+  .run__top { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .run__top .sev { height: 20px; font-size: 11px; padding: 0 7px; }
+  .run__t { margin-left: auto; font: 400 11px/1 var(--z-font-mono); color: var(--t-text-3); white-space: nowrap; }
+  .run__why { font: 400 11px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .run__d { margin-left: 10px; font: 500 11px/1 var(--z-font-mono); color: var(--t-text); white-space: nowrap; }
+  .run__d em { font-style: normal; font-weight: 400; color: var(--t-text-3); }
+  .run__mid { font: 500 12.5px/1.1 var(--z-font-sans); color: var(--t-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .run__mid em { font-style: normal; font-weight: 400; color: #FF8A8E; }
+  .run__mid b { font: 500 12px/1 var(--z-font-mono); color: var(--t-text); }
+  .run__mid span { overflow: hidden; text-overflow: ellipsis; }
+  .run__mid span.err { color: #FF8A8E; }
+  .run__steps { display: flex; align-items: center; gap: 2px; }
+  .run__steps i { flex: 1; height: 4px; border-radius: 2px; background: var(--z-ink-700); }
+  .run__steps i.s1 { background: rgba(150, 113, 255, 0.75); }
+  .run__steps i.s0 { background: rgba(211, 200, 255, 0.10); }
+  .run__steps i.s3 { background: var(--z-warning); }
+  .run__steps i.s4 { background: var(--z-danger); }
+  .run__steps i.s2 { background: var(--z-ink-700); }
+
+  /* inspector */
+  .insp { border-left: 1px solid var(--t-line); background: var(--t-surface); display: flex; flex-direction: column; min-height: 0; }
+  .insp__head { display: flex; align-items: center; gap: 10px; padding: 16px 16px 14px; border-bottom: 1px solid var(--t-line); }
+  .insp__head .node__tile { background: rgba(61, 216, 232, 0.10); border-color: rgba(61, 216, 232, 0.35); color: var(--z-cyan); }
+  .insp__title { font: 600 14.5px/1.1 var(--z-font-sans); }
+  .insp__sub { font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); margin-top: 5px; }
+  .insp__tabs { display: flex; gap: 4px; padding: 0 16px; border-bottom: 1px solid var(--t-line); }
+  .insp__tabs a { padding: 12px 8px 11px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-3); border-bottom: 2px solid transparent; margin-bottom: -1px; text-decoration: none; }
+  .insp__tabs a[aria-current] { color: var(--t-text); border-color: var(--z-electric); }
+  .insp__body { flex: 1; min-height: 0; overflow: hidden; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+  .sec__h { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font: 500 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .sec__h .r { margin-left: auto; }
+  .sec__h .z-ai { font-size: 11.5px; }
+  .inp { height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--t-line); background: var(--z-night); font: 400 12.5px/1 var(--z-font-sans); color: var(--t-text); white-space: nowrap; }
+  .inp .zi { color: var(--t-text-3); }
+  .inp .zi:last-child { margin-left: auto; }
+  .inp em { font-style: normal; color: var(--t-text-3); }
+  .map { border: 1px solid var(--t-line); border-radius: 8px; overflow: hidden; background: var(--z-night); }
+  .map__r { display: grid; grid-template-columns: minmax(0, 1fr) 14px minmax(0, 1fr) 30px; align-items: center; gap: 8px; height: 29px; padding: 0 10px; border-top: 1px solid var(--t-line); }
+  .map__r:first-child { border-top: 0; }
+  .map__r--h { height: 26px; background: rgba(36, 30, 64, 0.5); font: 500 10.5px/1 var(--z-font-sans); color: var(--t-text-3); letter-spacing: 0.04em; text-transform: uppercase; }
+  .map__r code { font: 400 11.5px/1 var(--z-font-mono); color: var(--t-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .map__r code.t { color: var(--z-lavender); }
+  .map__r .zi { color: var(--z-ink-500); }
+  .map__r .num { font: 400 11px/1 var(--z-font-mono); color: var(--t-text-2); text-align: right; }
+  .map__add { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-top: 1px solid var(--t-line); font: 500 12px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .slider { position: relative; height: 4px; border-radius: 2px; background: var(--z-ink-700); margin: 10px 0 0; }
+  .slider i { position: absolute; left: 0; top: 0; bottom: 0; width: 72%; border-radius: 2px; background: var(--z-electric); }
+  .slider b { position: absolute; left: 72%; top: 50%; width: 14px; height: 14px; border-radius: 50%; background: var(--z-snow); border: 3px solid var(--z-electric); transform: translate(-50%, -50%); }
+  .hint { font: 400 11.5px/1.4 var(--z-font-sans); color: var(--t-text-3); margin-top: 10px; }
+  .two { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
+  .lbl { font: 400 11.5px/1 var(--z-font-sans); color: var(--t-text-3); margin-bottom: 6px; display: block; }
+  .tog { display: flex; align-items: center; gap: 10px; margin-top: 10px; font: 400 12.5px/1.2 var(--z-font-sans); color: var(--t-text-2); }
+  .switch { width: 28px; height: 16px; border-radius: 999px; background: var(--z-electric); position: relative; flex: none; }
+  .switch::after { content: ""; position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--z-night); }
+  .test { border: 1px solid var(--t-line); border-radius: 10px; background: var(--z-night); padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .test__row { display: flex; align-items: center; gap: 8px; }
+  .test__file { display: flex; align-items: center; gap: 8px; font: 400 12.5px/1 var(--z-font-sans); color: var(--t-text); flex: 1; min-width: 0; white-space: nowrap; }
+  .test__file .zi { color: var(--t-text-3); }
+  .test__file em { font-style: normal; color: var(--t-text-3); overflow: hidden; text-overflow: ellipsis; }
+  .test .z-btn { height: 30px; padding: 0 10px; font-size: 12.5px; gap: 6px; }
+  .test__res { display: flex; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px solid var(--t-line); font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
+  .test__res .ok { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; background: rgba(46, 182, 125, 0.16); color: var(--z-success); flex: none; }
+  .test__res b { color: var(--t-text); font-weight: 500; }
+  .test__res .link { margin-left: auto; }
+  .insp__foot { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--t-line); font: 400 12px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .insp__foot .z-btn { margin-left: auto; height: 32px; padding: 0 14px; font-size: 13px; }
+
+</style>
+</head>
+<body>
+<div class="z-app">
+
+  <!-- ===================== SIDEBAR (shared VEVO shell) ===================== -->
+  <aside class="z-sidebar" aria-label="VEVO navigation">
+    <div class="z-sidebar__brand"><img src="../../favicon/vevo-app-icon.svg" alt="">VEVO</div>
+    <div class="ws" role="button" aria-label="Switch workspace">
+      <span class="ws__mono">CI</span>
+      <div class="grow"><div class="ws__name">Corvane Industrial</div><div class="ws__meta">Operations · 48 members</div></div>
+      <svg class="zi zi--sm"><use href="#zi-chevron-down"/></svg>
+    </div>
+    <a class="z-sidebar__item" href="dashboard.html"><svg class="zi"><use href="#zi-home"/></svg>Home</a>
+    <a class="z-sidebar__item" href="ai-assistant.html"><svg class="zi"><use href="#zi-ai-assistant"/></svg>Assistant</a>
+    <a class="z-sidebar__item" href="analytics.html"><svg class="zi"><use href="#zi-analytics"/></svg>Analytics</a>
+    <a class="z-sidebar__item" href="automation.html" aria-current="page"><svg class="zi"><use href="#zi-workflow"/></svg>Workflows<span class="z-sidebar__count z-sidebar__count--alert">3</span></a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-users"/></svg>Customers</a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-inbox"/></svg>Orders<span class="z-sidebar__count">1,284</span></a>
+    <a class="z-sidebar__item" href="api-integrations.html"><svg class="zi"><use href="#zi-integrations"/></svg>Integrations</a>
+    <a class="z-sidebar__item" href="#"><svg class="zi"><use href="#zi-settings"/></svg>Settings</a>
+
+    <div class="z-sidebar__section">Pinned</div>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#9671FF"></i>Q3 supplier review</a>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#D3C8FF"></i>Board pack · October</a>
+    <a class="z-sidebar__item" href="#"><i class="pin" style="background:#77718F"></i>Izmir plant capacity</a>
+
+    <div class="sb-foot">
+      <div class="sb-user">
+        <span class="z-avatar">LD</span>
+        <div class="grow"><div class="sb-user__name">Leyla Demir</div><div class="sb-user__role">Operations lead</div></div>
+        <svg class="zi zi--sm"><use href="#zi-more"/></svg>
+      </div>
+      <div class="sb-endorse">a product by <img src="../../logo/svg/zirven-symbol-micro-dark.svg" alt=""><img class="wm" src="../../logo/svg/zirven-wordmark-dark.svg" alt="Zirven"></div>
+    </div>
+  </aside>
+
+  <div class="shell">
+    <!-- ===================== TOP BAR ===================== -->
+    <header class="z-topbar">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <span>Corvane Industrial</span><svg class="zi zi--xs"><use href="#zi-chevron-right"/></svg>
+        <span>Workflows</span><svg class="zi zi--xs"><use href="#zi-chevron-right"/></svg>
+        <span>Finance</span><svg class="zi zi--xs"><use href="#zi-chevron-right"/></svg>
+        <b>Invoice matching</b>
+      </nav>
+      <div class="grow"></div>
+      <div class="z-search"><svg class="zi zi--sm"><use href="#zi-search"/></svg>Search or ask VEVO…<span class="z-kbd">⌘K</span></div>
+      <span class="icon-btn icon-btn--line" aria-label="Notifications"><svg class="zi zi--sm"><use href="#zi-bell"/></svg><i class="dot"></i></span>
+      <span class="z-avatar">LD</span>
+    </header>
+
+    <!-- ===================== WORKFLOW BUILDER · INVOICE MATCHING ===================== -->
+    <main class="wfw" aria-label="Workflow builder">
+      <div class="wbar">
+        <span class="wbar__tile"><svg class="zi zi--sm"><use href="#zi-workflow"/></svg></span>
+        <span class="wbar__name">Invoice matching</span>
+        <span class="z-chip z-chip--success">v14 · Published</span>
+        <span class="wbar__meta">Draft v15 · 2 changes · saved 09:41</span>
+        <nav class="wbar__tabs" aria-label="Workflow views">
+          <a href="#" aria-current="page">Editor</a>
+          <a href="#">Run history <span class="count">96</span></a>
+          <a href="#">Versions</a>
+          <a href="#">Settings</a>
+        </nav>
+        <span class="wbar__div"></span>
+        <a class="z-btn z-btn--secondary" href="#"><svg class="zi zi--sm"><use href="#zi-play"/></svg>Test run</a>
+        <a class="z-btn z-btn--primary" href="#">Publish v15</a>
+      </div>
+
+      <div class="wbody">
+        <div class="wleft">
+          <!-- Canvas -->
+          <section class="canvas" aria-label="Workflow canvas">
+            <svg class="canvas__edges" viewBox="0 0 832 640" aria-hidden="true">
+              <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.5 8 5 1 8.5" fill="none" stroke="rgba(211,200,255,0.6)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+              <path d="M416 88 C416 108 416 108 416 127" class="edge" marker-end="url(#arrow)"/><path d="M416 184 C416 204 416 204 416 223" class="edge" marker-end="url(#arrow)"/><path d="M416 280 C416 300 416 300 416 319" class="edge" marker-end="url(#arrow)"/><path d="M416 376 C416 406 266 406 266 435" class="edge edge--yes" marker-end="url(#arrow)"/><path d="M416 376 C416 406 566 406 566 435" class="edge" marker-end="url(#arrow)"/><path d="M266 492 C266 516 416 516 416 539" class="edge" marker-end="url(#arrow)"/><path d="M566 492 C566 516 416 516 416 539" class="edge" marker-end="url(#arrow)"/>
+              <g class="ports"><circle cx="416" cy="88" r="3.5"/><circle cx="416" cy="184" r="3.5"/><circle cx="416" cy="280" r="3.5"/><circle cx="416" cy="376" r="3.5"/><circle cx="266" cy="492" r="3.5"/><circle cx="566" cy="492" r="3.5"/></g>
+            </svg>
+            <span class="elabel" style="left:416px;top:108px">invoice.pdf</span><span class="elabel" style="left:416px;top:204px">6 fields</span><span class="elabel" style="left:416px;top:300px">PO found</span><span class="elabel elabel--yes" style="left:341px;top:406px">Yes · 12%</span><span class="elabel" style="left:491px;top:406px">No · 88%</span><span class="elabel" style="left:341px;top:516px">approved</span><span class="elabel" style="left:491px;top:516px">posted</span>
+            
+          <div class="node node--trigger" style="left:284px;top:32px;width:264px">
+            
+            <span class="node__tile"><svg class="zi zi--sm"><use href="#zi-mail"/></svg></span>
+            <span class="node__txt"><small>Trigger · Email / EDI 810<span class="node__stat">96 today</span></small><b>Invoice received</b></span>
+          </div>
+          <div class="node node--ai node--sel" style="left:284px;top:128px;width:264px" aria-selected="true">
+            
+            <span class="node__tile"><svg class="zi zi--sm"><use href="#zi-ai"/></svg></span>
+            <span class="node__txt"><small>AI step<span class="node__stat">1.6 s</span></small><b>Extract fields</b></span>
+          </div>
+          <div class="node" style="left:284px;top:224px;width:264px">
+            
+            <span class="node__tile"><svg class="zi zi--sm"><use href="#zi-database"/></svg></span>
+            <span class="node__txt"><small>Action · ERP lookup<span class="node__stat">0.4 s</span></small><b>Match to purchase order</b></span>
+          </div>
+          <div class="node node--cond" style="left:268px;top:320px;width:296px">
+            <svg class="node__shape" viewBox="0 0 296 56" preserveAspectRatio="none" aria-hidden="true"><path d="M18 0.5H278L295.5 28L278 55.5H18L0.5 28Z"/></svg>
+            <span class="node__tile"><svg class="zi zi--sm"><use href="#zi-git-branch"/></svg></span>
+            <span class="node__txt"><small>Condition</small><b>Amount difference &gt; 2%?</b></span>
+          </div>
+          <div class="node" style="left:134px;top:436px;width:264px">
+            
+            <span class="node__tile"><svg class="zi zi--sm"><use href="#zi-users"/></svg></span>
+            <span class="node__txt"><small>Approval · Finance<span class="node__stat">4.2 h</span></small><b>Request approval</b></span>
+          </div>
+          <div class="node" style="left:434px;top:436px;width:264px">
+            
+            <span class="node__tile"><svg class="zi zi--sm"><use href="#zi-send"/></svg></span>
+            <span class="node__txt"><small>Action · ERP<span class="node__stat">0.9 s</span></small><b>Post to ERP</b></span>
+          </div>
+          <div class="node" style="left:284px;top:540px;width:264px">
+            
+            <span class="node__tile"><svg class="zi zi--sm"><use href="#zi-bell"/></svg></span>
+            <span class="node__txt"><small>Notify<span class="node__stat">0.2 s</span></small><b>Team channel #ap-ops</b></span>
+          </div>
+            <div class="seltools" style="left:560px;top:140px" aria-label="Step actions">
+              <span title="Run this step"><svg class="zi zi--xs"><use href="#zi-play"/></svg></span>
+              <span title="Duplicate"><svg class="zi zi--xs"><use href="#zi-copy"/></svg></span>
+              <span title="More"><svg class="zi zi--xs"><use href="#zi-more"/></svg></span>
+            </div>
+
+            <div class="float" style="left:16px;top:16px">
+              <span class="fbtn"><svg class="zi zi--xs"><use href="#zi-plus"/></svg>Add step</span>
+              <span class="fbtn fbtn--icon" title="Auto-layout"><svg class="zi zi--xs"><use href="#zi-layers"/></svg></span>
+            </div>
+            <div class="float" style="right:16px;top:16px">
+              <span class="valid"><svg class="zi zi--xs"><use href="#zi-check"/></svg>7 steps valid <em>· 0 warnings</em></span>
+            </div>
+            <div class="float" style="left:16px;bottom:16px">
+              <span class="zoom"><span>−</span><span class="num">100%</span><span>+</span></span>
+              <span class="fbtn fbtn--icon" title="Fit to screen"><svg class="zi zi--xs"><use href="#zi-search"/></svg></span>
+            </div>
+            <div class="float" style="right:16px;bottom:16px">
+              <div class="mini" aria-hidden="true">
+                <i style="left:61px;top:12px;width:30px"></i><i class="ai" style="left:61px;top:22px;width:30px"></i><i style="left:61px;top:32px;width:30px"></i>
+                <i style="left:59px;top:42px;width:34px"></i><i style="left:42px;top:56px;width:30px"></i><i style="left:80px;top:56px;width:30px"></i><i style="left:61px;top:68px;width:30px"></i>
+                <b></b>
+              </div>
+            </div>
+          </section>
+
+          <!-- Recent runs -->
+          <section class="runs" aria-label="Recent runs">
+            <div class="runs__head">
+              <span class="card__title">Recent runs</span>
+              <span class="card__sub" style="margin-left:4px">Last 24 h · 96 runs · 93.8% straight-through · p50 4.1 s</span>
+              <a class="link" href="#" style="margin-left:auto">Run history<svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a>
+            </div>
+            <div class="runs__list">
+          <article class="run">
+            <div class="run__top"><span class="sev sev--ok">Succeeded</span><span class="run__t num">INV-20944</span></div>
+            <div class="run__mid">Helix Medical Supply</div>
+            <div class="run__steps"><i class="s1"></i><i class="s1"></i><i class="s1"></i><i class="s1"></i><i class="s0"></i><i class="s1"></i><i class="s1"></i><span class="run__d num"><em>09:41</em> · 3.8 s</span></div>
+          </article>
+          <article class="run">
+            <div class="run__top"><span class="sev sev--med">In approval</span><span class="run__t num">INV-20931</span></div>
+            <div class="run__mid">Arcadia Packaging</div>
+            <div class="run__steps"><i class="s1"></i><i class="s1"></i><i class="s1"></i><i class="s1"></i><i class="s3"></i><i class="s0"></i><i class="s2"></i><span class="run__d num"><em>09:36</em> · 2.9 s</span></div>
+          </article>
+          <article class="run">
+            <div class="run__top"><span class="sev sev--ok">Succeeded</span><span class="run__t num">INV-20928</span></div>
+            <div class="run__mid">Northline Components</div>
+            <div class="run__steps"><i class="s1"></i><i class="s1"></i><i class="s1"></i><i class="s1"></i><i class="s0"></i><i class="s1"></i><i class="s1"></i><span class="run__d num"><em>09:22</em> · 4.4 s</span></div>
+          </article>
+          <article class="run">
+            <div class="run__top"><span class="sev sev--high">Failed</span><span class="run__t num">INV-20925</span></div>
+            <div class="run__mid">Brightwater Freight</div>
+            <div class="run__steps"><i class="s1"></i><i class="s1"></i><i class="s1"></i><i class="s1"></i><i class="s0"></i><i class="s4"></i><i class="s2"></i><span class="run__d num"><em>09:15</em> · 31.2 s</span></div>
+          </article>
+            </div>
+          </section>
+        </div>
+
+        <!-- Inspector -->
+        <aside class="insp" aria-label="Step properties">
+          <div class="insp__head">
+            <span class="node__tile"><svg class="zi zi--sm"><use href="#zi-ai"/></svg></span>
+            <div class="grow"><div class="insp__title">Extract fields</div><div class="insp__sub">AI step · step 2 of 7 · <span class="num">extract_invoice</span></div></div>
+            <span class="icon-btn" style="width:28px;height:28px;border-radius:8px"><svg class="zi zi--sm"><use href="#zi-more"/></svg></span>
+          </div>
+          <nav class="insp__tabs" aria-label="Step settings">
+            <a href="#" aria-current="page">Configure</a><a href="#">Input &amp; output</a><a href="#">Runs</a>
+          </nav>
+          <div class="insp__body">
+            <section>
+              <div class="sec__h">Source document</div>
+              <div class="inp"><svg class="zi zi--xs"><use href="#zi-file"/></svg>trigger.attachment <em>· PDF or EDI 810</em><svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg></div>
+            </section>
+
+            <section>
+              <div class="sec__h">Fields &amp; mapping <span class="z-ai r">VEVO Extract</span></div>
+              <div class="map">
+                <div class="map__r map__r--h"><span>Extracted</span><span></span><span>ERP field</span><span style="text-align:right">Conf.</span></div>
+                <div class="map__r"><code>invoice_number</code><svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg><code class="t">AP.InvoiceNo</code><span class="num">0.99</span></div>
+                <div class="map__r"><code>supplier_vat_id</code><svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg><code class="t">Vendor.TaxId</code><span class="num">0.98</span></div>
+                <div class="map__r"><code>po_reference</code><svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg><code class="t">PO.Number</code><span class="num">0.97</span></div>
+                <div class="map__r"><code>total_amount</code><svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg><code class="t">AP.GrossAmount</code><span class="num">0.99</span></div>
+                <div class="map__r"><code>currency</code><svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg><code class="t">AP.Currency</code><span class="num">1.00</span></div>
+                <div class="map__r"><code>due_date</code><svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg><code class="t">AP.DueDate</code><span class="num">0.94</span></div>
+                <div class="map__add"><svg class="zi zi--xs"><use href="#zi-plus"/></svg>Add field</div>
+              </div>
+            </section>
+
+            <section>
+              <div class="sec__h">Human review below <span class="r num" style="color:var(--t-text)">0.90 confidence</span></div>
+              <div class="slider"><i></i><b></b></div>
+              <div class="hint">Last 7 days: 4 of 96 invoices went to review.</div>
+            </section>
+
+            <section>
+              <div class="sec__h">Retries</div>
+              <div class="two">
+                <div><span class="lbl">Max attempts</span><div class="inp num">3<svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg></div></div>
+                <div><span class="lbl">Backoff</span><div class="inp">Exponential <em>· 30 s</em><svg class="zi zi--xs"><use href="#zi-chevron-down"/></svg></div></div>
+              </div>
+              <div class="tog"><span class="switch"></span>Send failures to the exception queue</div>
+            </section>
+
+            <section>
+              <div class="sec__h">Test run</div>
+              <div class="test">
+                <div class="test__row">
+                  <span class="test__file"><svg class="zi zi--xs"><use href="#zi-file"/></svg>INV-20931.pdf <em>· 412 KB</em></span>
+                  <a class="z-btn z-btn--secondary" href="#"><svg class="zi zi--xs"><use href="#zi-play"/></svg>Run test</a>
+                </div>
+                <div class="test__res"><span class="ok"><svg class="zi zi--xs"><use href="#zi-check"/></svg></span><span><b>6 of 6 fields</b> · 1.8 s · avg 0.97</span><a class="link" href="#">Output<svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a></div>
+              </div>
+            </section>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

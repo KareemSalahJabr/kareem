@@ -15,17 +15,17 @@
   .zi--xs { width: 14px; height: 14px; }
 
   /* ---------- VEVO sidebar (shared shell) ---------- */
-  .z-sidebar { min-height: 0; overflow: hidden; gap: 2px; }
-  .z-sidebar__brand { padding: 6px 8px 14px; letter-spacing: 0.04em; }
+  .z-sidebar { min-height: 0; overflow: hidden; gap: 2px; padding: 18px 14px 16px; }
+  .z-sidebar__brand { padding: 0 8px 18px; letter-spacing: 0.04em; }
   .ws { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 7px 10px 7px 8px; border: 1px solid var(--t-line); border-radius: 10px; background: var(--t-surface); }
   .ws__mono { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: #2A2150; color: var(--z-lavender); font: 600 10.5px/1 var(--z-font-sans); letter-spacing: 0.02em; flex: none; }
-  .ws__name { font: 500 13.5px/1.2 var(--z-font-sans); color: var(--t-text); }
-  .ws__meta { font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; }
+  .ws__name { font: 500 13.5px/1.2 var(--z-font-sans); color: var(--t-text); white-space: nowrap; }
+  .ws__meta { font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; white-space: nowrap; }
   .ws .zi { color: var(--t-text-3); }
   .z-sidebar__item { height: 34px; font-size: 13.5px; }
   .z-sidebar__item .zi { color: var(--t-text-3); }
   .z-sidebar__count--alert { color: var(--z-warning); }
-  .pin { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin: 0 6px 0 6px; flex: none; }
+  .pin { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin: 0 6px; flex: none; }
   .sb-foot { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-top: 12px; border-top: 1px solid var(--t-line); }
   .sb-user { display: flex; align-items: center; gap: 10px; padding: 4px 6px; }
   .sb-user__name { font: 500 13.5px/1.2 var(--z-font-sans); }
@@ -36,14 +36,14 @@
   .sb-endorse img.wm { height: 10px; margin-left: 1px; }
 
   /* ---------- Top bar ---------- */
-  .shell { display: grid; grid-template-rows: 64px minmax(0, 1fr); min-height: 0; height: 100vh; }
+  .shell { display: grid; grid-template-rows: 64px minmax(0, 1fr); height: 100vh; min-height: 0; min-width: 0; }
   .z-topbar { padding: 0 20px 0 24px; gap: 12px; }
   .crumbs { display: flex; align-items: center; gap: 8px; font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; }
   .crumbs .zi { color: var(--z-ink-600); }
   .crumbs b { color: var(--t-text); font-weight: 500; }
   .z-search { width: 340px; height: 36px; font-size: 13.5px; }
   .z-search .z-kbd { margin-left: auto; }
-  .icon-btn { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--t-text-2); border: 1px solid transparent; position: relative; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--t-text-2); border: 1px solid transparent; position: relative; flex: none; }
   .icon-btn--line { border-color: var(--t-line); }
   .icon-btn .dot { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--z-electric); box-shadow: 0 0 0 2px var(--z-night); }
 
@@ -94,7 +94,7 @@
   .a__text { font: 400 14px/1.62 var(--z-font-sans); color: var(--z-ink-300); }
   .a__text b { color: var(--t-text); font-weight: 500; }
   .nw { white-space: nowrap; }
-  .cite { display: inline-grid; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; margin: 0 1px; border-radius: 5px; vertical-align: 1px; font: 500 10.5px/1 var(--z-font-mono); color: var(--z-lavender); background: rgba(150, 113, 255, 0.16); border: 1px solid rgba(150, 113, 255, 0.28); }
+  .cite { text-decoration: none !important; display: inline-grid; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; margin: 0 1px; border-radius: 5px; vertical-align: 1px; font: 500 10.5px/1 var(--z-font-mono); color: var(--z-lavender); background: rgba(150, 113, 255, 0.16); border: 1px solid rgba(150, 113, 255, 0.28); }
   .cite--on { background: var(--z-electric); color: var(--z-night); border-color: var(--z-electric); }
 
   .result { border: 1px solid var(--t-line); border-radius: 12px; overflow: hidden; background: var(--t-surface); }
@@ -197,7 +197,7 @@
     <div class="z-sidebar__brand"><img src="../../favicon/vevo-app-icon.svg" alt="">VEVO</div>
     <div class="ws" role="button" aria-label="Switch workspace">
       <span class="ws__mono">CI</span>
-      <div class="grow"><div class="ws__name">Corvane Industrial</div><div class="ws__meta">Enterprise · 48 seats</div></div>
+      <div class="grow"><div class="ws__name">Corvane Industrial</div><div class="ws__meta">Operations · 48 members</div></div>
       <svg class="zi zi--sm"><use href="#zi-chevron-down"/></svg>
     </div>
     <a class="z-sidebar__item" href="dashboard.html"><svg class="zi"><use href="#zi-home"/></svg>Home</a>
@@ -252,12 +252,12 @@
           <a class="thread" href="#"><div class="thread__t"><svg class="zi zi--xs"><use href="#zi-calendar"/></svg>Weekly operations brief</div><div class="thread__m">Scheduled · Mondays 08:00</div></a>
           <div class="tgroup">Today</div>
           <a class="thread" href="#" aria-current="true"><div class="thread__t">Supplier delays — Northline</div><div class="thread__m">4 sources · 09:14<span class="thread__badge">1 pending</span></div></a>
-          <a class="thread" href="#"><div class="thread__t">Helix invoice exceptions</div><div class="thread__m">3 exceptions resolved · 08:41</div></a>
+          <a class="thread" href="#"><div class="thread__t">Arcadia invoice exceptions</div><div class="thread__m">3 exceptions · one PO · 08:41</div></a>
           <div class="tgroup">Yesterday</div>
           <a class="thread" href="#"><div class="thread__t">Q3 board summary draft</div><div class="thread__m">Shared with Daniel Weber</div></a>
           <a class="thread" href="#"><div class="thread__t">Carrier cost by lane</div><div class="thread__m">September · chart · 2 sources</div></a>
           <div class="tgroup">Previous 7 days</div>
-          <a class="thread" href="#"><div class="thread__t">Arcadia onboarding plan</div><div class="thread__m">Checklist · 6 of 9 complete</div></a>
+          <a class="thread" href="#"><div class="thread__t">Helix supplier onboarding</div><div class="thread__m">Checklist · 6 of 9 complete</div></a>
           <a class="thread" href="#"><div class="thread__t">Meridian SLA report</div><div class="thread__m">Exported to PDF</div></a>
           <a class="thread" href="#"><div class="thread__t">Q4 warehouse capacity</div><div class="thread__m">Forecast · 3 sources</div></a>
           <a class="thread" href="#"><div class="thread__t">Tessera renewal risk</div><div class="thread__m">5 accounts flagged</div></a>
@@ -289,7 +289,7 @@
               </div>
             </div>
 
-            <p class="a__text"><b>Yes.</b> Northline missed the five-day delivery window on <b>23 of 214 orders</b> in <span class="nw">Q3&nbsp;<span class="cite">1</span>,</span> an <span class="nw">on-time</span> rate of <b>89.3%</b> against the <b>97%</b> required by the <span class="nw">contract&nbsp;<span class="cite cite--on">2</span>.</span> Two consecutive months below target is a formal SLA <span class="nw">breach&nbsp;<span class="cite">3</span>.</span> The decline starts in August and is concentrated in hydraulic fittings from the Izmir plant, where average transit rose from 3.8 to 6.4 <span class="nw">days&nbsp;<span class="cite">4</span>.</span></p>
+            <p class="a__text"><b>Yes.</b> Northline missed the five-day delivery window on <b>23 of 214 orders</b> in <span class="nw">Q3&nbsp;<a class="cite" href="#src-1" aria-label="Source 1">1</a>,</span> an <span class="nw">on-time</span> rate of <b>89.3%</b> against the <b>97%</b> required by the <span class="nw">contract&nbsp;<a class="cite cite--on" href="#src-2" aria-label="Source 2">2</a>.</span> Two consecutive months below target is a formal SLA <span class="nw">breach&nbsp;<a class="cite" href="#src-3" aria-label="Source 3">3</a>.</span> The decline starts in August and is concentrated in hydraulic fittings from the Izmir plant, where average transit rose from 3.8 to 6.4 <span class="nw">days&nbsp;<a class="cite" href="#src-4" aria-label="Source 4">4</a>.</span></p>
 
             <div class="result">
               <div class="result__head"><svg class="zi zi--xs"><use href="#zi-data"/></svg>Northline Components · on-time delivery · Q3 2026<a href="analytics.html">Open in Analytics <svg class="zi zi--xs"><use href="#zi-arrow-up-right"/></svg></a></div>
@@ -373,7 +373,7 @@
           <a href="#">Activity</a>
         </nav>
         <div class="side__body">
-          <div class="src">
+          <div class="src" id="src-1">
             <span class="src__n">1</span>
             <div style="min-width:0">
               <div class="src__t"><svg class="zi"><use href="#zi-database"/></svg><span>orders</span><span class="z-faint" style="font-weight:400">· table</span></div>
@@ -381,7 +381,7 @@
               <div class="src__q"><span class="tk-k">WHERE</span> supplier = <span class="tk-s">'NL-0042'</span><br><span class="tk-k">AND</span> quarter = <span class="tk-s">'2026-Q3'</span></div>
             </div>
           </div>
-          <div class="src src--on">
+          <div class="src src--on" id="src-2">
             <span class="src__n">2</span>
             <div style="min-width:0">
               <div class="src__t"><svg class="zi"><use href="#zi-file"/></svg><span>Northline_MSA_2025.pdf</span></div>
@@ -389,14 +389,14 @@
               <div class="src__x">§7.2 Supplier shall deliver <mark>no less than 97% of Purchase Orders within five (5) Business Days</mark>.</div>
             </div>
           </div>
-          <div class="src">
+          <div class="src" id="src-3">
             <span class="src__n">3</span>
             <div style="min-width:0">
               <div class="src__t"><svg class="zi"><use href="#zi-layers"/></svg><span>Supplier SLA policy v3</span></div>
               <div class="src__m">Procurement handbook · 12 Aug</div>
             </div>
           </div>
-          <div class="src">
+          <div class="src" id="src-4">
             <span class="src__n">4</span>
             <div style="min-width:0">
               <div class="src__t"><svg class="zi"><use href="#zi-integrations"/></svg><span>shipment_events</span><span class="z-faint" style="font-weight:400">· ERP sync</span></div>
@@ -410,6 +410,7 @@
             <div class="pend__m">Proposed 09:14 · writes to Tasks · waiting on Leyla Demir</div>
           </div>
 
+          <div class="side__label"><span>Completed today</span><span>1</span></div>
           <div class="log">
             <div><svg class="zi"><use href="#zi-check"/></svg>Shared Q3 summary with Daniel<code>08:52</code></div>
           </div>

@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Office and building signage · Zirven V2.1 application 17</title>
+<meta name="description" content="Zirven V2.1 environmental signage: reception wall, exterior totem, wayfinding blade signs and glass manifestation.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  .render { position: relative; overflow: hidden; border-radius: 16px; isolation: isolate; box-shadow: 0 1px 2px rgba(14, 11, 31, 0.08), 0 24px 60px -30px rgba(14, 11, 31, 0.45); }
+  .cap { display: flex; align-items: baseline; gap: 12px; margin-top: 14px; font: 400 13px/1.5 var(--z-font-sans); color: var(--z-ink-600); }
+  .cap b { font: 600 12px/1 var(--z-font-mono); color: var(--z-violet); }
+  .cap strong { color: var(--z-night); font-weight: 500; }
+  .abs { position: absolute; }
+
+  /* ---------- Dimension annotations ---------- */
+  .dim { position: absolute; color: var(--dim, rgba(211, 200, 255, 0.55)); font: 500 10.5px/1 var(--z-font-mono); letter-spacing: 0.02em; z-index: 20; }
+  .dim span { position: absolute; white-space: nowrap; padding: 3px 6px; border-radius: 4px; background: var(--dim-bg, rgba(14, 11, 31, 0.85)); color: var(--dim-text, var(--z-lavender)); }
+  .dim--h { height: 9px; border-inline: 1px solid currentColor; }
+  .dim--h::before { content: ""; position: absolute; left: 0; right: 0; top: 4px; border-top: 1px solid currentColor; }
+  .dim--h span { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  .dim--v { width: 9px; border-block: 1px solid currentColor; }
+  .dim--v::before { content: ""; position: absolute; top: 0; bottom: 0; left: 4px; border-left: 1px solid currentColor; }
+  .dim--v span { top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); }
+  .dim--v.dim--side span { left: 16px; transform: translateY(-50%); }
+  .dim--v.dim--left span { left: auto; right: 16px; transform: translateY(-50%); }
+  .dim--light { --dim: rgba(14, 11, 31, 0.5); --dim-bg: rgba(255, 255, 255, 0.9); --dim-text: var(--z-night); }
+
+  /* =================== A · Reception wall =================== */
+  .rcp { height: 640px; background:
+      radial-gradient(260px 220px at 14% 0%, rgba(211, 200, 255, 0.07), transparent 70%),
+      radial-gradient(260px 220px at 86% 0%, rgba(211, 200, 255, 0.07), transparent 70%),
+      linear-gradient(180deg, #130F29 0%, #0E0B1F 55%, #0B0919 100%); }
+  .rcp__floor { left: 0; right: 0; top: 500px; bottom: 0; z-index: 1;
+    background: linear-gradient(180deg, #08070F 0%, #0F0C1E 45%, #17132C 100%); }
+  .rcp__floor svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .rcp__base { left: 0; right: 0; top: 494px; height: 6px; z-index: 2; background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.55)); }
+  .rcp__sheen { left: 160px; right: 160px; top: 500px; height: 70px; z-index: 2; background: radial-gradient(50% 100% at 50% 0%, rgba(150, 113, 255, 0.16), transparent 70%); }
+  /* feature panel with terrain, stood off the wall */
+  .rcp__panel { left: 222px; top: 64px; width: 900px; height: 332px; z-index: 3; background: #110D25; border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(211, 200, 255, 0.06), 0 -18px 40px -10px rgba(0, 0, 0, 0.55), 10px 0 30px -12px rgba(0, 0, 0, 0.6); overflow: hidden; }
+  .rcp__panel::before { content: ""; position: absolute; inset: 0; background: url("../../pattern/terrain-dark-plain.svg") 70% 40% / 1280px 800px no-repeat; opacity: 0.85; }
+  .rcp__panel::after { content: ""; position: absolute; inset: 0; background:
+      linear-gradient(90deg, rgba(17, 13, 37, 0.85) 0%, rgba(17, 13, 37, 0.2) 30%, rgba(17, 13, 37, 0.2) 70%, rgba(17, 13, 37, 0.85) 100%),
+      linear-gradient(180deg, rgba(17, 13, 37, 0.6) 0%, rgba(17, 13, 37, 0) 35%, rgba(150, 113, 255, 0.10) 100%); }
+  /* the lit Electric Purple edge and the light it throws down the wall */
+  .rcp__led { left: 226px; top: 395px; width: 892px; height: 2px; z-index: 4; border-radius: 2px; background: #C9BBFF;
+    box-shadow: 0 0 6px 1px rgba(150, 113, 255, 0.95), 0 0 22px 4px rgba(150, 113, 255, 0.55); }
+  .rcp__wash { left: 180px; top: 396px; width: 984px; height: 120px; z-index: 2;
+    background: radial-gradient(50% 100% at 50% 0%, rgba(150, 113, 255, 0.34) 0%, rgba(150, 113, 255, 0.10) 45%, rgba(150, 113, 255, 0) 75%); }
+  .rcp__logo { left: 50%; top: 172px; height: 112px; width: auto; z-index: 5; transform: translateX(-50%);
+    filter: drop-shadow(1px 1px 0 #2B2357) drop-shadow(1px 1px 0 #251E4C) drop-shadow(1px 1px 0 #201A42) drop-shadow(1px 1px 0 #1B1639) drop-shadow(1px 1px 0 #171330)
+            drop-shadow(10px 16px 12px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 30px rgba(150, 113, 255, 0.16)); }
+  .rcp__logo-hi { left: 50%; top: 172px; height: 112px; width: auto; z-index: 6; transform: translate(calc(-50% - 0.5px), -0.5px); opacity: 0.18; filter: brightness(2.2) blur(0.3px); mix-blend-mode: screen;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 18%); mask-image: linear-gradient(180deg, #000 0%, transparent 18%); }
+  /* reception desk */
+  .rcp__desk { left: 402px; top: 432px; width: 540px; height: 170px; z-index: 8; }
+  .rcp__desk-top { position: absolute; left: -8px; right: -8px; top: 0; height: 12px; background: linear-gradient(180deg, #3A3358, #241E40); border-radius: 2px 2px 0 0;
+    clip-path: polygon(1.5% 0, 98.5% 0, 100% 100%, 0 100%); }
+  .rcp__desk-face { position: absolute; left: 0; right: 0; top: 12px; bottom: 10px;
+    background: linear-gradient(180deg, #1C1736 0%, #15112B 60%, #120E26 100%); box-shadow: inset 0 1px 0 rgba(211, 200, 255, 0.08); }
+  .rcp__desk-face::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(211, 200, 255, 0.035) 0 1px, transparent 1px 18px); }
+  .rcp__desk-kick { position: absolute; left: 10px; right: 10px; bottom: 0; height: 10px; background: #07060E; }
+  .rcp__desk-shadow { left: 380px; top: 588px; width: 584px; height: 30px; z-index: 7; background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.7), transparent 75%); }
+  .rcp__refl { left: 230px; top: 528px; width: 884px; height: 34px; z-index: 2; filter: blur(7px);
+    background: linear-gradient(180deg, rgba(185, 165, 255, 0.0), rgba(185, 165, 255, 0.28) 45%, rgba(185, 165, 255, 0)); }
+  .rcp__ceiling-light { top: 0; width: 120px; height: 3px; z-index: 2; background: rgba(247, 246, 252, 0.6); box-shadow: 0 0 18px 6px rgba(247, 246, 252, 0.08); border-radius: 0 0 3px 3px; }
+
+  /* =================== B · Exterior totem =================== */
+  .ext { height: 640px; background: linear-gradient(180deg, #D6D3E1 0%, #E7E5EE 60%, #EDECF2 100%); }
+  .ext__facade { left: 0; right: 0; top: 0; height: 474px;
+    background:
+      linear-gradient(100deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.16) 52%, rgba(255, 255, 255, 0) 70%),
+      repeating-linear-gradient(90deg, #8F8AA3 0 3px, transparent 3px 104px),
+      repeating-linear-gradient(180deg, #8F8AA3 0 3px, transparent 3px 118px),
+      linear-gradient(180deg, #ADA9BE 0%, #BDB9CC 60%, #A4A0B6 100%); }
+  .ext__canopy { left: 290px; right: -10px; top: 352px; height: 14px; background: #3A3456; box-shadow: 0 10px 20px -6px rgba(14, 11, 31, 0.5); }
+  .ext__door { left: 320px; right: 30px; top: 366px; height: 108px; background: linear-gradient(180deg, #2A2540, #1A1630); }
+  .ext__door::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, #4A4466 0 2px, transparent 2px 56px); }
+  .ext__ground { left: 0; right: 0; top: 474px; bottom: 0; background: linear-gradient(180deg, #BDB8CA 0%, #CFCBDA 100%); }
+  .ext__ground svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ext__kerb { left: 0; right: 0; top: 470px; height: 6px; background: #9D98AF; }
+  .totem-wrap { left: 116px; top: 72px; width: 168px; height: 504px; perspective: 1500px; z-index: 5; }
+  .totem { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateY(-24deg); transform-origin: 50% 50%; }
+  .totem__front { position: absolute; inset: 0; background: linear-gradient(180deg, #120E26 0%, #0E0B1F 50%, #0C0A1B 100%); padding: 26px 20px 22px; display: flex; flex-direction: column; color: var(--z-snow); backface-visibility: hidden; }
+  .totem__front::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #B9A5FF; box-shadow: 0 0 10px 1px rgba(150, 113, 255, 0.7); }
+  .totem__side { position: absolute; left: 100%; top: 0; width: 42px; height: 100%; transform-origin: left center; transform: rotateY(90deg); background: linear-gradient(180deg, #07060F, #05040B); }
+  .totem__top { position: absolute; left: 0; top: 0; width: 100%; height: 42px; transform-origin: top center; transform: rotateX(-90deg); background: #2A2448; }
+  .totem__logo { width: 112px; height: auto; margin: 6px auto 0; }
+  .totem__name { margin-top: 18px; text-align: center; font: 500 10px/1.3 var(--z-font-sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--z-ink-300); }
+  .totem__rule { margin: 26px 0 14px; height: 1px; background: rgba(211, 200, 255, 0.16); }
+  .totem__dir { display: flex; flex-direction: column; gap: 0; }
+  .totem__dir div { display: grid; grid-template-columns: 22px 1fr; padding: 9px 0; border-bottom: 1px solid rgba(211, 200, 255, 0.08); font: 400 10.5px/1.35 var(--z-font-sans); color: var(--z-snow); }
+  .totem__dir b { font: 600 10.5px/1.35 var(--z-font-mono); color: var(--z-electric); }
+  .totem__dir small { display: block; font-size: 9px; color: var(--z-ink-400); }
+  .totem__foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; font: 500 10px/1 var(--z-font-sans); color: var(--z-ink-300); }
+  .totem__foot .zi { width: 14px; height: 14px; color: var(--z-electric); }
+  .totem__plinth-shadow { left: 60px; top: 562px; width: 300px; height: 40px; z-index: 4; background: radial-gradient(50% 50% at 45% 50%, rgba(14, 11, 31, 0.45), transparent 75%); }
+
+  /* =================== C · Corridor & blades =================== */
+  .cor { height: 640px; background: #E6E3EC; }
+  .cor svg.room { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .blade { position: absolute; width: 288px; height: 96px; transform-origin: 0 0; background: linear-gradient(180deg, #15112B 0%, #0E0B1F 100%); color: var(--z-snow);
+    display: flex; align-items: center; gap: 16px; padding: 0 22px; border-radius: 2px; box-shadow: 0 1px 0 rgba(211, 200, 255, 0.06) inset; }
+  .blade::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: #B9A5FF; box-shadow: 0 0 8px rgba(150, 113, 255, 0.8); }
+  .blade .zi { width: 30px; height: 30px; color: var(--z-electric); stroke-width: 1.6; flex: none; }
+  .blade__t { font: 600 18px/1.15 var(--z-font-sans); letter-spacing: -0.005em; }
+  .blade__s { margin-top: 5px; font: 400 12px/1.2 var(--z-font-sans); color: var(--z-lavender); }
+  .blade__arrow { margin-left: auto; }
+  .blade__arrow .zi { width: 22px; height: 22px; color: var(--z-snow); }
+  .blade__mount { position: absolute; right: -16px; top: 18px; width: 16px; height: 6px; background: #8F8AA3; }
+  .blade__mount + .blade__mount { top: auto; bottom: 18px; }
+  .blade__plate { position: absolute; right: -22px; top: 6px; bottom: 6px; width: 6px; background: #B4AFC3; border-radius: 1px; }
+  .blade__plate::before, .blade__plate::after { content: ""; position: absolute; right: 6px; width: 16px; height: 5px; background: #8F8AA3; top: 16px; }
+  .blade__plate::after { top: auto; bottom: 16px; }
+  .cor .blade { box-shadow: 0 10px 20px -10px rgba(14, 11, 31, 0.6); }
+
+  /* family strip */
+  .fam { background: #ECEAF1; padding: 56px 64px 40px 56px; display: flex; justify-content: space-between; align-items: flex-start; }
+  .fam__wall { position: absolute; right: 0; top: 0; bottom: 0; width: 6px; }
+  .fam .item { position: relative; width: 288px; }
+  .fam .blade { position: relative; box-shadow: 0 16px 28px -14px rgba(14, 11, 31, 0.5); }
+  .fam .item p { margin-top: 16px; font: 400 12.5px/1.45 var(--z-font-sans); color: var(--z-ink-600); }
+  .fam .item p b { font-weight: 500; color: var(--z-night); }
+
+  /* =================== D · Glass manifestation =================== */
+  .gls { height: 480px; background: #E9E7EF; }
+  .gls__room { left: 0; right: 0; top: 0; height: 440px; filter: blur(1.2px);
+    background: linear-gradient(180deg, #DCD9E4 0%, #D3CFDD 62%, #C3BED0 62.2%, #B9B4C7 100%); }
+  .gls__lamp { top: 58px; width: 160px; height: 5px; border-radius: 3px; background: #F7F6FC; box-shadow: 0 6px 40px 14px rgba(255, 255, 255, 0.55); }
+  .gls__credenza { left: 300px; top: 236px; width: 740px; height: 38px; background: #A9A4BA; border-radius: 2px; }
+  .gls__screen { left: 546px; top: 104px; width: 248px; height: 120px; background: #15112B; border-radius: 3px; box-shadow: 0 0 0 6px #241E40; }
+  .gls__screen svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .gls__table { left: 380px; top: 318px; width: 580px; height: 9px; background: #6F6A85; border-radius: 3px; box-shadow: 0 24px 26px -8px rgba(14, 11, 31, 0.25); }
+  .gls__leg { top: 326px; width: 8px; height: 108px; background: #5E5973; }
+  .gls__chair { width: 64px; border-radius: 14px 14px 6px 6px; background: #57516F; }
+  .gls__chair--far { top: 282px; height: 40px; background: #77718F; }
+  .gls__chair--near { top: 300px; height: 92px; background: #4A4466; }
+  .gls__glass { left: 0; right: 0; top: 0; height: 440px; z-index: 3; background:
+      linear-gradient(112deg, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0.34) 15%, rgba(255, 255, 255, 0.05) 24%, rgba(255, 255, 255, 0) 52%, rgba(255, 255, 255, 0.22) 63%, rgba(255, 255, 255, 0) 74%),
+      rgba(214, 226, 232, 0.10); }
+  .gls__mull { top: 0; height: 440px; width: 8px; z-index: 6; background: linear-gradient(90deg, #9E99B0, #D9D6E2 45%, #9E99B0); box-shadow: 2px 0 6px rgba(14, 11, 31, 0.12); }
+  .gls__track { left: 0; right: 0; height: 12px; z-index: 6; background: linear-gradient(180deg, #D9D6E2, #A9A4BA); }
+  .gls__floor { left: 0; right: 0; top: 440px; bottom: 0; z-index: 7; background: linear-gradient(180deg, #A7A2B8, #C4C0D1); }
+  .gls__band { left: 0; right: 0; z-index: 4; top: 216px; height: 64px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    background: rgba(250, 249, 253, 0.62); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), inset 0 -1px 0 rgba(255, 255, 255, 0.5); }
+  .gls__lines { left: 0; right: 0; z-index: 5; top: 216px; height: 64px;
+    background: repeating-linear-gradient(160deg, rgba(14, 11, 31, 0) 0 10px, rgba(91, 52, 224, 0.10) 10px 11.5px);
+    -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.35), #000 35%, #000 75%, rgba(0, 0, 0, 0.6)); mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.35), #000 35%, #000 75%, rgba(0, 0, 0, 0.6)); }
+  .gls__id { z-index: 6; top: 228px; display: flex; align-items: center; gap: 12px; height: 40px; padding: 0 16px 0 14px; background: rgba(255, 255, 255, 0.96); border-radius: 2px; color: var(--z-night); box-shadow: 0 0 0 1px rgba(14, 11, 31, 0.05); }
+  .gls__id img { height: 18px; width: auto; }
+  .gls__id b { font: 600 15px/1 var(--z-font-sans); font-variant-numeric: tabular-nums; }
+  .gls__id span { font: 400 11.5px/1.25 var(--z-font-sans); color: var(--z-ink-600); }
+  .gls__handle { z-index: 7; top: 150px; width: 10px; height: 230px; border-radius: 5px; background: linear-gradient(90deg, #8F8AA3, #EEEDF4 50%, #8F8AA3); box-shadow: 4px 6px 10px rgba(14, 11, 31, 0.2); }
+  .angle { position: absolute; z-index: 21; }
+
+  /* ---------- Board layout ---------- */
+  .row-bc { display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 24px; }
+  .specs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid rgba(14, 11, 31, 0.1); border-bottom: 1px solid rgba(14, 11, 31, 0.1); }
+  .specs div { padding: 18px 18px 18px 0; display: flex; flex-direction: column; gap: 8px; }
+  .specs div + div { padding-left: 18px; border-left: 1px solid rgba(14, 11, 31, 0.1); }
+  .specs dt { font: 500 11px/1 var(--z-font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--z-ink-500); }
+  .specs dd { margin: 0; font: 400 14px/1.45 var(--z-font-sans); color: var(--z-night); }
+</style>
+</head>
+<body>
+<div class="z-board">
+  <header class="z-board__head">
+    <img src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven">
+    <span>Zirven V2.1 · Applications</span>
+    <div class="z-board__title"><b>17</b> Office / building signage</div>
+  </header>
+
+  <!-- =================== A · Reception wall =================== -->
+  <section>
+    <div class="render rcp" aria-label="Reception wall render">
+
+      <div class="abs rcp__panel"></div>
+      <div class="abs rcp__wash"></div>
+      <div class="abs rcp__led"></div>
+      <img class="abs rcp__logo" src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven">
+
+      <div class="abs rcp__floor">
+        <svg viewBox="0 0 1344 140" preserveAspectRatio="none" aria-hidden="true">
+          <g stroke="rgba(211,200,255,0.05)" stroke-width="1" fill="none">
+            <path d="M672 -140 L-400 140 M672 -140 L0 140 M672 -140 L336 140 M672 -140 L672 140 M672 -140 L1008 140 M672 -140 L1344 140 M672 -140 L1744 140"/>
+            <path d="M0 22 H1344 M0 58 H1344 M0 106 H1344"/>
+          </g>
+        </svg>
+      </div>
+      <div class="abs rcp__base"></div>
+      <div class="abs rcp__refl"></div>
+      <div class="abs rcp__sheen"></div>
+
+      <div class="abs rcp__desk-shadow"></div>
+      <div class="abs rcp__desk"><div class="rcp__desk-top"></div><div class="rcp__desk-face"></div><div class="rcp__desk-kick"></div></div>
+
+      <!-- dimensions -->
+      <div class="dim dim--h" style="left:222px; top:30px; width:900px"><span>Feature panel · 4 800 mm</span></div>
+      <div class="dim dim--v" style="left:1146px; top:64px; height:332px"><span>1 770 mm</span></div>
+      <div class="dim dim--v" style="left:376px; top:172px; height:112px"><span>600 mm</span></div>
+      <div class="dim dim--h" style="left:410px; top:306px; width:524px; --dim: rgba(211,200,255,0.4)"><span>Logo · 2 850 mm</span></div>
+    </div>
+    <div class="cap"><b>A</b><span><strong>Reception wall</strong> · dimensional Summit Z and wordmark, 40 mm stand-off, on a Night feature panel with an etched terrain field and an Electric Purple LED edge</span></div>
+  </section>
+
+  <!-- =================== B + C =================== -->
+  <section class="row-bc">
+    <div>
+      <div class="render ext" aria-label="Exterior totem render">
+        <div class="abs ext__facade"></div>
+        <div class="abs ext__door"></div>
+        <div class="abs ext__canopy"></div>
+        <div class="abs ext__kerb"></div>
+        <div class="abs ext__ground">
+          <svg viewBox="0 0 520 166" preserveAspectRatio="none" aria-hidden="true">
+            <g stroke="rgba(87,81,111,0.22)" stroke-width="1" fill="none">
+              <path d="M300 -200 L-300 166 M300 -200 L-60 166 M300 -200 L160 166 M300 -200 L380 166 M300 -200 L600 166 M300 -200 L860 166"/>
+              <path d="M0 14 H520 M0 36 H520 M0 66 H520 M0 108 H520 M0 160 H520"/>
+            </g>
+          </svg>
+        </div>
+        <div class="abs totem__plinth-shadow"></div>
+        <div class="abs totem-wrap">
+          <div class="totem">
+            <div class="totem__side"></div>
+            <div class="totem__front">
+              <img class="totem__logo" src="../../logo/svg/zirven-logo-stacked-dark.svg" alt="Zirven">
+              <div class="totem__name">Zirven Technology</div>
+              <div class="totem__rule"></div>
+              <div class="totem__dir">
+                <div><b>4</b><span>AI Lab<small>Research and evaluation</small></span></div>
+                <div><b>3</b><span>Engineering<small>Product Studio</small></span></div>
+                <div><b>2</b><span>Meeting rooms<small>Events and training</small></span></div>
+                <div><b>1</b><span>Reception<small>Visitors sign in here</small></span></div>
+              </div>
+              <div class="totem__foot"><span>Main entrance</span><svg class="zi"><use href="#zi-arrow-right"/></svg></div>
+            </div>
+          </div>
+        </div>
+        <div class="dim dim--v dim--light" style="left:72px; top:72px; height:504px"><span>2 400 mm</span></div>
+        <div class="dim dim--h dim--light" style="left:122px; top:600px; width:150px"><span>800 × 200 mm</span></div>
+      </div>
+      <div class="cap"><b>B</b><span><strong>Exterior totem</strong> · Night powder-coated aluminium, stacked logo and floor directory, Electric Purple LED edge</span></div>
+    </div>
+
+    <div>
+      <div class="render cor" aria-label="Corridor with wayfinding blade signs">
+        <svg class="room" viewBox="0 0 800 640" aria-hidden="true">
+          <defs>
+            <linearGradient id="ceil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F3F8"/><stop offset="1" stop-color="#E4E1EB"/></linearGradient>
+            <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B7B2C5"/><stop offset="1" stop-color="#9F9AB2"/></linearGradient>
+            <linearGradient id="rwall" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#E9E7EF"/><stop offset="1" stop-color="#D4D0DD"/></linearGradient>
+            <linearGradient id="lwall" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C2BED0"/><stop offset="1" stop-color="#CDC9D9"/></linearGradient>
+            <linearGradient id="glassref" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.35"/><stop offset="0.4" stop-color="#fff" stop-opacity="0"/><stop offset="0.7" stop-color="#fff" stop-opacity="0.15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          </defs>
+          <!-- ceiling, floor, walls -->
+          <polygon points="0,0 800,0 440,216 216,216" fill="url(#ceil)"/>
+          <polygon points="0,640 800,640 440,395 216,395" fill="url(#floor)"/>
+          <polygon points="800,0 440,216 440,395 800,640" fill="url(#rwall)"/>
+          <polygon points="0,0 216,216 216,395 0,640" fill="url(#lwall)"/>
+          <rect x="216" y="216" width="224" height="179" fill="#CBC7D7"/>
+          <!-- far wall window -->
+          <rect x="268" y="252" width="120" height="96" fill="#EEF0F4"/>
+          <path d="M328 252V348M268 300H388" stroke="#B8B4C6" stroke-width="2"/>
+          <!-- left glazing: rooms behind glass -->
+          <polygon points="0,65 216,234 216,395 0,640" fill="#B9B4C8"/>
+          <polygon points="0,65 216,234 216,395 0,640" fill="url(#glassref)"/>
+          <polygon points="0,342 216,312 216,336 0,427" fill="#F4F3F8" fill-opacity="0.75"/>
+          <g stroke="#FFFFFF" stroke-opacity="0.8" stroke-width="1">
+            <path d="M0 412 L216 331 M0 398 L216 326 M0 384 L216 321 M0 370 L216 316 M0 356 L216 313"/>
+          </g>
+          <g stroke="#8F8AA3" stroke-width="3">
+            <path d="M30 88V606M90 135V538M132 168V490M162 192V456M183 208V433M201 222V412"/>
+          </g>
+          <path d="M0 65 L216 234" stroke="#8F8AA3" stroke-width="4"/>
+          <!-- ceiling light lines -->
+          <g fill="#FFFFFF">
+            <polygon points="176,0 194,0 321,212 318,212"/>
+            <polygon points="560,0 578,0 349,212 346,212"/>
+          </g>
+          <!-- floor joints -->
+          <g stroke="rgba(14,11,31,0.10)" stroke-width="1">
+            <path d="M200 640 L310 395 M400 640 L330 395 M600 640 L360 395"/>
+            <path d="M48 560 H730 M132 497 H630 M178 462 H560 M206 437 H500"/>
+          </g>
+          <!-- doors on the right wall -->
+          <polygon points="690,565 690,200 630,215 630,524" fill="#3A3456"/>
+          <polygon points="684,560 684,206 636,219 636,522" fill="#4A4466"/>
+          <rect x="642" y="372" width="3" height="40" fill="#C4C0D3"/>
+          <polygon points="500,436 500,249 480,254 480,422" fill="#3A3456"/>
+          <!-- skirting -->
+          <path d="M800 640 L440 395" stroke="#8F8AA3" stroke-width="3"/>
+        </svg>
+
+        <!-- blade signs in perspective (base 900 × 300 mm at 0.32 px/mm, scaled by depth) -->
+        <div class="blade" style="left:576px; top:113px; transform:scale(0.6125)"><svg class="zi"><use href="#zi-terminal"/></svg><div><div class="blade__t">Engineering</div><div class="blade__s">Level 3 · East</div></div><i class="blade__plate"></i></div>
+        <div class="blade" style="left:486px; top:174px; transform:scale(0.4128)"><svg class="zi"><use href="#zi-ai"/></svg><div><div class="blade__t">AI Lab</div><div class="blade__s">3.10 – 3.12</div></div><i class="blade__plate"></i></div>
+        <div class="blade" style="left:435px; top:208.6px; transform:scale(0.2996)"><svg class="zi"><use href="#zi-layers"/></svg><div><div class="blade__t">Product Studio</div><div class="blade__s">3.08</div></div><i class="blade__plate"></i></div>
+        <div class="blade" style="left:402px; top:231px; transform:scale(0.2264)"><svg class="zi"><use href="#zi-users"/></svg><div><div class="blade__t">Meeting rooms</div><div class="blade__s">3.01 – 3.06</div></div><i class="blade__plate"></i></div>
+
+        <div class="dim dim--v dim--light dim--left" style="left:730px; top:172px; height:441px"><span>2 250 mm</span></div>
+      </div>
+      <div class="cap"><b>C</b><span><strong>Wayfinding in context</strong> · Level 3 corridor; blade signs mounted at 2 250 mm to the underside, double-sided</span></div>
+    </div>
+  </section>
+
+  <!-- =================== C · blade family =================== -->
+  <section>
+    <div class="render fam" aria-label="Blade sign family">
+      <div class="item">
+        <div class="blade"><svg class="zi"><use href="#zi-terminal"/></svg><div><div class="blade__t">Engineering</div><div class="blade__s">Level 3 · East</div></div><i class="blade__plate"></i></div>
+        <div class="dim dim--h dim--light" style="left:0; top:-26px; width:288px"><span>900 mm</span></div>
+        <div class="dim dim--v dim--light" style="left:-26px; top:0; height:96px"><span>300</span></div>
+        <p><b>Department</b> · icon, name and location</p>
+      </div>
+      <div class="item">
+        <div class="blade"><svg class="zi"><use href="#zi-ai"/></svg><div><div class="blade__t">AI Lab</div><div class="blade__s">3.10 – 3.12</div></div><i class="blade__plate"></i></div>
+        <p><b>Space</b> · rooms in tabular figures</p>
+      </div>
+      <div class="item">
+        <div class="blade"><svg class="zi"><use href="#zi-layers"/></svg><div><div class="blade__t">Product Studio</div><div class="blade__s">3.08</div></div><i class="blade__plate"></i></div>
+        <p><b>Space</b> · same layout, single room</p>
+      </div>
+      <div class="item">
+        <div class="blade"><svg class="zi"><use href="#zi-users"/></svg><div><div class="blade__t">Meeting rooms</div><div class="blade__s">3.01 – 3.06</div></div><span class="blade__arrow"><svg class="zi"><use href="#zi-arrow-right"/></svg></span><i class="blade__plate"></i></div>
+        <p><b>Directional</b> · arrow on the leading edge</p>
+      </div>
+    </div>
+    <div class="cap"><b>C</b><span><strong>Blade sign family</strong> · 900 × 300 × 20 mm, Night face, Electric Purple icons in translucent acrylic, lit lower edge; shown at one scale</span></div>
+  </section>
+
+  <!-- =================== D · Glass manifestation =================== -->
+  <section>
+    <div class="render gls" aria-label="Glass manifestation on a meeting-room wall">
+      <div class="abs gls__room">
+        <i class="abs gls__lamp" style="left:420px"></i><i class="abs gls__lamp" style="left:760px"></i>
+        <div class="abs gls__credenza"></div>
+        <div class="abs gls__screen">
+          <svg viewBox="0 0 248 120" preserveAspectRatio="none" aria-hidden="true">
+            <g stroke="rgba(211,200,255,0.12)"><path d="M14 30H234M14 60H234M14 90H234"/></g>
+            <path d="M14 96 C50 90 70 80 100 82 S150 60 180 54 S220 36 234 30" fill="none" stroke="#9671FF" stroke-width="2.5"/>
+            <rect x="14" y="10" width="60" height="8" rx="2" fill="rgba(211,200,255,0.4)"/>
+          </svg>
+        </div>
+        <i class="abs gls__chair gls__chair--far" style="left:430px"></i><i class="abs gls__chair gls__chair--far" style="left:560px"></i><i class="abs gls__chair gls__chair--far" style="left:690px"></i><i class="abs gls__chair gls__chair--far" style="left:820px"></i>
+        <div class="abs gls__table"></div>
+        <i class="abs gls__leg" style="left:400px"></i><i class="abs gls__leg" style="left:930px"></i>
+        <i class="abs gls__chair gls__chair--near" style="left:470px"></i><i class="abs gls__chair gls__chair--near" style="left:620px"></i><i class="abs gls__chair gls__chair--near" style="left:770px"></i>
+      </div>
+      <div class="abs gls__glass"></div>
+      <div class="abs gls__band"></div>
+      <div class="abs gls__lines"></div>
+      <div class="abs gls__id" style="left:1086px"><img src="../../logo/svg/zirven-symbol-micro-light.svg" alt=""><b>3.04</b><span>Meeting room<br>8 people</span></div>
+      <div class="abs gls__track" style="top:0"></div>
+      <div class="abs gls__track" style="top:428px"></div>
+      <i class="abs gls__mull" style="left:0"></i>
+      <i class="abs gls__mull" style="left:330px"></i>
+      <i class="abs gls__mull" style="left:668px"></i>
+      <i class="abs gls__mull" style="left:1006px"></i>
+      <i class="abs gls__mull" style="left:1336px"></i>
+      <i class="abs gls__handle" style="left:1030px"></i>
+      <div class="abs gls__floor"></div>
+
+      <div class="dim dim--v dim--light dim--left" style="left:1312px; top:216px; height:64px"><span>400 mm</span></div>
+      <div class="dim dim--v dim--light dim--side" style="left:40px; top:280px; height:160px"><span>1 000 mm to floor</span></div>
+      <svg class="angle" style="left:64px; top:146px" width="170" height="70" viewBox="0 0 170 70" aria-hidden="true">
+        <path d="M4 66 H160" stroke="#0E0B1F" stroke-opacity="0.45" stroke-width="1" stroke-dasharray="3 3"/>
+        <path d="M4 66 L152 12.1" stroke="#5B34E0" stroke-width="1.5"/>
+        <path d="M84 66 A80 80 0 0 0 79.2 38.6" fill="none" stroke="#0E0B1F" stroke-opacity="0.55" stroke-width="1"/>
+        <rect x="92" y="40" width="36" height="19" rx="4" fill="#fff" fill-opacity="0.94"/>
+        <text x="110" y="53.5" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="600" fill="#0E0B1F">20°</text>
+      </svg>
+    </div>
+    <div class="cap"><b>D</b><span><strong>Glass manifestation</strong> · a 400 mm frosted band with 20° ascent lines, 1 000 mm above the floor, room number and capacity on the door leaf</span></div>
+  </section>
+
+  <dl class="specs">
+    <div><dt>Materials</dt><dd>Powder-coated aluminium in Night; acrylic faces; frosted vinyl on glass</dd></div>
+    <div><dt>Light</dt><dd>Electric Purple LED, diffused, edge and halo only; never flashing</dd></div>
+    <div><dt>Type</dt><dd>Readex Pro Semibold and Regular; room numbers in tabular figures</dd></div>
+    <div><dt>Access</dt><dd>Contrast above 7 : 1; tactile room numbers at 1 400 mm where required</dd></div>
+  </dl>
+
+  <p class="z-board__note">Dimensional letters are 20 mm aluminium with a custom Night powder-coat return and faces matched to Electric Purple and Snow (all finishes to be proofed on sample); LED light is used only as an edge or halo, and the Summit Z is never cropped on signage. Blade signs and glass manifestation share one grid, one icon set and one 20° motif across every floor.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VEVO — a product by Zirven · Zirven V2.1 application 05</title>
+<meta name="description" content="VEVO is the AI-powered business platform from Zirven: operations, customers and reporting in one workspace, with an assistant that understands your business data.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  html, body { overflow-x: hidden; }
+
+  /* ---------- Product sub-nav ---------- */
+  .pnav { position: sticky; top: 72px; z-index: 19; border-bottom: 1px solid var(--t-line); background: color-mix(in srgb, #120E26 84%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .pnav__inner { height: 56px; display: flex; align-items: center; gap: 28px; }
+  .pnav__brand { display: flex; align-items: center; gap: 10px; color: var(--t-text); font: 600 15px/1 var(--z-font-sans); letter-spacing: 0.02em; text-decoration: none !important; }
+  .pnav__brand img { width: 26px; height: 26px; border-radius: 7px; }
+  .pnav__brand small { font: 400 12.5px/1 var(--z-font-sans); color: var(--t-text-3); letter-spacing: 0; padding-left: 10px; border-left: 1px solid var(--t-line); }
+  .pnav__links { display: flex; gap: 4px; font: 500 13.5px/1 var(--z-font-sans); }
+  .pnav__links a { color: var(--t-text-3); padding: 8px 10px; border-radius: 8px; }
+  .pnav__links a:hover { color: var(--t-text); background: var(--t-surface-2); text-decoration: none; }
+  .pnav__links a[aria-current] { color: var(--t-text); background: var(--t-accent-soft); }
+
+  /* ---------- Hero ---------- */
+  .v-hero { position: relative; overflow: hidden; padding: 96px 0 0; }
+  .v-hero__bg { position: absolute; inset: 0 0 auto; height: 900px; opacity: 0.8; }
+  .v-hero__bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(14,11,31,0.65), var(--z-night) 85%), linear-gradient(0deg, var(--z-night), rgba(14,11,31,0) 50%); }
+  .v-hero__copy { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .v-hero__logo { height: 46px; width: auto; }
+  .v-hero h1 { margin-top: 36px; max-width: 940px; font-size: 70px; line-height: 1.02; letter-spacing: -0.032em; font-weight: 600; }
+  .v-hero h1 em { font-style: normal; font-weight: 300; color: var(--z-lavender); }
+  .v-hero .z-lead { margin-top: 24px; max-width: 660px; font-size: 19px; }
+  .v-hero__meta { margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .v-hero__meta span { display: inline-flex; align-items: center; gap: 8px; }
+  .v-hero__meta .zi { color: var(--z-lavender); }
+
+  /* ---------- Big product screenshot ---------- */
+  .shot { position: relative; margin-top: 72px; }
+  .shot::before { content: ""; position: absolute; left: 10%; right: 10%; top: -40px; height: 280px; background: radial-gradient(closest-side, rgba(150, 113, 255, 0.35), rgba(91, 52, 224, 0)); filter: blur(30px); pointer-events: none; }
+  .shot .z-browser { position: relative; box-shadow: 0 0 0 1px rgba(150, 113, 255, 0.12), 0 50px 120px -40px rgba(91, 52, 224, 0.55), 0 40px 80px -40px rgba(0, 0, 0, 0.9); }
+  .app { display: grid; grid-template-columns: 224px minmax(0, 1fr) 348px; background: var(--z-night); text-align: left; }
+  .app .z-sidebar { padding: 14px 12px; gap: 2px; background: #0C0A1B; }
+  .app .z-sidebar__item { height: 34px; font-size: 13.5px; }
+  .app .z-sidebar__section { padding: 16px 10px 6px; font-size: 10.5px; }
+  .ws { display: flex; align-items: center; gap: 10px; padding: 4px 6px 14px; margin-bottom: 6px; border-bottom: 1px solid var(--t-line); }
+  .ws img { width: 30px; height: 30px; border-radius: 8px; }
+  .ws b { display: block; font: 600 14px/1.2 var(--z-font-sans); }
+  .ws small { display: block; font: 400 12px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; }
+  .ws .zi { margin-left: auto; color: var(--t-text-3); }
+  .beta { margin-left: auto; font: 500 10px/1 var(--z-font-mono); padding: 3px 6px; border-radius: 5px; color: var(--z-cyan); background: rgba(61, 216, 232, 0.08); border: 1px solid rgba(61, 216, 232, 0.25); }
+  .me { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 8px 4px; border-top: 1px solid var(--t-line); font: 500 13px/1.2 var(--z-font-sans); }
+  .me small { display: block; font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); margin-top: 2px; }
+  .app__main { min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--t-line); }
+  .app .z-topbar { height: 56px; padding: 0 20px; gap: 12px; }
+  .app .z-search { width: 300px; height: 34px; font-size: 13px; }
+  .app .z-search .z-kbd { margin-left: auto; }
+  .icon-btn { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; color: var(--t-text-3); border: 1px solid var(--t-line); }
+  .avs { display: flex; }
+  .avs .z-avatar { margin-left: -6px; border-color: var(--z-night); border-width: 2px; }
+  .app__body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 9px; border: 1px solid var(--t-line); font: 500 12px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .seg span { padding: 6px 9px; border-radius: 6px; }
+  .seg span[aria-current] { background: var(--t-surface-2); color: var(--t-text); }
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .kpi { border: 1px solid var(--t-line); border-radius: 12px; padding: 14px; background: rgba(21, 17, 43, 0.6); }
+  .kpi .z-stat__label { font-size: 12.5px; }
+  .kpi .z-stat__value { font-size: 23px; margin-top: 6px; }
+  .kpi .z-delta { display: inline-block; margin-top: 6px; font-size: 12px; }
+  .kpi .z-delta + span { font: 400 11.5px/1 var(--z-font-sans); color: var(--t-text-3); margin-left: 4px; }
+  .box { border: 1px solid var(--t-line); border-radius: 12px; background: rgba(21, 17, 43, 0.6); }
+  .box__head { display: flex; align-items: center; gap: 12px; padding: 14px 16px 0; }
+  .box__head .z-stat__label { color: var(--t-text); font-size: 13.5px; }
+  .lg { display: flex; gap: 14px; font: 500 11.5px/1 var(--z-font-sans); color: var(--t-text-3); margin-left: auto; }
+  .lg span { display: inline-flex; align-items: center; gap: 6px; }
+  .lg i { width: 14px; height: 0; border-top: 2px solid; display: inline-block; }
+  .chart { display: block; width: 100%; height: auto; }
+  .chart text { font: 500 10px var(--z-font-sans); fill: #77718F; }
+  .tbl { font-size: 13px; }
+  .tbl th { padding: 10px 14px; font-size: 11.5px; }
+  .tbl td { padding: 11px 14px; }
+  .tbl .z-mono { color: var(--t-text-2); }
+  .tbl .z-chip { height: 23px; font-size: 11.5px; }
+
+  .asst { display: flex; flex-direction: column; background: linear-gradient(180deg, #120E27, #0E0B1F); min-width: 0; }
+  .asst__head { height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 16px; border-bottom: 1px solid var(--t-line); font: 500 14px/1 var(--z-font-sans); }
+  .asst__head > .zi:first-child { color: var(--z-cyan); }
+  .asst__head .beta { margin-left: 0; }
+  .asst__head .icon-btn { margin-left: auto; width: 30px; height: 30px; border: 0; }
+  .asst__body { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .ctx { display: inline-flex; align-self: flex-start; align-items: center; gap: 6px; height: 24px; padding: 0 9px; border-radius: 7px; background: var(--t-surface-2); font: 500 11.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .bubble { align-self: flex-end; max-width: 90%; padding: 10px 12px; border-radius: 12px 12px 4px 12px; background: var(--z-ink-800); font: 400 13.5px/1.5 var(--z-font-sans); color: var(--z-snow); }
+  .ans { font: 400 13.5px/1.6 var(--z-font-sans); color: var(--z-ink-300); }
+  .ans b { color: var(--z-snow); font-weight: 500; }
+  .why { border: 1px solid var(--t-line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 9px; }
+  .why__row { display: grid; grid-template-columns: 96px minmax(0, 1fr) 16px; gap: 10px; align-items: center; font: 400 12px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .why__row i { display: block; height: 6px; border-radius: 3px; background: var(--z-electric); }
+  .why__row b { font: 500 11.5px/1 var(--z-font-mono); color: var(--t-text); text-align: right; }
+  .srcs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .srcs .z-tag { font-size: 11px; height: 21px; }
+  .act { border: 1px solid rgba(150, 113, 255, 0.35); border-radius: 12px; padding: 12px 14px; background: rgba(150, 113, 255, 0.07); display: flex; flex-direction: column; gap: 10px; }
+  .act__t { font: 500 13px/1.45 var(--z-font-sans); color: var(--z-snow); }
+  .act .z-caption { display: flex; align-items: center; gap: 6px; }
+  .composer { margin: 0 16px 16px; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 14px; border-radius: 12px; border: 1px solid var(--t-line); background: var(--z-ink-900); font: 400 13.5px/1 var(--z-font-sans); color: var(--t-text-3); }
+  .composer .send { margin-left: auto; width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--z-electric); color: var(--z-night); }
+
+  /* ---------- Trust strip ---------- */
+  .trust { padding-top: 64px; }
+  .trust__line { text-align: center; font: 500 15px/1.4 var(--z-font-sans); color: var(--t-text-2); }
+  .trust__line b { color: var(--t-text); font-weight: 500; }
+  .trust__stats { margin-top: 32px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--t-line); border-bottom: 1px solid var(--t-line); }
+  .trust__stats div { padding: 24px 24px 26px; border-left: 1px solid var(--t-line); display: flex; flex-direction: column; gap: 8px; }
+  .trust__stats div:first-child { border-left: 0; }
+  .trust__stats b { font: 600 30px/1 var(--z-font-sans); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .trust__stats span { font: 400 13.5px/1.35 var(--z-font-sans); color: var(--t-text-3); }
+
+  /* ---------- Feature blocks ---------- */
+  .fb { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); gap: 72px; align-items: center; }
+  .fb--flip { grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr); }
+  .fb--flip .fb__text { order: 2; }
+  .fb__text { display: flex; flex-direction: column; gap: 18px; }
+  .fb__text .z-lead { font-size: 17.5px; }
+  .fb__text h2 { font-size: 40px; line-height: 1.1; }
+  .fb__list { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; }
+  .fb__list li { display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; padding: 14px 0; border-top: 1px solid var(--t-line); font: 400 15px/1.5 var(--z-font-sans); color: var(--t-text-2); }
+  .fb__list li b { display: block; color: var(--t-text); font-weight: 500; }
+  .fb__list .z-icon-tile { width: 36px; height: 36px; border-radius: 10px; }
+  .ui { border: 1px solid rgba(211, 200, 255, 0.14); border-radius: 18px; background: var(--z-ink-900); overflow: hidden; box-shadow: 0 40px 90px -50px rgba(91, 52, 224, 0.6), 0 30px 60px -40px rgba(0, 0, 0, 0.8); }
+  .ui__head { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--t-line); font: 500 13.5px/1 var(--z-font-sans); color: var(--t-text); background: rgba(14, 11, 31, 0.5); }
+  .ui__head .grow + * { margin-left: 0; }
+  .ui__foot { display: flex; align-items: center; gap: 18px; padding: 12px 18px; border-top: 1px solid var(--t-line); font: 500 12px/1 var(--z-font-mono); color: var(--t-text-3); background: rgba(14, 11, 31, 0.5); }
+  .ui__foot b { color: var(--t-text-2); font-weight: 500; }
+
+  /* assistant anatomy */
+  .anat { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .anat__srcs { border: 1px solid var(--t-line); border-radius: 12px; overflow: hidden; }
+  .anat__srcs header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--z-ink-850); font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); }
+  .src { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 14px; border-top: 1px solid var(--t-line); }
+  .src__n { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font: 600 11px/1 var(--z-font-mono); color: var(--z-cyan); background: rgba(61, 216, 232, 0.08); border: 1px solid rgba(61, 216, 232, 0.25); }
+  .src b { display: block; font: 500 13.5px/1.25 var(--z-font-sans); color: var(--t-text); }
+  .src small { display: block; margin-top: 3px; font: 400 12px/1.2 var(--z-font-sans); color: var(--t-text-3); }
+  .src code { font: 500 11.5px/1 var(--z-font-mono); color: var(--t-text-3); }
+  .anat .z-code { padding: 14px 16px; font-size: 12.5px; line-height: 1.7; border-radius: 12px; }
+  sup.cite { font: 600 9.5px/1 var(--z-font-mono); color: var(--z-cyan); margin-left: 2px; }
+
+  /* workflow canvas */
+  .canvas { position: relative; aspect-ratio: 600 / 380; background: radial-gradient(circle, rgba(211, 200, 255, 0.12) 1px, rgba(211, 200, 255, 0) 1.4px) 0 0 / 20px 20px, #0C0A1B; }
+  .canvas > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .wn { position: absolute; width: 28%; height: 15.79%; display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 0 12px; border-radius: 10px; border: 1px solid rgba(211, 200, 255, 0.18); background: var(--z-ink-850); box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.9); }
+  .wn small { display: flex; align-items: center; gap: 6px; font: 500 10.5px/1 var(--z-font-sans); color: var(--t-text-3); letter-spacing: 0.02em; }
+  .wn b { font: 500 13px/1.15 var(--z-font-sans); color: var(--z-snow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wn--trigger { border-color: rgba(150, 113, 255, 0.55); }
+  .wn--trigger small { color: var(--z-electric); }
+  .wn--ai { border-color: rgba(61, 216, 232, 0.55); background: linear-gradient(180deg, rgba(61, 216, 232, 0.07), rgba(28, 23, 53, 1)); }
+  .wn--ai small { color: var(--z-cyan); }
+  .wn--sel { box-shadow: 0 0 0 3px rgba(150, 113, 255, 0.25); border-color: var(--z-electric); }
+  .runcard { position: absolute; left: 2.667%; top: 66%; width: 28%; padding: 10px 12px; border-radius: 10px; border: 1px dashed rgba(211, 200, 255, 0.2); background: rgba(14, 11, 31, 0.85); display: flex; flex-direction: column; gap: 7px; font: 500 11px/1.2 var(--z-font-mono); color: var(--t-text-3); }
+  .runcard b { color: var(--z-success); font-weight: 500; }
+  .runcard span { display: flex; justify-content: space-between; }
+
+  /* analytics */
+  .an { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 16px; }
+  .an__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .an__row .kpi .z-stat__value { font-size: 22px; }
+  .movers { border: 1px solid var(--t-line); border-radius: 12px; }
+  .movers .z-table td, .movers .z-table th { padding: 10px 14px; }
+
+  /* integrations */
+  .conn { padding: 20px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .ct { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--t-line); border-radius: 12px; background: rgba(14, 11, 31, 0.5); min-width: 0; }
+  .ct__i { width: 34px; height: 34px; flex: none; border-radius: 9px; display: grid; place-items: center; background: var(--z-ink-800); color: var(--z-lavender); font: 700 12px/1 var(--z-font-sans); letter-spacing: -0.02em; }
+  .ct b { display: block; font: 500 13px/1.2 var(--z-font-sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ct small { display: flex; align-items: center; gap: 6px; margin-top: 4px; font: 400 11.5px/1.2 var(--z-font-sans); color: var(--t-text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ct small i { flex: none; }
+  .ct small i { width: 6px; height: 6px; border-radius: 50%; background: var(--z-success); }
+  .ct--add { border-style: dashed; color: var(--t-text-3); }
+  .ct--add .ct__i { background: transparent; border: 1px dashed rgba(211, 200, 255, 0.3); color: var(--t-text-3); }
+  .apibox { margin: 0 20px 20px; }
+  .apibox .z-code { padding: 14px 16px; font-size: 12.5px; line-height: 1.7; }
+
+  /* ---------- Security grid ---------- */
+  .sec-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 64px; align-items: end; }
+  .sec { display: flex; flex-direction: column; gap: 14px; min-height: 236px; }
+  .sec p { color: var(--t-text-2); font-size: 15px; }
+  .sec footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--t-line); font: 500 12px/1.4 var(--z-font-mono); color: var(--t-text-3); }
+  .sec--ai .z-icon-tile { color: var(--z-cyan); background: rgba(61, 216, 232, 0.08); border-color: rgba(61, 216, 232, 0.3); }
+  .secbar { margin-top: 24px; display: flex; align-items: center; gap: 16px; padding: 18px 22px; border-radius: 14px; border: 1px solid var(--t-line); background: var(--z-ink-900); font: 400 15px/1.5 var(--z-font-sans); color: var(--t-text-2); }
+  .secbar b { color: var(--t-text); font-weight: 500; }
+
+  /* ---------- How it works ---------- */
+  .how { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 56px; }
+  .how::before { content: ""; position: absolute; left: 22px; right: 22px; top: 22px; height: 1px; background: linear-gradient(90deg, var(--z-electric), rgba(150, 113, 255, 0.35)); }
+  .step { position: relative; display: flex; flex-direction: column; gap: 14px; }
+  .step__n { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--z-night); border: 1px solid var(--z-electric); font: 600 13px/1 var(--z-font-mono); color: var(--z-electric); }
+  .step:first-child .step__n { background: var(--z-electric); color: var(--z-night); }
+  .step .z-chip { align-self: flex-start; }
+  .step p { color: var(--t-text-2); font-size: 15px; max-width: 340px; }
+
+  /* ---------- FAQ ---------- */
+  .faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 72px; }
+  .faq details { border-top: 1px solid var(--t-line); }
+  .faq details:last-child { border-bottom: 1px solid var(--t-line); }
+  .faq summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 0; cursor: pointer; font: 500 18px/1.35 var(--z-font-sans); color: var(--t-text); }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .zi { color: var(--t-text-3); transition: transform var(--z-duration-base) var(--z-ease-summit); }
+  .faq details[open] summary .zi { transform: rotate(180deg); color: var(--z-electric); }
+  .faq details p { padding: 0 48px 24px 0; color: var(--t-text-2); font-size: 15.5px; line-height: 1.65; }
+
+  /* ---------- Demo ---------- */
+  .demo { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 56px; padding: 56px; background: radial-gradient(ellipse 60% 70% at 0% 0%, rgba(91, 52, 224, 0.28), rgba(91, 52, 224, 0) 70%), linear-gradient(160deg, #1A1338 0%, #110D24 60%); }
+  .demo__list { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-direction: column; gap: 14px; color: var(--t-text-2); font-size: 15.5px; }
+  .demo__list li { display: flex; gap: 12px; align-items: flex-start; }
+  .demo__list .zi { color: var(--z-electric); margin-top: 3px; }
+  .demo__who { margin-top: 32px; display: flex; align-items: center; gap: 14px; padding-top: 24px; border-top: 1px solid var(--t-line); }
+  .demo__who p { font: 400 14px/1.45 var(--z-font-sans); color: var(--t-text-3); }
+  .demo__who b { color: var(--t-text); font-weight: 500; }
+  form.z-card { background: var(--z-night); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 28px; box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.9); }
+  form .full { grid-column: 1 / -1; }
+  .z-select { appearance: none; -webkit-appearance: none; padding-right: 36px; background: var(--t-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239C97B1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center; }
+  .form__head { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding-bottom: 6px; }
+
+  /* ---------- Footer ---------- */
+  .foot-grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 32px; }
+  .foot-grid h4 { font: 500 13px/1 var(--z-font-sans); color: var(--t-text-3); margin-bottom: 16px; }
+  .foot-grid ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; }
+  .foot-brand p b { color: var(--t-text); font-weight: 500; }
+  .foot-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--t-line); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) { .z-nav__links { display: none; } }
+  @media (max-width: 1240px) {
+    .app { grid-template-columns: 210px minmax(0, 1fr); }
+    .asst { display: none; }
+    .app__main { border-right: 0; }
+  }
+  @media (max-width: 1080px) {
+    .fb, .fb--flip, .faq, .demo, .sec-head { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .sec-head h2 br { display: none; }
+    .fb--flip .fb__text { order: 0; }
+    .pnav__links { display: none; }
+    .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .trust__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .trust__stats div:nth-child(3) { border-left: 0; }
+    .trust__stats div:nth-child(n+3) { border-top: 1px solid var(--t-line); }
+  }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: minmax(0, 1fr); }
+    .app .z-sidebar { display: none; }
+    .app .z-search { width: auto; flex: 1; }
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .how { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .how::before { display: none; }
+    .step:not(:last-child)::after { content: ""; position: absolute; left: 22px; top: 44px; bottom: -32px; width: 1px; background: rgba(150, 113, 255, 0.45); }
+    .step { padding-left: 64px; }
+    .step__n { position: absolute; left: 0; top: 0; }
+  }
+  @media (max-width: 640px) {
+    .z-nav__links, .z-lang { display: none; }
+    .z-nav__inner { gap: 16px; }
+    .pnav__brand small { display: none; }
+    .pnav__inner .z-btn--ghost { display: none; }
+    .v-hero { padding-top: 56px; }
+    .v-hero__logo { height: 36px; }
+    .v-hero h1 { font-size: 40px; margin-top: 28px; }
+    .v-hero .z-lead { font-size: 17px; }
+    .fb__text h2 { font-size: 32px; }
+    .v-hero__meta { gap: 12px 18px; }
+    .shot { margin-top: 48px; }
+    .z-browser__url { min-width: 0; }
+    .app .z-topbar { padding: 0 12px; }
+    .app .z-topbar > :not(.z-search) { display: none; }
+    .app__body { padding: 14px; }
+    .app__head .seg, .app__head .z-btn { display: none; }
+    .tbl th:nth-child(3), .tbl td:nth-child(3), .tbl th:nth-child(4), .tbl td:nth-child(4) { display: none; }
+    .tbl th:nth-child(1), .tbl td:nth-child(1) { display: none; }
+    .box__head .z-caption { display: none; }
+    .src code { display: none; }
+    .ui__head .seg, .ui__head .z-chip, .ui__head .z-btn { display: none; }
+    .movers th:nth-child(4), .movers td:nth-child(4) { display: none; }
+    .ct__i { display: none; }
+    .lg { display: none; }
+    .trust__stats div { padding: 18px 14px; }
+    .trust__stats b { font-size: 24px; }
+    .canvas { aspect-ratio: auto; display: flex; flex-direction: column; gap: 10px; padding: 16px; }
+    .canvas > svg { display: none; }
+    .wn, .runcard { position: static; width: 100%; height: auto; padding: 12px; }
+    .an__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .an__row .kpi:last-child { display: none; }
+    .conn { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 14px; }
+    .apibox { margin: 0 14px 14px; }
+    .ui__foot { flex-wrap: wrap; gap: 8px 14px; }
+    .secbar { flex-direction: column; align-items: flex-start; }
+    .faq details p { padding-right: 0; }
+    .demo { padding: 28px 20px; }
+    form.z-card { grid-template-columns: minmax(0, 1fr); padding: 20px; }
+    .foot-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== ZIRVEN NAV ===================== -->
+<header class="z-nav">
+  <div class="z-container z-nav__inner">
+    <a href="index.html" aria-label="Zirven home"><img class="z-nav__logo" src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven"></a>
+    <nav class="z-nav__links" aria-label="Primary">
+      <a href="products.html" aria-current="page">Products</a>
+      <a href="index.html#build">What we build</a>
+      <a href="index.html#ai">AI &amp; Technology</a>
+      <a href="index.html#engineering">Engineering</a>
+      <a href="index.html#about">About</a>
+    </nav>
+    <div class="grow"></div>
+    <div class="z-lang" aria-label="Language"><span aria-current="true">EN</span><span>TR</span><span>AR</span></div>
+    <a class="z-btn z-btn--secondary z-btn--sm" href="index.html#contact">Work with us</a>
+  </div>
+</header>
+
+<!-- ===================== VEVO SUB-NAV ===================== -->
+<nav class="pnav" aria-label="VEVO">
+  <div class="z-container pnav__inner">
+    <a class="pnav__brand" href="#overview"><img src="../../favicon/vevo-app-icon.svg" alt="">VEVO<small>a product by Zirven</small></a>
+    <div class="pnav__links">
+      <a href="#overview" aria-current="true">Overview</a>
+      <a href="#assistant">Assistant</a>
+      <a href="#workflows">Workflows</a>
+      <a href="#analytics">Analytics</a>
+      <a href="#integrations">Integrations</a>
+      <a href="#security">Security</a>
+    </div>
+    <div class="grow"></div>
+    <a class="z-btn z-btn--ghost z-btn--sm" href="#">Sign in</a>
+    <a class="z-btn z-btn--primary z-btn--sm" href="#demo">Book a demo</a>
+  </div>
+</nav>
+
+<main>
+<!-- ===================== HERO ===================== -->
+<section class="v-hero" id="overview">
+  <div class="v-hero__bg z-bg-terrain-plain"></div>
+  <div class="z-container v-hero__copy z-rise">
+    <img class="v-hero__logo" src="../../logo/svg/vevo-endorsed-dark.svg" alt="VEVO — a product by Zirven">
+    <h1>Run your operations from <em>one intelligent workspace.</em></h1>
+    <p class="z-lead">VEVO brings orders, customers and reporting into one place, with an assistant that understands your business data and shows where every answer came from.</p>
+    <div class="z-row gap-3 z-wrap mt-8" style="justify-content:center">
+      <a class="z-btn z-btn--primary z-btn--lg" href="#demo">Book a demo <svg class="zi"><use href="#zi-arrow-right"/></svg></a>
+      <a class="z-btn z-btn--secondary z-btn--lg" href="#how"><svg class="zi"><use href="#zi-play"/></svg>Watch the 3-minute tour</a>
+    </div>
+    <div class="v-hero__meta">
+      <span><svg class="zi zi--sm"><use href="#zi-lock"/></svg>SSO &amp; SAML</span>
+      <span><svg class="zi zi--sm"><use href="#zi-globe"/></svg>Hosted in the EU, Türkiye or Middle East</span>
+      <span><svg class="zi zi--sm"><use href="#zi-users"/></svg>English · Türkçe · العربية</span>
+    </div>
+  </div>
+
+  <!-- product screenshot -->
+  <div class="z-container z-container--wide shot">
+    <div class="z-browser" aria-label="VEVO operations overview with the assistant open">
+      <div class="z-browser__bar"><i></i><i></i><i></i><div class="z-browser__url">vevo.zirven.com/meridian/operations</div></div>
+      <div class="app">
+        <!-- sidebar -->
+        <aside class="z-sidebar">
+          <div class="ws"><img src="../../favicon/vevo-app-icon.svg" alt=""><div><b>VEVO</b><small>Meridian Logistics</small></div><svg class="zi zi--sm"><use href="#zi-chevron-down"/></svg></div>
+          <a class="z-sidebar__item" aria-current="page"><svg class="zi zi--sm"><use href="#zi-home"/></svg>Overview</a>
+          <a class="z-sidebar__item"><svg class="zi zi--sm"><use href="#zi-inbox"/></svg>Orders<span class="z-sidebar__count">1,284</span></a>
+          <a class="z-sidebar__item"><svg class="zi zi--sm"><use href="#zi-map-pin"/></svg>Shipments<span class="z-sidebar__count">312</span></a>
+          <a class="z-sidebar__item"><svg class="zi zi--sm"><use href="#zi-users"/></svg>Customers<span class="z-sidebar__count">248</span></a>
+          <a class="z-sidebar__item"><svg class="zi zi--sm"><use href="#zi-workflow"/></svg>Workflows<span class="z-sidebar__count">12</span></a>
+          <a class="z-sidebar__item"><svg class="zi zi--sm"><use href="#zi-analytics"/></svg>Reports</a>
+          <div class="z-sidebar__section">Intelligence</div>
+          <a class="z-sidebar__item"><svg class="zi zi--sm"><use href="#zi-ai-assistant"/></svg>Assistant<span class="beta">BETA</span></a>
+          <a class="z-sidebar__item"><svg class="zi zi--sm"><use href="#zi-ai"/></svg>Insights<span class="z-sidebar__count">3</span></a>
+          <div class="z-sidebar__section">Workspace</div>
+          <a class="z-sidebar__item"><svg class="zi zi--sm"><use href="#zi-integrations"/></svg>Integrations</a>
+          <a class="z-sidebar__item"><svg class="zi zi--sm"><use href="#zi-settings"/></svg>Settings</a>
+          <div class="me"><span class="z-avatar">LD</span><div>Leyla Demir<small>Operations lead</small></div></div>
+        </aside>
+
+        <!-- main -->
+        <div class="app__main">
+          <div class="z-topbar">
+            <div class="z-search"><svg class="zi zi--sm"><use href="#zi-search"/></svg>Search or ask VEVO…<span class="z-kbd">⌘ K</span></div>
+            <div class="grow"></div>
+            <span class="z-chip z-chip--live">Synced 2 min ago</span>
+            <span class="icon-btn"><svg class="zi zi--sm"><use href="#zi-bell"/></svg></span>
+            <div class="avs"><span class="z-avatar z-avatar--sm">OH</span><span class="z-avatar z-avatar--sm">EK</span><span class="z-avatar z-avatar--sm">KM</span></div>
+          </div>
+          <div class="app__body">
+            <div class="z-row z-between gap-4 app__head">
+              <div><div class="z-caption">Meridian Logistics · Operations</div><div class="z-h4" style="margin-top:4px;font-size:20px">Operations overview</div></div>
+              <div class="z-row gap-2"><div class="seg"><span>Today</span><span>7 days</span><span aria-current="true">30 days</span><span>Quarter</span></div><span class="z-btn z-btn--secondary z-btn--sm"><svg class="zi zi--sm"><use href="#zi-send"/></svg>Share</span></div>
+            </div>
+            <div class="kpis">
+              <div class="kpi"><div class="z-stat__label">Open orders</div><div class="z-stat__value">1,284</div><span class="z-delta">+6.2%</span><span>vs. last 30 d</span></div>
+              <div class="kpi"><div class="z-stat__label">On-time delivery</div><div class="z-stat__value">94.1%</div><span class="z-delta">+1.8 pts</span><span>target 95%</span></div>
+              <div class="kpi"><div class="z-stat__label">Avg. cycle time</div><div class="z-stat__value">2.4 d</div><span class="z-delta">−0.3 d</span><span>faster</span></div>
+              <div class="kpi"><div class="z-stat__label">Automation rate</div><div class="z-stat__value">73%</div><span class="z-delta">+4.0 pts</span><span>of steps</span></div>
+            </div>
+            <div class="box">
+              <div class="box__head">
+                <span class="z-stat__label">Orders vs. capacity · weekly</span>
+                <div class="lg"><span><i style="border-color:#9671FF"></i>Orders</span><span><i style="border-color:#D3C8FF;border-top-style:dashed"></i>Capacity</span><span><i style="border-color:#3DD8E8;border-top-style:dashed"></i>AI forecast</span></div>
+              </div>
+              <svg class="chart" viewBox="0 0 620 204" aria-label="Weekly orders rising from 10.2k to 14.3k; forecast exceeds capacity from week 41">
+                <defs><linearGradient id="oa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9671FF" stop-opacity="0.32"/><stop offset="1" stop-color="#9671FF" stop-opacity="0"/></linearGradient></defs>
+                <g stroke="rgba(211,200,255,0.08)"><path d="M40 20H604M40 65.1H604M40 110.3H604M40 155.4H604"/></g>
+                <g text-anchor="end"><text x="30" y="23.5">16k</text><text x="30" y="68.6">14k</text><text x="30" y="113.8">12k</text><text x="30" y="158.9">10k</text></g>
+                <rect x="513.8" y="14" width="90" height="164" fill="rgba(61,216,232,0.04)"/>
+                <path d="M40.0 150.9 L83.1 137.4 L126.2 144.1 L169.2 123.8 L212.3 112.5 L255.4 119.3 L298.5 101.3 L341.5 90.0 L384.6 96.7 L427.7 78.7 L470.8 69.7 L513.8 58.4 V178 H40.0 Z" fill="url(#oa)"/>
+                <path d="M40 87.7 H276.9 V53.9 H604" fill="none" stroke="#D3C8FF" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="5 4"/>
+                <path d="M40.0 150.9 L83.1 137.4 L126.2 144.1 L169.2 123.8 L212.3 112.5 L255.4 119.3 L298.5 101.3 L341.5 90.0 L384.6 96.7 L427.7 78.7 L470.8 69.7 L513.8 58.4" fill="none" stroke="#9671FF" stroke-width="2.25" stroke-linejoin="round"/>
+                <path d="M513.8 58.4 L556.9 44.8 L600.0 33.5" fill="none" stroke="#3DD8E8" stroke-width="2" stroke-dasharray="4 4"/>
+                <circle cx="513.8" cy="58.4" r="4" fill="#0E0B1F" stroke="#9671FF" stroke-width="2"/>
+                <circle cx="600" cy="33.5" r="3.5" fill="#0E0B1F" stroke="#3DD8E8" stroke-width="2"/>
+                <g transform="translate(470 18)"><rect width="104" height="20" rx="5" fill="#0E0B1F" stroke="rgba(61,216,232,0.45)"/><text x="52" y="13.5" text-anchor="middle" style="fill:#3DD8E8">+6% over capacity</text></g>
+                <g text-anchor="middle"><text x="40" y="196">W29</text><text x="126.2" y="196">W31</text><text x="212.3" y="196">W33</text><text x="298.5" y="196">W35</text><text x="384.6" y="196">W37</text><text x="470.8" y="196">W39</text><text x="556.9" y="196" style="fill:#3DD8E8">W41</text></g>
+              </svg>
+            </div>
+            <div class="box" style="overflow:hidden">
+              <div class="box__head" style="padding-bottom:12px"><span class="z-stat__label">Shipments at risk</span><span class="z-chip z-chip--warning" style="height:22px;font-size:11.5px">4 need action</span><span class="z-caption" style="margin-left:auto">View all 312</span></div>
+              <table class="z-table tbl">
+                <thead><tr><th>Shipment</th><th>Customer</th><th>Lane</th><th>ETA</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td class="z-mono">SH-48199</td><td>Corvane Industrial</td><td>IST → MIL</td><td>Oct 5, 09:00</td><td><span class="z-chip z-chip--danger">Customs hold</span></td></tr>
+                  <tr><td class="z-mono">SH-48213</td><td>Brightwater Freight</td><td>IZM → RTM</td><td>Oct 4, 14:00</td><td><span class="z-chip z-chip--warning">Delayed 6 h</span></td></tr>
+                  <tr><td class="z-mono">SH-48188</td><td>Northline Components</td><td>GDN → HAM</td><td>Oct 4, 18:30</td><td><span class="z-chip z-chip--warning">Carrier delay</span></td></tr>
+                  <tr><td class="z-mono">SH-48176</td><td>Arcadia Packaging</td><td>BCN → LYS</td><td>Oct 6, 11:00</td><td><span class="z-chip">Awaiting docs</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- assistant -->
+        <aside class="asst" aria-label="VEVO Assistant">
+          <div class="asst__head"><svg class="zi zi--sm"><use href="#zi-ai-assistant"/></svg>Assistant<span class="beta">BETA</span><span class="icon-btn"><svg class="zi zi--sm"><use href="#zi-more"/></svg></span></div>
+          <div class="asst__body">
+            <span class="ctx"><svg class="zi zi--sm"><use href="#zi-filter"/></svg>Context: Operations · 30 days</span>
+            <div class="bubble">Why did on-time delivery drop on the Istanbul → Milan lane this week?</div>
+            <span class="z-ai">Answer · 4 sources · 1.2 s</span>
+            <p class="ans">On-time delivery on <b>IST → MIL</b> fell to <b>86.4%</b> (−7.9 pts). <b>5 of 7</b> late shipments were held at Kapıkule customs, waiting for corrected commercial invoices from <b>Corvane Industrial</b>.</p>
+            <div class="why">
+              <div class="z-caption">Late shipments by cause · IST → MIL</div>
+              <div class="why__row"><span>Customs hold</span><i style="width:100%"></i><b>5</b></div>
+              <div class="why__row"><span>Carrier delay</span><i style="width:20%;background:#D3C8FF"></i><b>1</b></div>
+              <div class="why__row"><span>Late loading</span><i style="width:20%;background:#77718F"></i><b>1</b></div>
+            </div>
+            <div class="srcs"><span class="z-tag">shipments.sql</span><span class="z-tag">customs_events</span><span class="z-tag">corvane/invoices</span><span class="z-tag">+1</span></div>
+            <div class="act">
+              <span class="act__t">Ask Corvane Industrial for corrected invoices on 5 held shipments?</span>
+              <div class="z-row gap-2"><span class="z-btn z-btn--primary z-btn--sm">Draft request</span><span class="z-btn z-btn--secondary z-btn--sm">Create workflow</span></div>
+              <span class="z-caption"><svg class="zi zi--sm"><use href="#zi-lock"/></svg>Sends only after your approval</span>
+            </div>
+          </div>
+          <div class="composer">Ask a follow-up…<span class="send"><svg class="zi zi--sm"><use href="#zi-send"/></svg></span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- trust strip -->
+  <div class="z-container trust">
+    <p class="trust__line"><b>Built for operations teams</b> in logistics, manufacturing and distribution</p>
+    <div class="trust__stats">
+      <div><b>40+</b><span>Connectors for ERP, CRM, data and messaging</span></div>
+      <div><b>3</b><span>Hosting regions: EU, Türkiye, Middle East</span></div>
+      <div><b>4–6 wks</b><span>Typical time from kickoff to live</span></div>
+      <div><b>99.95%</b><span>Uptime target, published on our status page</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURE 1: ASSISTANT ===================== -->
+<section class="z-section" id="assistant">
+  <div class="z-container fb">
+    <div class="fb__text">
+      <div class="z-row gap-3"><span class="z-overline">Assistant</span><span class="z-chip z-chip--accent" style="height:22px;font-size:11.5px">Beta · GA in Q4 2026</span></div>
+      <h2 class="z-h1">Answers with sources, not guesses.</h2>
+      <p class="z-lead">Ask about orders, customers or costs in plain language. The assistant queries your workspace, shows its working and cites every record it used.</p>
+      <ul class="fb__list">
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-database"/></svg></div><div><b>Grounded in your data</b>Every answer lists the queries, records and documents behind it.</div></li>
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-lock"/></svg></div><div><b>Same permissions as the person asking</b>It never sees data the user could not open themselves.</div></li>
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-check"/></svg></div><div><b>People approve the actions</b>It drafts requests and updates. Nothing changes until someone says yes.</div></li>
+      </ul>
+    </div>
+    <div class="ui">
+      <div class="ui__head"><svg class="zi zi--sm" style="color:var(--z-cyan)"><use href="#zi-ai-assistant"/></svg><span class="grow">Assistant · Answer details</span><span class="z-chip">Customers workspace</span></div>
+      <div class="anat">
+        <div class="bubble">Which key accounts are at risk of missing SLA next week?</div>
+        <span class="z-ai">Answer · 3 sources · 0.9 s</span>
+        <p class="ans"><b>Brightwater Freight</b> has 4 shipments likely to land after their SLA deadline<sup class="cite">1</sup>. Their contract allows 2 late deliveries per month before penalties apply<sup class="cite">3</sup>; they already had 1 in September<sup class="cite">2</sup>.</p>
+        <div class="anat__srcs">
+          <header><svg class="zi zi--sm"><use href="#zi-layers"/></svg>Sources<span class="z-caption" style="margin-left:auto">Click to open</span></header>
+          <div class="src"><span class="src__n">1</span><div><b>shipments_at_risk.sql</b><small>Query · Shipments</small></div><code>142 rows · 0.4 s</code></div>
+          <div class="src"><span class="src__n">2</span><div><b>Brightwater Freight</b><small>Customer record · Key account</small></div><code>acct_2291</code></div>
+          <div class="src"><span class="src__n">3</span><div><b>SLA_Brightwater_2026.pdf</b><small>Document · Contracts</small></div><code>page 4</code></div>
+        </div>
+<pre class="z-code"><span class="tk-c">-- generated query, read-only</span>
+<span class="tk-k">select</span> customer, <span class="tk-f">count</span>(*) <span class="tk-k">as</span> at_risk
+<span class="tk-k">from</span> shipments
+<span class="tk-k">where</span> eta &gt; sla_deadline <span class="tk-k">and</span> status = <span class="tk-s">'in_transit'</span>
+<span class="tk-k">group by</span> customer <span class="tk-k">order by</span> at_risk <span class="tk-k">desc</span>;</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURE 2: WORKFLOWS ===================== -->
+<section class="z-section" id="workflows" style="padding-top:40px">
+  <div class="z-container fb fb--flip">
+    <div class="fb__text">
+      <span class="z-overline">Workflows &amp; automation</span>
+      <h2 class="z-h1">Automate the work between systems.</h2>
+      <p class="z-lead">Build workflows visually from triggers, conditions, approvals and AI steps. VEVO runs them on events from your ERP, CRM, email and API.</p>
+      <ul class="fb__list">
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-workflow"/></svg></div><div><b>Visual builder</b>Branches, approvals and retries without writing code.</div></li>
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-zap"/></svg></div><div><b>Event-driven</b>Start runs from system events, schedules, webhooks or the API.</div></li>
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-activity"/></svg></div><div><b>Every run is logged</b>Inspect, replay and audit each step, including AI output.</div></li>
+      </ul>
+    </div>
+    <div class="ui">
+      <div class="ui__head"><svg class="zi zi--sm"><use href="#zi-workflow"/></svg><span class="grow">Workflow · Delay escalation</span><span class="z-chip z-chip--success">Running</span><span class="z-btn z-btn--secondary z-btn--sm">Edit</span></div>
+      <div class="canvas" aria-label="Workflow: shipment delayed more than 4 hours; if key account, AI drafts an update, ops lead approves, then email and CRM update; otherwise add to daily report">
+        <svg viewBox="0 0 600 380" aria-hidden="true">
+          <g fill="none" stroke="rgba(211,200,255,0.38)" stroke-width="1.5">
+            <path d="M184 70 H216"/>
+            <path d="M384 70 H416"/>
+            <path d="M300 100 V160"/>
+            <path d="M300 220 V280" stroke="rgba(61,216,232,0.6)"/>
+            <path d="M384 310 H416"/>
+          </g>
+          <g fill="#0C0A1B" stroke="#9671FF" stroke-width="1.5">
+            <circle cx="184" cy="70" r="3.5"/><circle cx="216" cy="70" r="3.5"/><circle cx="384" cy="70" r="3.5"/><circle cx="416" cy="70" r="3.5"/>
+            <circle cx="300" cy="100" r="3.5"/><circle cx="300" cy="160" r="3.5"/><circle cx="300" cy="280" r="3.5"/><circle cx="384" cy="310" r="3.5"/><circle cx="416" cy="310" r="3.5"/>
+          </g>
+          <circle cx="300" cy="220" r="3.5" fill="#0C0A1B" stroke="#3DD8E8" stroke-width="1.5"/>
+          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#9C97B1">
+            <text x="389" y="61">no</text>
+            <text x="308" y="134">yes</text>
+            <text x="308" y="254">draft</text>
+            <text x="389" y="301">ok</text>
+          </g>
+        </svg>
+        <div class="wn wn--trigger" style="left:2.667%;top:10.526%"><small><svg class="zi zi--sm"><use href="#zi-zap"/></svg>Trigger</small><b>Delay over 4 hours</b></div>
+        <div class="wn" style="left:36%;top:10.526%"><small><svg class="zi zi--sm"><use href="#zi-filter"/></svg>Condition</small><b>Key account?</b></div>
+        <div class="wn" style="left:69.333%;top:10.526%"><small><svg class="zi zi--sm"><use href="#zi-file"/></svg>Action</small><b>Add to daily report</b></div>
+        <div class="wn wn--ai" style="left:36%;top:42.105%"><small><svg class="zi zi--sm"><use href="#zi-ai"/></svg>AI step</small><b>Draft client update</b></div>
+        <div class="wn wn--sel" style="left:36%;top:73.684%"><small><svg class="zi zi--sm"><use href="#zi-users"/></svg>Approval</small><b>Ops lead approves</b></div>
+        <div class="wn" style="left:69.333%;top:73.684%"><small><svg class="zi zi--sm"><use href="#zi-send"/></svg>Action</small><b>Email + update CRM</b></div>
+        <div class="runcard"><span>Last run<span>#18,402</span></span><span>09:42<span>3.1 s</span></span><span>Steps<b>6 / 6 passed</b></span></div>
+      </div>
+      <div class="ui__foot"><span>Runs today <b>412</b></span><span>Success <b>99.2%</b></span><span>Avg. <b>3.1 s</b></span><span style="margin-left:auto">v14 · edited by Omar Haddad</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURE 3: ANALYTICS ===================== -->
+<section class="z-section" id="analytics" style="padding-top:40px">
+  <div class="z-container fb">
+    <div class="fb__text">
+      <span class="z-overline">Analytics</span>
+      <h2 class="z-h1">Numbers every team can trust.</h2>
+      <p class="z-lead">Dashboards update as your systems do. Each metric has one definition, an owner and a link back to the records behind it.</p>
+      <ul class="fb__list">
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-analytics"/></svg></div><div><b>Shared metric definitions</b>On-time, cycle time and margin mean the same thing in every team.</div></li>
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-calendar"/></svg></div><div><b>Scheduled reports</b>Weekly summaries by email or Microsoft Teams, in EN, TR or AR.</div></li>
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-database"/></svg></div><div><b>Your warehouse, too</b>Sync to Snowflake, BigQuery or Postgres for your own models.</div></li>
+      </ul>
+    </div>
+    <div class="ui">
+      <div class="ui__head"><svg class="zi zi--sm"><use href="#zi-analytics"/></svg><span class="grow">Reports · On-time delivery by region</span><div class="seg"><span>Month</span><span aria-current="true">Quarter</span><span>Year</span></div></div>
+      <div class="an">
+        <div class="an__row">
+          <div class="kpi"><div class="z-stat__label">On-time · Q3</div><div class="z-stat__value">93.8%</div><span class="z-delta">+0.9 pts</span></div>
+          <div class="kpi"><div class="z-stat__label">Shipments · Q3</div><div class="z-stat__value">38,920</div><span class="z-delta">+11.3%</span></div>
+          <div class="kpi"><div class="z-stat__label">Cost per shipment</div><div class="z-stat__value">€412</div><span class="z-delta">−3.6%</span></div>
+        </div>
+        <div class="box" style="padding:14px 16px 8px">
+          <div class="z-row z-between"><span class="z-stat__label" style="color:var(--t-text)">On-time delivery by region</span><div class="lg"><span><i style="border-color:#9671FF;border-top-width:6px;width:10px"></i>Q3 2026</span><span><i style="border-color:#77718F;border-top-width:6px;width:10px"></i>Q2 2026</span></div></div>
+          <svg class="chart" viewBox="0 0 560 206" style="margin-top:10px" aria-label="On-time delivery by region, Q3 versus Q2">
+            <g stroke="rgba(211,200,255,0.08)"><path d="M36 20H556M36 60H556M36 100H556M36 140H556"/></g>
+            <path d="M36 180H556" stroke="rgba(211,200,255,0.2)"/>
+            <path d="M36 60H556" stroke="rgba(211,200,255,0.35)" stroke-dasharray="3 4"/>
+            <g text-anchor="end"><text x="28" y="23.5">100</text><text x="28" y="63.5">95</text><text x="28" y="103.5">90</text><text x="28" y="143.5">85</text></g>
+            <g fill="#9671FF">
+              <rect x="54" y="58.4" width="24" height="121.6" rx="3"/><rect x="139" y="48.8" width="24" height="131.2" rx="3"/><rect x="224" y="110.4" width="24" height="69.6" rx="3" fill="#D3C8FF"/><rect x="309" y="75.2" width="24" height="104.8" rx="3"/><rect x="394" y="68" width="24" height="112" rx="3"/><rect x="479" y="88" width="24" height="92" rx="3"/>
+            </g>
+            <g fill="#57516F">
+              <rect x="80" y="67.2" width="24" height="112.8" rx="3"/><rect x="165" y="53.6" width="24" height="126.4" rx="3"/><rect x="250" y="76.8" width="24" height="103.2" rx="3"/><rect x="335" y="92" width="24" height="88" rx="3"/><rect x="420" y="88.8" width="24" height="91.2" rx="3"/><rect x="505" y="82.4" width="24" height="97.6" rx="3"/>
+            </g>
+            <g text-anchor="middle"><text x="79" y="198">Türkiye</text><text x="164" y="198">DACH</text><text x="249" y="198" style="fill:#D3C8FF">Benelux</text><text x="334" y="198">Italy</text><text x="419" y="198">Nordics</text><text x="504" y="198">UK</text></g>
+            <text x="552" y="54" text-anchor="end" style="fill:#9C97B1">target 95%</text>
+          </svg>
+        </div>
+        <div class="movers">
+          <table class="z-table">
+            <thead><tr><th>Biggest movers</th><th>Q3</th><th>Change</th><th>Driver</th></tr></thead>
+            <tbody>
+              <tr><td>Benelux</td><td>88.7%</td><td><span class="z-delta z-delta--down">−4.2 pts</span></td><td class="z-muted">Rotterdam lane change</td></tr>
+              <tr><td>Nordics</td><td>94.0%</td><td><span class="z-delta">+2.6 pts</span></td><td class="z-muted">New carrier contract</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURE 4: INTEGRATIONS ===================== -->
+<section class="z-section" id="integrations" style="padding-top:40px">
+  <div class="z-container fb fb--flip">
+    <div class="fb__text">
+      <span class="z-overline">Integrations &amp; API</span>
+      <h2 class="z-h1">Connects to the systems you run.</h2>
+      <p class="z-lead">VEVO reads from and writes to your ERP, CRM and data stack, so teams stop copying data between tabs.</p>
+      <ul class="fb__list">
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-integrations"/></svg></div><div><b>40+ prebuilt connectors</b>ERP, CRM, warehouses, email and messaging, kept in sync both ways.</div></li>
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-api"/></svg></div><div><b>REST API and webhooks</b>Every object in VEVO is available at api.zirven.com, with typed SDKs.</div></li>
+        <li><div class="z-icon-tile"><svg class="zi zi--sm"><use href="#zi-terminal"/></svg></div><div><b>Custom connectors</b>For in-house systems, Zirven Solutions builds and maintains the link.</div></li>
+      </ul>
+    </div>
+    <div class="ui">
+      <div class="ui__head"><svg class="zi zi--sm"><use href="#zi-integrations"/></svg><span class="grow">Integrations · Meridian Logistics</span><span class="z-chip z-chip--success">9 connected</span></div>
+      <div class="conn">
+        <div class="ct"><span class="ct__i">S4</span><div style="min-width:0"><b>SAP S/4HANA</b><small><i></i>ERP · 1 min ago</small></div></div>
+        <div class="ct"><span class="ct__i">D365</span><div style="min-width:0"><b>Dynamics 365</b><small><i></i>ERP · 3 min ago</small></div></div>
+        <div class="ct"><span class="ct__i">NS</span><div style="min-width:0"><b>Oracle NetSuite</b><small>ERP · available</small></div></div>
+        <div class="ct"><span class="ct__i">SF</span><div style="min-width:0"><b>Salesforce</b><small><i></i>CRM · 2 min ago</small></div></div>
+        <div class="ct"><span class="ct__i">HS</span><div style="min-width:0"><b>HubSpot</b><small>CRM · available</small></div></div>
+        <div class="ct"><span class="ct__i"><svg class="zi zi--sm"><use href="#zi-database"/></svg></span><div style="min-width:0"><b>Snowflake</b><small><i></i>Warehouse · hourly</small></div></div>
+        <div class="ct"><span class="ct__i"><svg class="zi zi--sm"><use href="#zi-database"/></svg></span><div style="min-width:0"><b>PostgreSQL</b><small><i></i>Database · live</small></div></div>
+        <div class="ct"><span class="ct__i"><svg class="zi zi--sm"><use href="#zi-mail"/></svg></span><div style="min-width:0"><b>Microsoft 365</b><small><i></i>Email &amp; calendar</small></div></div>
+        <div class="ct"><span class="ct__i"><svg class="zi zi--sm"><use href="#zi-webhook"/></svg></span><div style="min-width:0"><b>Webhooks</b><small><i></i>6 endpoints</small></div></div>
+      </div>
+      <div class="apibox">
+<pre class="z-code"><span class="tk-f">curl</span> https://api.zirven.com/vevo/v1/shipments?status=at_risk \
+  -H <span class="tk-s">"Authorization: Bearer $VEVO_API_KEY"</span>
+
+<span class="tk-p">{</span> <span class="tk-k">"total"</span><span class="tk-p">:</span> <span class="tk-n">4</span><span class="tk-p">,</span> <span class="tk-k">"data"</span><span class="tk-p">: [</span>
+  <span class="tk-p">{</span> <span class="tk-k">"id"</span><span class="tk-p">:</span> <span class="tk-s">"SH-48199"</span><span class="tk-p">,</span> <span class="tk-k">"lane"</span><span class="tk-p">:</span> <span class="tk-s">"IST-MIL"</span><span class="tk-p">,</span> <span class="tk-k">"delay_h"</span><span class="tk-p">:</span> <span class="tk-n">18</span> <span class="tk-p">},</span> <span class="tk-c">…</span>
+<span class="tk-p">] }</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECURITY ===================== -->
+<section class="z-section" id="security" style="background:linear-gradient(180deg, transparent, rgba(36,22,84,0.3) 25%, rgba(36,22,84,0.3) 75%, transparent)">
+  <div class="z-container">
+    <div class="sec-head">
+      <div class="z-stack gap-4"><span class="z-overline">Security &amp; compliance</span><h2 class="z-h1">Enterprise controls <br>from day one.</h2></div>
+      <p class="z-lead">VEVO runs on the Zirven Platform, so identity, permissions, audit and encryption are the same proven services behind every Zirven product.</p>
+    </div>
+    <div class="z-grid z-grid-3 mt-12">
+      <article class="z-card sec"><div class="z-icon-tile"><svg class="zi"><use href="#zi-key"/></svg></div><h3 class="z-h4">SSO &amp; SAML</h3><p>Sign in with Microsoft Entra ID, Okta or Google Workspace. SCIM keeps users and groups in sync.</p><footer>SAML 2.0 · OIDC · SCIM 2.0</footer></article>
+      <article class="z-card sec"><div class="z-icon-tile"><svg class="zi"><use href="#zi-users"/></svg></div><h3 class="z-h4">Roles &amp; permissions</h3><p>Workspace, team and record-level roles. The assistant and workflows inherit the same rules.</p><footer>RBAC · field-level access</footer></article>
+      <article class="z-card sec"><div class="z-icon-tile"><svg class="zi"><use href="#zi-activity"/></svg></div><h3 class="z-h4">Audit log</h3><p>Every sign-in, change, workflow run and assistant action is recorded and exportable.</p><footer>400-day retention · SIEM export</footer></article>
+      <article class="z-card sec"><div class="z-icon-tile"><svg class="zi"><use href="#zi-lock"/></svg></div><h3 class="z-h4">Encryption</h3><p>Data is encrypted in transit and at rest, with separate keys for every customer workspace.</p><footer>TLS 1.3 · AES-256 · per-tenant keys</footer></article>
+      <article class="z-card sec"><div class="z-icon-tile"><svg class="zi"><use href="#zi-globe"/></svg></div><h3 class="z-h4">Regional hosting</h3><p>Choose where your data lives. It stays in that region, backups included.</p><footer>Frankfurt · Istanbul · UAE</footer></article>
+      <article class="z-card sec sec--ai"><div class="z-icon-tile"><svg class="zi"><use href="#zi-ai"/></svg></div><h3 class="z-h4">No training on your data</h3><p>Customer data is never used to train AI models, ours or any provider’s. Prompts are not retained.</p><footer>Zero data retention with model providers</footer></article>
+    </div>
+    <div class="secbar">
+      <div class="z-icon-tile"><svg class="zi"><use href="#zi-file"/></svg></div>
+      <span class="grow"><b>Security pack.</b> Architecture overview, DPA, sub-processor list and the latest penetration-test summary.</span>
+      <a class="z-btn z-btn--secondary z-btn--sm" href="#demo">Request the pack</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section class="z-section" id="how">
+  <div class="z-container">
+    <div class="z-stack gap-4 maxw-lg">
+      <span class="z-overline">How VEVO works</span>
+      <h2 class="z-h1">Live in weeks, not quarters.</h2>
+    </div>
+    <div class="how">
+      <div class="step"><span class="step__n">01</span><span class="z-chip">Weeks 1–2</span><h3 class="z-h3">Connect</h3><p>Link your ERP, CRM and data sources with prebuilt connectors. Historical data loads in the background.</p></div>
+      <div class="step"><span class="step__n">02</span><span class="z-chip">Weeks 2–4</span><h3 class="z-h3">Configure</h3><p>Set up workspaces, roles, dashboards and your first workflows together with our onboarding team.</p></div>
+      <div class="step"><span class="step__n">03</span><span class="z-chip">Ongoing</span><h3 class="z-h3">Operate</h3><p>Teams work in VEVO every day. We review results with you monthly and tune workflows as you grow.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="z-section" id="faq" style="padding-top:24px">
+  <div class="z-container faq">
+    <div class="z-stack gap-4">
+      <span class="z-overline">FAQ</span>
+      <h2 class="z-h1">Questions, answered.</h2>
+      <p class="z-lead">Something else on your mind? Ask during the demo or write to <a href="#">vevo@zirven.com</a>.</p>
+    </div>
+    <div>
+      <details open>
+        <summary>How long does it take to go live?<svg class="zi"><use href="#zi-chevron-down"/></svg></summary>
+        <p>Most teams are live in four to six weeks. Connecting core systems takes one to two weeks; the rest is setting up workspaces, roles and the first workflows with our onboarding team.</p>
+      </details>
+      <details>
+        <summary>Where is our data hosted?<svg class="zi"><use href="#zi-chevron-down"/></svg></summary>
+        <p>In the region you choose when the workspace is created: the EU (Frankfurt), Türkiye (Istanbul) or the Middle East (UAE). Data and backups stay in that region.</p>
+      </details>
+      <details>
+        <summary>Does VEVO use our data to train AI models?<svg class="zi"><use href="#zi-chevron-down"/></svg></summary>
+        <p>No. Your data is never used to train models, ours or any provider’s. The assistant only reads what the person asking can already see, and every answer lists its sources.</p>
+      </details>
+      <details>
+        <summary>Can VEVO connect to our ERP?<svg class="zi"><use href="#zi-chevron-down"/></svg></summary>
+        <p>Yes. Prebuilt connectors cover SAP S/4HANA, Microsoft Dynamics 365, Oracle NetSuite and others. For in-house systems, use the REST API and webhooks, or Zirven Solutions can build the connector for you.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BOOK A DEMO ===================== -->
+<section class="z-section" id="demo" style="padding-top:40px">
+  <div class="z-container">
+    <div class="z-panel demo">
+      <div>
+        <span class="z-overline">Book a demo</span>
+        <h2 class="z-h1 mt-4">See VEVO on your own operations.</h2>
+        <p class="z-lead mt-4">A 30-minute walkthrough with a product specialist, using a sample of your data.</p>
+        <ul class="demo__list">
+          <li><svg class="zi"><use href="#zi-check"/></svg>Dashboards, workflows and the assistant on your use case</li>
+          <li><svg class="zi"><use href="#zi-check"/></svg>Answers on security, hosting and integrations</li>
+          <li><svg class="zi"><use href="#zi-check"/></svg>A rollout plan for your team, in writing</li>
+        </ul>
+        <div class="demo__who">
+          <div class="avs"><span class="z-avatar">SL</span><span class="z-avatar">KM</span><span class="z-avatar">AY</span></div>
+          <p><b>Sara, Kenji or Amina</b> from the VEVO team will host your session in English, Turkish or Arabic.</p>
+        </div>
+      </div>
+      <form class="z-card" onsubmit="return false">
+        <div class="form__head"><span class="z-h4">Book a demo</span><span class="z-caption">Takes 1 minute</span></div>
+        <div class="z-field"><label class="z-label" for="n">Full name</label><input class="z-input" id="n" placeholder="Elif Kaya"></div>
+        <div class="z-field"><label class="z-label" for="e">Work email</label><input class="z-input" id="e" placeholder="name@company.com"></div>
+        <div class="z-field"><label class="z-label" for="c">Company</label><input class="z-input" id="c" placeholder="Company name"></div>
+        <div class="z-field"><label class="z-label" for="s">Team size</label><select class="z-input z-select" id="s"><option>51–200 people</option><option>1–50 people</option><option>201–1,000 people</option><option>1,000+ people</option></select></div>
+        <div class="z-field full"><label class="z-label" for="erp">Main system today</label><select class="z-input z-select" id="erp"><option>SAP S/4HANA</option><option>Microsoft Dynamics 365</option><option>Oracle NetSuite</option><option>Spreadsheets and email</option><option>Other</option></select></div>
+        <div class="z-field full"><label class="z-label" for="m">What would you like to see?</label><textarea class="z-textarea" id="m" placeholder="For example: delay alerts for key accounts, weekly on-time reporting by region."></textarea></div>
+        <div class="full z-row z-between gap-4 z-wrap"><span class="z-caption">We reply within one working day.</span><button class="z-btn z-btn--primary">Book a demo <svg class="zi"><use href="#zi-arrow-right"/></svg></button></div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="z-footer">
+  <div class="z-container">
+    <div class="foot-grid">
+      <div class="z-stack gap-4 foot-brand">
+        <img src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven" style="height:28px;width:auto;align-self:flex-start">
+        <p class="z-small z-muted maxw-sm"><b>VEVO is a product by Zirven.</b><br>Building intelligent digital products.</p>
+      </div>
+      <div><h4>VEVO</h4><ul><li><a href="#overview">Overview</a></li><li><a href="#assistant">Assistant</a></li><li><a href="#workflows">Workflows</a></li><li><a href="#security">Security</a></li><li><a href="#demo">Book a demo</a></li></ul></div>
+      <div><h4>Zirven</h4><ul><li><a href="products.html">All products</a></li><li><a href="products.html#roadmap">Roadmap</a></li><li><a href="index.html#about">About</a></li><li><a href="index.html#contact">Contact</a></li></ul></div>
+      <div><h4>Developers</h4><ul><li><a href="#">API reference</a></li><li><a href="#">docs.zirven.com</a></li><li><a href="#">Status</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Security</a></li><li><a href="#">Terms</a></li><li><a href="#">DPA</a></li></ul></div>
+    </div>
+    <div class="foot-bottom z-caption"><span>© 2026 Zirven Technology · VEVO is a product by Zirven</span><span>vevo.zirven.com</span></div>
+  </div>
+</footer>
+</body>
+</html>

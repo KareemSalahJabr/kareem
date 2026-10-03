@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub &amp; developer branding · Zirven V2.1 application 19</title>
+<meta name="description" content="Zirven on a code host in dark mode: organization profile with pinned repositories, the vevo-sdk-js README with its banner and badges, and the zirven CLI splash.">
+<link rel="icon" href="../../favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/zirven.css">
+<script src="../../assets/js/zirven-icons.js"></script>
+<style>
+  .z-board__head .brand { display: flex; align-items: center; gap: 16px; }
+  .z-board__head .brand i { width: 1px; height: 16px; background: rgba(14, 11, 31, 0.16); }
+  .dev { display: flex; flex-direction: column; gap: 40px; }
+  .dev .z-overline { color: var(--z-violet); }
+  .lbl { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; font: 500 14px/1.35 var(--z-font-sans); color: var(--z-night); }
+  .lbl b { font: 600 12px/1 var(--z-font-mono); color: var(--z-violet); }
+  .lbl span { margin-left: auto; font: 500 12px/1 var(--z-font-mono); color: var(--z-ink-500); }
+
+  /* ---------- Generic code-host chrome, dark mode ---------- */
+  .host { display: flow-root; --h-bg: #0D0C14; --h-surface: #14121D; --h-line: #2A2737; --h-text: #EDEBF5; --h-muted: #9A96AC; --h-link: #B9A5FF;
+    background: var(--h-bg); color: var(--h-text); font: 400 14px/1.5 var(--z-font-sans); }
+  .z-browser { box-shadow: 0 1px 2px rgba(14, 11, 31, 0.2), 0 50px 90px -40px rgba(14, 11, 31, 0.7); }
+  .z-browser__url { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 360px; }
+  .z-browser__url .zi { width: 13px; height: 13px; color: var(--z-ink-400); }
+  .host__nav { height: 60px; display: flex; align-items: center; gap: 14px; padding: 0 24px; border-bottom: 1px solid var(--h-line); background: #100E18; }
+  .host__btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--h-line); display: grid; place-items: center; color: var(--h-muted); }
+  .host__btn .zi { width: 16px; height: 16px; }
+  .host__crumb { font: 600 15px/1 var(--z-font-sans); display: flex; align-items: center; gap: 10px; }
+  .host__crumb img { width: 22px; height: 22px; border-radius: 5px; }
+  .host__crumb span { color: var(--h-muted); font-weight: 400; }
+  .host__search { margin-left: auto; width: 300px; height: 32px; border-radius: 8px; border: 1px solid var(--h-line); display: flex; align-items: center; gap: 8px; padding: 0 10px; color: var(--h-muted); font-size: 13px; }
+  .host__search .zi { width: 15px; height: 15px; }
+  .host__search kbd { margin-left: auto; font: 500 11px/1 var(--z-font-mono); border: 1px solid var(--h-line); border-radius: 4px; padding: 2px 5px; }
+  .host__me { width: 30px; height: 30px; border-radius: 50%; background: var(--z-deep-violet); color: var(--z-lavender); display: grid; place-items: center; font: 600 11px/1 var(--z-font-sans); }
+  .hmenu { display: flex; flex-direction: column; gap: 3px; width: 14px; }
+  .hmenu i { height: 1.5px; background: currentColor; border-radius: 2px; }
+
+  /* Org header */
+  .org { display: flex; align-items: center; gap: 24px; padding: 28px 32px 22px; }
+  .org__av { width: 100px; height: 100px; flex: none; }
+  .org h1 { font: 600 26px/1.2 var(--z-font-sans); letter-spacing: -0.01em; display: flex; align-items: center; gap: 12px; }
+  .org h1 small { font: 500 12px/1 var(--z-font-sans); color: var(--h-muted); border: 1px solid var(--h-line); border-radius: 999px; padding: 4px 9px; letter-spacing: 0; }
+  .org__bio { margin-top: 6px; color: #C9C5D8; font-size: 15px; }
+  .org__meta { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 18px; font-size: 13.5px; color: var(--h-muted); }
+  .org__meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .org__meta .zi { width: 15px; height: 15px; }
+  .org__meta a { color: var(--h-text); font-weight: 500; }
+  .verified { color: var(--z-success) !important; border: 1px solid rgba(46, 182, 125, 0.4); border-radius: 999px; padding: 1px 9px; }
+  .verified .zi { color: var(--z-success); }
+  .org__actions { margin-left: auto; align-self: flex-start; display: flex; gap: 8px; }
+  .hbtn { height: 32px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--h-line); background: var(--h-surface); display: inline-flex; align-items: center; gap: 8px; font: 500 13px/1 var(--z-font-sans); color: var(--h-text); }
+  .hbtn .zi { width: 15px; height: 15px; color: var(--h-muted); }
+  .htabs { display: flex; gap: 4px; padding: 0 24px; border-bottom: 1px solid var(--h-line); }
+  .htabs span { display: inline-flex; align-items: center; gap: 8px; padding: 12px 10px; font: 500 14px/1 var(--z-font-sans); color: var(--h-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .htabs span[aria-current] { color: var(--h-text); border-color: var(--z-electric); }
+  .htabs .zi { width: 16px; height: 16px; }
+  .htabs em { font: 500 11.5px/1 var(--z-font-sans); font-style: normal; background: #24212F; color: #C9C5D8; border-radius: 999px; padding: 3px 7px; }
+
+  .org__body { display: grid; grid-template-columns: minmax(0, 1fr) 292px; gap: 32px; padding: 24px 32px 32px; }
+  .sec__h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font: 500 15px/1 var(--z-font-sans); }
+  .sec__h small { font: 400 13px/1 var(--z-font-sans); color: var(--h-link); }
+  .pins { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .pin { border: 1px solid var(--h-line); border-radius: 10px; padding: 16px 18px; background: var(--h-surface); display: flex; flex-direction: column; gap: 8px; min-height: 132px; }
+  .pin__name { display: flex; align-items: center; gap: 8px; font: 600 14.5px/1.2 var(--z-font-sans); color: var(--h-link); }
+  .pin__name svg { width: 16px; height: 16px; color: var(--h-muted); flex: none; }
+  .pin__name em { margin-left: auto; font: 500 11.5px/1 var(--z-font-sans); font-style: normal; color: var(--h-muted); border: 1px solid var(--h-line); border-radius: 999px; padding: 3px 8px; }
+  .pin p { font-size: 13px; line-height: 1.5; color: var(--h-muted); }
+  .pin__foot { margin-top: auto; display: flex; align-items: center; gap: 18px; font-size: 12.5px; color: var(--h-muted); }
+  .pin__foot span { display: inline-flex; align-items: center; gap: 6px; }
+  .pin__foot svg { width: 15px; height: 15px; }
+  .lang { width: 11px; height: 11px; border-radius: 50%; display: inline-block; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); }
+  .ico { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+  .repos { margin-top: 28px; }
+  .repos__tools { display: flex; gap: 8px; margin-bottom: 4px; }
+  .repos__tools .find { flex: 1; height: 32px; border: 1px solid var(--h-line); border-radius: 8px; background: var(--h-bg); display: flex; align-items: center; padding: 0 12px; color: var(--h-muted); font-size: 13px; }
+  .repo { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 24px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--h-line); }
+  .repo__name { display: flex; align-items: center; gap: 8px; font: 600 16px/1.2 var(--z-font-sans); color: var(--h-link); }
+  .repo__name em { font: 500 11.5px/1 var(--z-font-sans); font-style: normal; color: var(--h-muted); border: 1px solid var(--h-line); border-radius: 999px; padding: 3px 8px; }
+  .repo p { margin-top: 6px; font-size: 13.5px; color: var(--h-muted); }
+  .repo .pin__foot { margin-top: 10px; }
+  .repo svg.spark { width: 150px; height: 32px; }
+
+  .side { display: flex; flex-direction: column; gap: 24px; }
+  .side h3 { font: 500 14px/1 var(--z-font-sans); margin-bottom: 12px; }
+  .side section + section { padding-top: 22px; border-top: 1px solid var(--h-line); }
+  .people { display: grid; grid-template-columns: repeat(6, 36px); gap: 8px; }
+  .people span { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font: 600 11.5px/1 var(--z-font-sans); color: var(--z-lavender); background: #221B44; border: 1px solid rgba(211, 200, 255, 0.16); }
+  .langbar { display: flex; height: 8px; border-radius: 8px; overflow: hidden; gap: 2px; margin-bottom: 12px; }
+  .langlist { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; font-size: 13px; color: #C9C5D8; }
+  .langlist span { display: flex; align-items: center; gap: 7px; }
+  .langlist small { color: var(--h-muted); font-size: 12px; }
+  .topics { display: flex; flex-wrap: wrap; gap: 6px; }
+  .topics span { font: 500 12px/1 var(--z-font-sans); color: var(--h-link); background: rgba(150, 113, 255, 0.12); border-radius: 999px; padding: 6px 10px; }
+
+  /* ---------- Row 2 ---------- */
+  .row2 { display: grid; grid-template-columns: minmax(0, 1fr) 500px; gap: 32px; align-items: start; }
+  .repohead { padding: 20px 28px 0; border-bottom: 1px solid var(--h-line); background: #100E18; }
+  .repohead__t { display: flex; align-items: center; gap: 10px; font: 400 19px/1 var(--z-font-sans); color: var(--h-link); }
+  .repohead__t img { width: 24px; height: 24px; border-radius: 6px; }
+  .repohead__t b { font-weight: 600; }
+  .repohead__t em { font: 500 12px/1 var(--z-font-sans); font-style: normal; color: var(--h-muted); border: 1px solid var(--h-line); border-radius: 999px; padding: 4px 9px; }
+  .repohead__t .hbtn { margin-left: auto; }
+  .repohead .htabs { padding: 0; border: 0; margin-top: 14px; }
+  .readme { margin: 22px 28px 28px; border: 1px solid var(--h-line); border-radius: 10px; overflow: hidden; }
+  .readme__bar { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border-bottom: 1px solid var(--h-line); background: var(--h-surface); font: 600 13.5px/1 var(--z-font-sans); }
+  .readme__bar .zi { width: 16px; height: 16px; color: var(--h-muted); }
+  .readme__bar span { margin-left: auto; color: var(--h-muted); font-weight: 400; font-size: 12.5px; }
+  .readme__body { padding: 26px 28px 30px; }
+  .readme__body > img { width: 100%; height: auto; border-radius: 10px; }
+  .badges { display: flex; gap: 8px; margin-top: 18px; }
+  .badge { display: inline-flex; height: 22px; border-radius: 4px; overflow: hidden; font: 500 11.5px/22px var(--z-font-sans); }
+  .badge span { padding: 0 8px; background: #3A3456; color: #EDEBF5; }
+  .badge b { padding: 0 8px; font-weight: 600; color: #0E0B1F; }
+  .readme h2 { font: 600 21px/1.3 var(--z-font-sans); padding-bottom: 8px; border-bottom: 1px solid var(--h-line); margin: 26px 0 14px; }
+  .readme p { color: #C9C5D8; font-size: 14.5px; line-height: 1.65; }
+  .readme p code, .readme li code { font: 500 12.5px/1 var(--z-font-mono); background: #24212F; color: var(--h-text); padding: 3px 6px; border-radius: 5px; }
+  .readme .z-code { font-size: 13px; padding: 16px 18px; position: relative; }
+  .readme .z-code .copy { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border-radius: 7px; border: 1px solid rgba(211, 200, 255, 0.14); display: grid; place-items: center; color: var(--z-ink-400); }
+  .readme .z-code .copy .zi { width: 15px; height: 15px; }
+  .readme ul { margin: 0; padding-left: 20px; color: #C9C5D8; font-size: 14.5px; line-height: 1.75; }
+  .readme a { color: var(--h-link); }
+
+  .term { border-radius: 14px; overflow: hidden; background: #09080F; border: 1px solid rgba(211, 200, 255, 0.12); box-shadow: 0 1px 2px rgba(14, 11, 31, 0.2), 0 50px 90px -40px rgba(14, 11, 31, 0.7); }
+  .term__bar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: #15112B; border-bottom: 1px solid rgba(211, 200, 255, 0.1); }
+  .term__bar i { width: 10px; height: 10px; border-radius: 50%; background: #3A3456; }
+  .term__bar span { margin: 0 auto; transform: translateX(-24px); font: 500 12px/1 var(--z-font-sans); color: var(--z-ink-400); }
+  .term__body { padding: 20px 22px 24px; font: 400 13px/1.75 var(--z-font-mono); color: #C9C5D8; white-space: pre; }
+  .term__splash { display: flex; align-items: center; gap: 16px; padding: 16px 18px; margin: 10px 0 14px; border: 1px solid rgba(150, 113, 255, 0.3); border-radius: 12px; background: linear-gradient(120deg, rgba(91, 52, 224, 0.18), rgba(91, 52, 224, 0.02) 70%); white-space: normal; }
+  .term__splash img { width: 34px; height: auto; flex: none; }
+  .term__splash b { display: block; font: 600 14px/1.3 var(--z-font-mono); color: var(--z-snow); }
+  .term__splash small { display: block; font: 400 12px/1.5 var(--z-font-mono); color: var(--z-ink-400); }
+  .term__splash .ver { margin-left: auto; font: 500 11.5px/1 var(--z-font-mono); color: var(--z-electric); border: 1px solid rgba(150, 113, 255, 0.4); border-radius: 6px; padding: 5px 8px; }
+  .t-p { color: var(--z-electric); } .t-d { color: #6F6990; } .t-w { color: var(--z-snow); } .t-ok { color: var(--z-success); } .t-ai { color: var(--z-cyan); } .t-warn { color: var(--z-warning); } .t-k { color: #B9A5FF; }
+  .cursor { display: inline-block; width: 8px; height: 15px; background: var(--z-electric); vertical-align: -3px; }
+
+  .kit { margin-top: 24px; background: #fff; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(14, 11, 31, 0.08); }
+  .kit h3 { font: 600 16px/1.3 var(--z-font-sans); color: var(--z-night); }
+  .kit__row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 14px; border-radius: 10px; }
+  .kit__row--dark { background: var(--z-night); }
+  .kit__row--light { background: var(--z-snow); border: 1px solid var(--z-ink-200); }
+  .kit__row--light .badge span { background: #57516F; color: #fff; }
+  .kit dl { margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 14px; }
+  .kit dl div { display: flex; align-items: center; gap: 8px; font: 500 13px/1.2 var(--z-font-sans); color: var(--z-night); }
+  .kit dl small { display: block; font: 500 11px/1.2 var(--z-font-mono); color: var(--z-ink-500); margin-top: 2px; }
+
+  /* Repository social preview, 1280 × 640 */
+  .art { position: relative; overflow: hidden; width: calc(var(--w) * var(--s) * 1px); height: calc(var(--h) * var(--s) * 1px); border-radius: 12px; box-shadow: 0 1px 2px rgba(14, 11, 31, 0.2), 0 40px 80px -40px rgba(14, 11, 31, 0.7); }
+  .cv { position: absolute; left: 0; top: 0; width: calc(var(--w) * 1px); height: calc(var(--h) * 1px); transform: scale(var(--s)); transform-origin: 0 0; overflow: hidden; font-family: var(--z-font-sans); }
+  .og { background: var(--z-night) url("../../pattern/terrain-dark.svg") left -300px top -130px / 1800px auto no-repeat; color: var(--z-snow); }
+  .og::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #0E0B1F 0%, rgba(14, 11, 31, 0.9) 42%, rgba(14, 11, 31, 0.2) 80%); }
+  .og__in { position: absolute; inset: 72px 80px; display: flex; flex-direction: column; }
+  .og__top { display: flex; align-items: center; justify-content: space-between; }
+  .og__top img { height: 48px; width: auto; }
+  .og__top span { font: 500 22px/1 var(--z-font-mono); color: var(--z-ink-400); }
+  .og h4 { margin-top: auto; font: 600 92px/1 var(--z-font-sans); letter-spacing: -0.035em; }
+  .og h4 span { font-weight: 300; color: var(--z-ink-400); }
+  .og p { margin-top: 18px; font: 400 32px/1.35 var(--z-font-sans); color: var(--z-ink-300); }
+  .og__meta { margin-top: 40px; display: flex; gap: 14px; }
+  .og__meta span { height: 52px; padding: 0 20px; border-radius: 999px; border: 2px solid rgba(211, 200, 255, 0.16); background: rgba(21, 17, 43, 0.75); display: inline-flex; align-items: center; gap: 12px; font: 500 22px/1 var(--z-font-sans); color: var(--z-snow); }
+  .og__meta i { width: 16px; height: 16px; border-radius: 50%; }
+  .og__meta svg { width: 24px; height: 24px; color: var(--z-lavender); }
+  .og__meta .ico { stroke-width: 1.4; }
+</style>
+</head>
+<body>
+<!-- small generic glyphs: repository, star, fork -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="g-repo" viewBox="0 0 16 16"><path class="ico" d="M3 2.75A1.75 1.75 0 0 1 4.75 1h8.5v11H4.75A1.75 1.75 0 0 0 3 13.75Zm0 11A1.25 1.25 0 0 0 4.25 15H6m4 0h3.25v-3"/><path class="ico" d="M6 12.5V16l1-0.8 1 0.8v-3.5"/></symbol>
+  <symbol id="g-star" viewBox="0 0 16 16"><path class="ico" d="m8 1.75 1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.5l-3.8 2 .7-4.3-3.1-3 4.3-.6Z"/></symbol>
+  <symbol id="g-fork" viewBox="0 0 16 16"><circle class="ico" cx="4" cy="3" r="1.6"/><circle class="ico" cx="12" cy="3" r="1.6"/><circle class="ico" cx="8" cy="13" r="1.6"/><path class="ico" d="M4 4.6v1.4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V4.6M8 8v3.4"/></symbol>
+</svg>
+
+<div class="z-board">
+  <header class="z-board__head">
+    <div class="brand"><img src="../../logo/svg/zirven-logo-horizontal-light.svg" alt="Zirven"><i></i><span>Zirven V2.1 · Applications</span></div>
+    <div class="z-board__title"><b>19</b> GitHub / developer-facing branding</div>
+  </header>
+
+  <main class="dev">
+    <!-- ============ Organization profile ============ -->
+    <section>
+      <div class="lbl"><b>A</b>Organization profile on a code host, dark mode<span>github.com/zirven</span></div>
+      <div class="z-browser">
+        <div class="z-browser__bar"><i></i><i></i><i></i><div class="z-browser__url"><svg class="zi"><use href="#zi-github"/></svg>github.com/zirven</div></div>
+        <div class="host">
+          <div class="host__nav">
+            <span class="host__btn"><span class="hmenu"><i></i><i></i><i></i></span></span>
+            <span class="host__crumb"><img src="../../favicon/app-icon.svg" alt="">zirven</span>
+            <div class="host__search"><svg class="zi"><use href="#zi-search"/></svg>Type / to search<kbd>/</kbd></div>
+            <span class="host__btn"><svg class="zi"><use href="#zi-plus"/></svg></span>
+            <span class="host__btn"><svg class="zi"><use href="#zi-inbox"/></svg></span>
+            <span class="host__me">EK</span>
+          </div>
+
+          <div class="org">
+            <img class="org__av" src="../../favicon/app-icon.svg" alt="Zirven">
+            <div>
+              <h1>Zirven <small>Organization</small></h1>
+              <p class="org__bio">Building intelligent digital products. Software · SaaS · AI</p>
+              <div class="org__meta">
+                <span><svg class="zi"><use href="#zi-users"/></svg><a>1.2k</a> followers</span>
+                <span><svg class="zi"><use href="#zi-map-pin"/></svg>Istanbul, Türkiye</span>
+                <span><svg class="zi"><use href="#zi-globe"/></svg><a>zirven.com</a></span>
+                <span><svg class="zi"><use href="#zi-mail"/></svg>opensource@zirven.com</span>
+                <span class="verified"><svg class="zi"><use href="#zi-check"/></svg>Verified domain</span>
+              </div>
+            </div>
+            <div class="org__actions"><span class="hbtn">Follow</span><span class="hbtn"><svg class="zi"><use href="#zi-more"/></svg></span></div>
+          </div>
+
+          <nav class="htabs" aria-hidden="true">
+            <span aria-current="true"><svg class="zi"><use href="#zi-home"/></svg>Overview</span>
+            <span><svg class="ico" width="16" height="16"><use href="#g-repo"/></svg>Repositories <em>38</em></span>
+            <span><svg class="zi"><use href="#zi-layers"/></svg>Projects <em>4</em></span>
+            <span><svg class="zi"><use href="#zi-products"/></svg>Packages <em>12</em></span>
+            <span><svg class="zi"><use href="#zi-teams"/></svg>People <em>24</em></span>
+          </nav>
+
+          <div class="org__body">
+            <div>
+              <div class="sec__h">Pinned <small>Customize pins</small></div>
+              <div class="pins">
+                <article class="pin"><div class="pin__name"><svg><use href="#g-repo"/></svg>vevo-sdk-js<em>Public</em></div><p>Official TypeScript SDK for the VEVO API: workspaces, workflows, the assistant and webhooks.</p><div class="pin__foot"><span><i class="lang" style="background:#9671FF"></i>TypeScript</span><span><svg><use href="#g-star"/></svg>1.4k</span><span><svg><use href="#g-fork"/></svg>112</span></div></article>
+                <article class="pin"><div class="pin__name"><svg><use href="#g-repo"/></svg>vevo-python<em>Public</em></div><p>Python client for the VEVO API, with async support, typed models and retries built in.</p><div class="pin__foot"><span><i class="lang" style="background:#D3C8FF"></i>Python</span><span><svg><use href="#g-star"/></svg>862</span><span><svg><use href="#g-fork"/></svg>74</span></div></article>
+                <article class="pin"><div class="pin__name"><svg><use href="#g-repo"/></svg>design-tokens<em>Public</em></div><p>Zirven design tokens: colour, type, space and motion, generated for CSS, iOS and Android.</p><div class="pin__foot"><span><i class="lang" style="background:#5B34E0"></i>CSS</span><span><svg><use href="#g-star"/></svg>531</span><span><svg><use href="#g-fork"/></svg>48</span></div></article>
+                <article class="pin"><div class="pin__name"><svg><use href="#g-repo"/></svg>evals<em>Public</em></div><p>Evaluation harness for production AI features.</p><div class="pin__foot"><span><i class="lang" style="background:#D3C8FF"></i>Python</span><span><svg><use href="#g-star"/></svg>2.1k</span><span><svg><use href="#g-fork"/></svg>196</span></div></article>
+                <article class="pin"><div class="pin__name"><svg><use href="#g-repo"/></svg>terraform-modules<em>Public</em></div><p>Terraform modules for the Zirven platform: networking, data stores and observability.</p><div class="pin__foot"><span><i class="lang" style="background:#77718F"></i>HCL</span><span><svg><use href="#g-star"/></svg>318</span><span><svg><use href="#g-fork"/></svg>41</span></div></article>
+                <article class="pin"><div class="pin__name"><svg><use href="#g-repo"/></svg>.github<em>Public</em></div><p>Organization profile, contribution guide, security policy and community health files.</p><div class="pin__foot"><span><svg><use href="#g-star"/></svg>46</span><span><svg><use href="#g-fork"/></svg>19</span></div></article>
+              </div>
+
+              <div class="repos">
+                <div class="sec__h">Repositories</div>
+                <div class="repos__tools"><span class="find">Find a repository…</span><span class="hbtn">Type <svg class="zi"><use href="#zi-chevron-down"/></svg></span><span class="hbtn">Language <svg class="zi"><use href="#zi-chevron-down"/></svg></span><span class="hbtn">Sort <svg class="zi"><use href="#zi-chevron-down"/></svg></span></div>
+                <div class="repo">
+                  <div><div class="repo__name">vevo-sdk-js<em>Public</em></div><p>Official TypeScript SDK for the VEVO API.</p><div class="pin__foot"><span><i class="lang" style="background:#9671FF"></i>TypeScript</span><span><svg><use href="#g-star"/></svg>1.4k</span><span><svg><use href="#g-fork"/></svg>112</span><span>Updated 2 hours ago</span></div></div>
+                  <svg class="spark" viewBox="0 0 150 32" aria-hidden="true"><path d="M0 28 L12 26 L24 27 L36 22 L48 24 L60 18 L72 20 L84 14 L96 16 L108 10 L120 12 L132 6 L150 4" fill="none" stroke="#9671FF" stroke-width="1.6"/></svg>
+                </div>
+                <div class="repo">
+                  <div><div class="repo__name">zirven-cli<em>Public</em></div><p>The zirven command line: sign in, run workflows and deploy from your terminal.</p><div class="pin__foot"><span><i class="lang" style="background:#B9A5FF"></i>Go</span><span><svg><use href="#g-star"/></svg>604</span><span><svg><use href="#g-fork"/></svg>37</span><span>Updated yesterday</span></div></div>
+                  <svg class="spark" viewBox="0 0 150 32" aria-hidden="true"><path d="M0 26 L12 27 L24 22 L36 24 L48 20 L60 22 L72 16 L84 18 L96 13 L108 15 L120 10 L132 11 L150 7" fill="none" stroke="#9671FF" stroke-width="1.6"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <aside class="side">
+              <section><h3>People</h3><div class="people"><span>LD</span><span>OH</span><span>EK</span><span>DW</span><span>SL</span><span>KM</span><span>AY</span><span>MR</span><span>+16</span></div></section>
+              <section><h3>Top languages</h3>
+                <div class="langbar"><i style="flex:38;background:#9671FF"></i><i style="flex:27;background:#D3C8FF"></i><i style="flex:14;background:#B9A5FF"></i><i style="flex:12;background:#5B34E0"></i><i style="flex:9;background:#77718F"></i></div>
+                <div class="langlist"><span><i class="lang" style="background:#9671FF"></i>TypeScript <small>38%</small></span><span><i class="lang" style="background:#D3C8FF"></i>Python <small>27%</small></span><span><i class="lang" style="background:#B9A5FF"></i>Go <small>14%</small></span><span><i class="lang" style="background:#5B34E0"></i>CSS <small>12%</small></span><span><i class="lang" style="background:#77718F"></i>HCL <small>9%</small></span></div>
+              </section>
+              <section><h3>Most used topics</h3><div class="topics"><span>saas</span><span>sdk</span><span>typescript</span><span>evals</span><span>applied-ai</span><span>design-tokens</span><span>terraform</span><span>api</span></div></section>
+              <section><h3>Security</h3><p style="font-size:13px;color:var(--h-muted);line-height:1.6">Security reports go to <span style="color:var(--h-link)">security@zirven.com</span>. Every public repository ships with SECURITY.md and a code of conduct.</p></section>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ README + CLI ============ -->
+    <div class="row2">
+      <section>
+        <div class="lbl"><b>B</b>Repository README with banner and badges<span>readme-banner.svg · 1280 × 320</span></div>
+        <div class="z-browser">
+          <div class="z-browser__bar"><i></i><i></i><i></i><div class="z-browser__url"><svg class="zi"><use href="#zi-github"/></svg>github.com/zirven/vevo-sdk-js</div></div>
+          <div class="host">
+            <div class="repohead">
+              <div class="repohead__t"><img src="../../favicon/app-icon.svg" alt="">zirven <span style="color:var(--h-muted)">/</span> <b>vevo-sdk-js</b><em>Public</em><span class="hbtn"><svg class="ico" width="15" height="15" style="color:var(--h-muted)"><use href="#g-star"/></svg>Star <em style="border:0;padding:0 0 0 4px;font-style:normal;color:var(--h-muted)">1.4k</em></span></div>
+              <nav class="htabs" aria-hidden="true">
+                <span aria-current="true"><svg class="zi"><use href="#zi-file"/></svg>Code</span>
+                <span><svg class="zi"><use href="#zi-activity"/></svg>Issues <em>12</em></span>
+                <span><svg class="zi"><use href="#zi-git-branch"/></svg>Pull requests <em>4</em></span>
+                <span><svg class="zi"><use href="#zi-play"/></svg>Actions</span>
+                <span><svg class="zi"><use href="#zi-security"/></svg>Security</span>
+              </nav>
+            </div>
+            <div class="readme">
+              <div class="readme__bar"><svg class="zi"><use href="#zi-file"/></svg>README.md<span>MIT license</span></div>
+              <div class="readme__body">
+                <img src="readme-banner.svg" alt="vevo-sdk-js — TypeScript SDK for VEVO">
+                <div class="badges">
+                  <span class="badge"><span>build</span><b style="background:#2EB67D">passing</b></span>
+                  <span class="badge"><span>npm</span><b style="background:#9671FF">v2.3.1</b></span>
+                  <span class="badge"><span>license</span><b style="background:#D3C8FF">MIT</b></span>
+                  <span class="badge"><span>types</span><b style="background:#C4C0D3">included</b></span>
+                </div>
+                <p style="margin-top:18px">The official TypeScript SDK for <a>VEVO</a>, the AI-powered business platform by Zirven. Typed clients for workspaces, workflows, webhooks and the assistant. Works in Node.js 18+, Deno, Bun and edge runtimes.</p>
+                <h2>Install</h2>
+<pre class="z-code"><span class="tk-p">$</span> <span class="tk-f">npm</span> install <span class="tk-s">@zirven/vevo</span><span class="copy"><svg class="zi"><use href="#zi-copy"/></svg></span></pre>
+                <h2>Usage</h2>
+<pre class="z-code"><span class="tk-k">import</span> <span class="tk-p">{</span> Vevo <span class="tk-p">}</span> <span class="tk-k">from</span> <span class="tk-s">"@zirven/vevo"</span><span class="tk-p">;</span>
+
+<span class="tk-k">const</span> vevo <span class="tk-p">=</span> <span class="tk-k">new</span> <span class="tk-f">Vevo</span><span class="tk-p">({</span> apiKey<span class="tk-p">:</span> process.env.VEVO_API_KEY <span class="tk-p">});</span>
+
+<span class="tk-c">// Answers come back with the sources they used</span>
+<span class="tk-k">const</span> answer <span class="tk-p">=</span> <span class="tk-k">await</span> vevo.assistant.<span class="tk-f">ask</span><span class="tk-p">({</span>
+  workspace<span class="tk-p">:</span> <span class="tk-s">"operations"</span><span class="tk-p">,</span>
+  question<span class="tk-p">:</span> <span class="tk-s">"Which suppliers missed delivery targets last month?"</span><span class="tk-p">,</span>
+<span class="tk-p">});</span>
+console.<span class="tk-f">log</span><span class="tk-p">(</span>answer.text<span class="tk-p">,</span> answer.sources<span class="tk-p">.</span>length<span class="tk-p">);</span> <span class="tk-c">// → "Three of 41 suppliers…" 3</span>
+
+<span class="tk-c">// Actions that change data wait for approval</span>
+<span class="tk-k">const</span> run <span class="tk-p">=</span> <span class="tk-k">await</span> vevo.workflows.<span class="tk-f">run</span><span class="tk-p">(</span><span class="tk-s">"order_intake"</span><span class="tk-p">,</span> <span class="tk-p">{</span> orderId<span class="tk-p">:</span> <span class="tk-s">"SO-20481"</span> <span class="tk-p">});</span></pre>
+                <h2>Documentation</h2>
+                <ul>
+                  <li>API reference: <a>docs.zirven.com/vevo/sdk-js</a></li>
+                  <li>Examples for webhooks, pagination and retries in <code>/examples</code></li>
+                  <li>Security issues: see <code>SECURITY.md</code>, never a public issue</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="lbl"><b>C</b>zirven CLI splash<span>JetBrains Mono · 80 col</span></div>
+        <div class="term" aria-label="Terminal running the zirven CLI">
+          <div class="term__bar"><i></i><i></i><i></i><span>zirven — zsh — 80×24</span></div>
+<div class="term__body"><span class="t-d">~/ops</span> <span class="t-p">❯</span> <span class="t-w">zirven login</span>
+<div class="term__splash"><img src="../../logo/svg/zirven-symbol-micro-dark.svg" alt="Zirven"><div><b>Zirven CLI</b><small>Software · SaaS · AI</small></div><span class="ver">v1.4.0</span></div><span class="t-ok">✓</span> Signed in as <span class="t-w">elif.kaya@zirven.com</span>
+  <span class="t-d">organization</span>  Zirven
+  <span class="t-d">workspaces  </span>  operations · finance · field-service
+  <span class="t-d">region      </span>  eu-central-1
+
+<span class="t-d">~/ops</span> <span class="t-p">❯</span> <span class="t-w">zirven workflows run order_intake</span> <span class="t-d">\</span>
+          <span class="t-k">--input</span> order_id=SO-20481
+<span class="t-p">→</span> run_7Hq2kV9 started · 4 steps
+  <span class="t-ok">✓</span> validate        <span class="t-d">112 ms</span>
+  <span class="t-ai">✦</span> classify  <span class="t-ai">AI</span>   <span class="t-d">318 ms</span>  <span class="t-d">confidence 0.97</span>
+  <span class="t-ok">✓</span> sync_erp        <span class="t-d">402 ms</span>
+  <span class="t-warn">●</span> notify          <span class="t-warn">waiting for approval</span>
+
+<span class="t-d">~/ops</span> <span class="t-p">❯</span> <span class="cursor"></span></div>
+        </div>
+
+
+        <div class="lbl" style="margin-top:32px"><b>D</b>Repository social preview<span>1280 × 640 · PNG</span></div>
+        <div class="art" style="--w:1280;--h:640;--s:0.390625">
+          <div class="cv og" role="img" aria-label="Social preview for zirven/evals: Evaluation harness for production AI features.">
+            <div class="og__in">
+              <div class="og__top"><img src="../../logo/svg/zirven-logo-horizontal-dark.svg" alt="Zirven"><span>github.com/zirven</span></div>
+              <h4><span>zirven/</span>evals</h4>
+              <p>Evaluation harness for production AI features.</p>
+              <div class="og__meta"><span><i style="background:#D3C8FF"></i>Python</span><span><svg viewBox="0 0 16 16"><use href="#g-star"/></svg>2.1k</span><span><svg viewBox="0 0 16 16"><use href="#g-fork"/></svg>196</span><span>MIT</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="kit">
+          <div><span class="z-overline">Developer kit</span><h3 style="margin-top:8px">Badges and language colours</h3></div>
+          <div class="kit__row kit__row--dark">
+            <span class="badge"><span>build</span><b style="background:#2EB67D">passing</b></span>
+            <span class="badge"><span>npm</span><b style="background:#9671FF">v2.3.1</b></span>
+            <span class="badge"><span>license</span><b style="background:#D3C8FF">MIT</b></span>
+          </div>
+          <div class="kit__row kit__row--light">
+            <span class="badge"><span>build</span><b style="background:#2EB67D;color:#fff">passing</b></span>
+            <span class="badge"><span>npm</span><b style="background:#5B34E0;color:#fff">v2.3.1</b></span>
+            <span class="badge"><span>license</span><b style="background:#D3C8FF">MIT</b></span>
+          </div>
+          <dl>
+            <div><i class="lang" style="background:#9671FF"></i><span>TypeScript<small>Electric</small></span></div>
+            <div><i class="lang" style="background:#D3C8FF;box-shadow:inset 0 0 0 1px rgba(14,11,31,.15)"></i><span>Python<small>Lavender</small></span></div>
+            <div><i class="lang" style="background:#B9A5FF"></i><span>Go<small>#B9A5FF</small></span></div>
+            <div><i class="lang" style="background:#5B34E0"></i><span>CSS<small>Violet</small></span></div>
+            <div><i class="lang" style="background:#77718F"></i><span>HCL<small>Ink 500</small></span></div>
+            <div><i class="lang" style="background:#2EB67D"></i><span>Status<small>Success</small></span></div>
+          </dl>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <p class="z-board__note">Developer surfaces in dark mode on generic code-host chrome: organization avatar from the app icon, bio “Building intelligent digital products. Software · SaaS · AI”, pinned repositories with brand-mapped language colours. The README banner is a self-contained 1280 × 320 SVG with embedded logo paths; the CLI uses the micro symbol and JetBrains Mono.</p>
+</div>
+</body>
+</html>
