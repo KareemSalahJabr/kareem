@@ -24,10 +24,8 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const P = (...p) => join(ROOT, ...p);
 
 // Page previews: [source html, preview png, viewport width, viewport height, fullPage]
+// Application pages first: the composite pages (brand board, guidelines, index) embed their previews.
 export const PAGES = [
-  ['brand-board/index.html', 'previews/00-brand-board.png', 1600, 1000, true],
-  ['logo/exploration/logo-review.html', 'previews/01-logo-review.png', 1440, 900, true],
-  ['guidelines/index.html', 'previews/02-guidelines.png', 1440, 900, true],
   ['applications/web/index.html', 'previews/app-01-website-home.png', 1440, 900, true],
   ['applications/web/index.html', 'previews/app-02-homepage-hero.png', 1440, 900, false],
   ['applications/web/products.html', 'previews/app-03-products-page.png', 1440, 900, true],
@@ -47,6 +45,9 @@ export const PAGES = [
   ['applications/presentation/deck-cover.html', 'previews/app-18-pitch-deck-cover.png', 1440, 900, true],
   ['applications/developer/github.html', 'previews/app-19-github-developer.png', 1440, 900, true],
   ['applications/app-icon/index.html', 'previews/app-20-app-icon-favicon.png', 1440, 900, true],
+  ['brand-board/index.html', 'previews/00-brand-board.png', 1600, 1000, true],
+  ['logo/exploration/logo-review.html', 'previews/01-logo-review.png', 1440, 900, true],
+  ['guidelines/index.html', 'previews/02-guidelines.png', 1440, 900, true],
   ['applications/index.html', 'previews/03-applications-index.png', 1440, 900, true],
 ];
 

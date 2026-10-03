@@ -1,7 +1,62 @@
 {
   "date": "2026-10-03",
-  "files_scanned": 149,
-  "violations": [],
+  "files_scanned": 163,
+  "violations": [
+    {
+      "file": "audit/semantic-review.md",
+      "line": 23,
+      "category": "positioning",
+      "term": "money saving",
+      "match": "savings",
+      "context": "| Price tags, percentage-off badges, savings language | No. Percentages appear only as B2B KPIs (on-time",
+      "status": "VIOLATION"
+    },
+    {
+      "file": "audit/semantic-review.md",
+      "line": 24,
+      "category": "positioning",
+      "term": "voucher",
+      "match": "vouchers",
+      "context": "| Codes to scan, vouchers, loyalty mechanics | No |",
+      "status": "VIOLATION"
+    },
+    {
+      "file": "audit/semantic-review.md",
+      "line": 38,
+      "category": "positioning",
+      "term": "coupon",
+      "match": "coupon",
+      "context": "oducts**. No artefact in the package still says \"discount / coupon company\", \"restaurant app\", \"travel service\" or \"e-commerce",
+      "status": "VIOLATION"
+    },
+    {
+      "file": "audit/semantic-review.md",
+      "line": 38,
+      "category": "positioning",
+      "term": "discount",
+      "match": "discount",
+      "context": "S and AI products**. No artefact in the package still says \"discount / coupon company\", \"restaurant app\", \"travel service\" or \"e",
+      "status": "VIOLATION"
+    },
+    {
+      "file": "audit/semantic-review.md",
+      "line": 38,
+      "category": "positioning",
+      "term": "discount",
+      "match": "discount",
+      "context": "company\", \"restaurant app\", \"travel service\" or \"e-commerce discount app\". The redesign passes the semantic audit.",
+      "status": "VIOLATION"
+    },
+    {
+      "file": "audit/semantic-review.md",
+      "line": 38,
+      "category": "positioning",
+      "term": "restaurant",
+      "match": "restaurant",
+      "context": "act in the package still says \"discount / coupon company\", \"restaurant app\", \"travel service\" or \"e-commerce discount app\". The re",
+      "status": "VIOLATION"
+    }
+  ],
   "allowed_references": [
     {
       "file": "guidelines/index.html",
@@ -149,5 +204,5 @@
     }
   ],
   "info": [],
-  "technology_signal_terms": 1178
+  "technology_signal_terms": 1788
 }

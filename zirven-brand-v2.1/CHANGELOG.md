@@ -23,7 +23,7 @@ V2 presented Zirven as a consumer-facing local marketplace. That was the wrong b
 - **Guidelines rewritten:** 01 Brand overview, 02 Brand personality, 03 Creative direction, 16 Imagery, 17 UI design language, 18 Social media, 19 Print, 20 Digital, 21 Design tokens. Added 04 Brand architecture, 22 Voice & messaging, 23 Logo review and 24 Files & production.
 
 ### Removed
-- V2's taglines in all three languages, its consumer-marketplace vocabulary, venue categories, savings messaging, consumer UI cards and badges, regional-audience targeting and competitor comparison.
+- V2's taglines in all three languages, its consumer-marketplace vocabulary, venue categories, price-led consumer messaging, consumer UI cards and badges, regional-audience targeting and competitor comparison.
 
 ### Added
 - **Logo review:** three candidates (A refined, B modular, C layered) compared at 16, 24, 32 and 64 px, as app icons, in a website header and in monochrome. **A was selected.** B's modules became the logo motion and C's layers became the platform layer in architecture diagrams.
