@@ -141,7 +141,7 @@
   .ex { background: linear-gradient(180deg, rgba(36, 22, 84, 0.5), rgba(21, 17, 43, 1) 75%); border-color: rgba(61, 216, 232, 0.22); }
   .ex .card__head { border-bottom: 1px solid var(--t-line); }
   .ex .z-ai { font-size: 13px; }
-  .ex__body { flex: 1; padding: 14px 16px 14px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+  .ex__body { flex: 1; padding: 12px 16px 14px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
   .ex__subj { display: flex; align-items: center; gap: 8px; font: 500 12.5px/1 var(--z-font-sans); color: var(--t-text-2); }
   .ex__subj b { color: var(--t-text); font-weight: 500; }
   .ex__subj .z-delta { margin-left: auto; font-size: 12px; }
@@ -362,13 +362,13 @@
           <div class="card__head">
             <span class="z-ai">Explain this change</span>
             <span class="card__sub" style="margin-left:4px">3 queries · 1.4 s</span>
-            <span class="icon-btn" style="width:28px;height:28px;border-radius:8px;margin:0 -6px 0 auto"><svg class="zi zi--sm"><use href="#zi-more"/></svg></span>
+            <a class="link" href="ai-assistant.html" style="margin-left:auto">Follow up<svg class="zi zi--xs"><use href="#zi-arrow-up-right"/></svg></a>
           </div>
           <div class="ex__body">
             <div class="ex__subj"><b>On-time rate</b><span class="num">92.8% → 94.6%</span><span class="z-delta num">↑ 1.8 pts</span></div>
-            <p><b>Rotterdam DC drove most of the rise.</b> Its carrier cut-off moved from 14:00 to 16:00 on 24 Aug<sup>2</sup>, and same-day pickups rose from 61% to 88%<sup>3</sup>.</p>
+            <p><b>Rotterdam DC drove most of the rise.</b><sup>1</sup> Its carrier cut-off moved from 14:00 to 16:00 on 24 Aug<sup>2</sup>, and same-day pickups rose from 61% to 88%<sup>3</sup>.</p>
             <div class="drv" aria-label="Contribution by site, percentage points">
-              <span class="drv__cap">Contribution by site</span><span></span><span class="drv__cap r">pts</span>
+              <span class="drv__cap" style="grid-column:1 / 3">Contribution by site</span><span class="drv__cap r">pts</span>
               <span>Rotterdam DC</span><span class="drv__bar"><i style="left:30%;width:65%"></i></span><b>+1.3</b>
               <span>Leipzig hub</span><span class="drv__bar"><i style="left:30%;width:30%"></i></span><b>+0.6</b>
               <span>Izmir plant</span><span class="drv__bar"><i class="neg" style="left:25%;width:5%"></i></span><b>−0.1</b>
@@ -377,7 +377,6 @@
               <span class="z-tag"><em>1</em>ontime_by_site.sql</span>
               <span class="z-tag"><em>2</em>carrier_cutoffs</span>
               <span class="z-tag"><em>3</em>pickups_daily</span>
-              <a class="link" href="ai-assistant.html">Ask a follow-up<svg class="zi zi--xs"><use href="#zi-arrow-right"/></svg></a>
             </div>
           </div>
         </article>
