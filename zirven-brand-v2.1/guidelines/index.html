@@ -680,13 +680,14 @@
       <tr><td>pattern</td><td>Data terrain (dark/light/plain), ascent lines, module grid</td></tr>
       <tr><td>tokens · assets/css · assets/js · assets/fonts</td><td>Design tokens, shared stylesheet, icon injector, Readex Pro and JetBrains Mono (OFL)</td></tr>
       <tr><td>applications</td><td>The 20 applications (web, product, print, comms, social, environment, presentation, developer, app icon)</td></tr>
-      <tr><td>brand-board · previews · audit</td><td>Brand board, PNG previews of every page, semantic audit report</td></tr>
+      <tr><td>brand-board · previews · pdf · audit</td><td>Brand board, PNG previews of every page, PDF brand book / guidelines / board, semantic audit report</td></tr>
     </tbody>
   </table>
 <pre class="z-code mt-8"><span class="tk-c"># rebuild everything</span>
 python3 -m pip install fonttools uharfbuzz brotli
 python3 scripts/build_brand.py      <span class="tk-c"># tokens, logos, icons, patterns, favicon masters</span>
 node scripts/render.mjs             <span class="tk-c"># favicon PNG/ICO, logo PNGs, page previews</span>
+node scripts/export-pdf.mjs         <span class="tk-c"># Brand Book, Guidelines and Brand Board PDFs in pdf/</span>
 python3 scripts/audit.py            <span class="tk-c"># semantic audit, writes audit/semantic-audit.md</span></pre>
   <div class="z-row z-between mt-16 z-caption"><span>Zirven Technology · Brand guidelines V2.1</span><span>Building intelligent digital products.</span></div>
 </section>

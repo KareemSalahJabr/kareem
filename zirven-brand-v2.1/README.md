@@ -10,6 +10,9 @@ V2.1 corrects the business positioning of the Zirven identity. Zirven is a **tec
 
 | Open | What it is |
 |---|---|
+| `pdf/Zirven-V2.1-Brand-Book.pdf` | **Everything in one PDF** (45 pages): brand board, guidelines 01–24, logo review, all applications |
+| `pdf/Zirven-V2.1-Guidelines.pdf` | Brand guidelines only (cover + 24 sections) |
+| `pdf/Zirven-V2.1-Brand-Board.pdf` | Brand board, one page |
 | `index.html` | Package hub |
 | `brand-board/index.html` | The whole identity on one board (PNG: `previews/00-brand-board.png`) |
 | `guidelines/index.html` | Brand guidelines, sections 01–24 |
@@ -67,6 +70,7 @@ zirven-brand-v2.1/
 ├── pattern/                    data terrain, ascent lines, module grid
 ├── tokens/                     tokens.json · tokens.css · _tokens.scss · tailwind.preset.cjs
 ├── assets/                     zirven.css, icon injector, fonts (Readex Pro, JetBrains Mono, OFL)
+├── pdf/                        Brand Book, Guidelines and Brand Board as vector PDFs
 ├── previews/                   PNG renders of every page
 ├── audit/                      semantic audit report
 └── scripts/                    build_brand.py · render.mjs · audit.py
@@ -78,6 +82,7 @@ zirven-brand-v2.1/
 python3 -m pip install fonttools uharfbuzz brotli    # once
 python3 scripts/build_brand.py   # tokens, logos (outlined from Readex Pro), icons, patterns, favicon masters
 node scripts/render.mjs          # favicon PNG/ICO, logo PNGs, page previews (Playwright Chromium)
+node scripts/export-pdf.mjs      # vector PDFs in pdf/ (needs: python3 -m pip install pypdf)
 python3 scripts/audit.py         # semantic audit; exits non-zero on any violation
 ```
 

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-03",
-  "files_scanned": 162,
+  "files_scanned": 164,
   "violations": [],
   "allowed_references": [
     {
@@ -149,5 +149,5 @@
     }
   ],
   "info": [],
-  "technology_signal_terms": 1744
+  "technology_signal_terms": 1765
 }
